@@ -2,6 +2,7 @@
 
 from flask_sqlalchemy import SQLAlchemy 
 
+
 # This is the connection to the PostgreSQL database;
 db = SQLAlchemy()
 
@@ -38,8 +39,6 @@ class Location(db.Model):
     longitude = db.Column(db.Integer, nullable=False)
     location_description = db.Column(db.Text, nullable=False)
     
-
-
     def __repr__(self):
         """Provide helpful representation when printed."""
 
@@ -58,7 +57,6 @@ class Location_rating(db.Model):
     location_id = db.Column(db.Integer, db.ForeignKey('locations.location_id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     
-
     #RELATIONSHIPS
     location = db.relationship('Location', backref='Location_rating')
     user = db.relationship('User', backref='Location_rating')
@@ -69,7 +67,8 @@ class Location_rating(db.Model):
         return ("<Location Rating: loc_rate_id=%s user_id=%s loc_id=%s loc_rate=%s>" 
                 % ( self.location_rating_id, self.user_id,
                     self.location_id, self.location_rating) )
-    
+ 
+
 class Location_comment(db.Model):
     """Location comments"""
     
@@ -78,7 +77,7 @@ class Location_comment(db.Model):
     
     location_comment_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     location_comment = db.Column(db.Text, nullable=False)
-    location_datetime = db.Column(db.Datetime, nullable=False)
+    location_datetime = db.Column(db.DateTime, nullable=False)
 
     location_id = db.Column(db.Integer, db.ForeignKey('locations.location_id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
@@ -139,6 +138,7 @@ class Route_rating(db.Model):
         return ("<Route Rating: id=%s route_id=%s route_rating=%s difficulty_rate=%s>"
                 % (self.route_rating_id, route_id, route_rating, route_difficulty_rate))
 
+
 class Route_comment(db.Model):
     """Route comments"""
     
@@ -157,17 +157,18 @@ class Route_comment(db.Model):
     
     def __repr__(self):
         """Provide helpful representation when printed."""
-    return "<Route Comment: id=%s route_id=%s>" % (route_comment_id, route_id)
+        return "<Route Comment: id=%s route_id=%s>" % (route_comment_id, route_id)
 
-class Images(db.Model):
-    """Images uploaded from users"""
-    #TODO AFTER FIRST SPRINT
-    #add table creation
 
-    #add column creation
-    def __repr__(self):
-        """Provide helpful representation when printed."""
-    pass 
+# class Images(db.Model):
+#     """Images uploaded from users"""
+#     #TODO AFTER FIRST SPRINT
+#     #add table creation
+
+#     #add column creation
+#     def __repr__(self):
+#         """Provide helpful representation when printed."""
+#     pass 
 
 
 #################################
