@@ -3,7 +3,7 @@
 from flask_sqlalchemy import SQLAlchemy 
 
 # This is the connection to the PostgreSQL database;
-db= SQLAlchemy()
+db = SQLAlchemy()
 
 #################################
 #Model definitions
@@ -33,10 +33,10 @@ class Location(db.Model):
 
     location_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     location_name = db.Column(db.String(100), nullable=False)
-    directions = db.Column()#TODO
+    directions = db.Column(db.Text, nullable=True)
     latitude = db.Column(db.Integer, nullable=False)
     longitude = db.Column(db.Integer, nullable=False)
-    location_description #TODO
+    location_description = db.Column(db.Text, nullable=False)
     
 
 
@@ -49,38 +49,43 @@ class Location(db.Model):
 
 class Location_rating(db.Model):
     """Location ratings"""
-    #TODO
+    
     __tablename__ = 'location_ratings'
     
-    location_rating_id = db.Column(db.Integer, autoincrement=True, nullable=False)
+    location_rating_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    location_rating = db.Column(db.Integer, nullable=False)
+
     location_id = db.Column(db.Integer, db.ForeignKey('locations.location_id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-    location_rating = db.Column(db.Integer, nullable=False)
     
 
-    #TODO RELATIONSHIPS
+    #RELATIONSHIPS
+    location = db.relationship('Location', backref='Location_rating')
+    user = db.relationship('User', backref='Location_rating')
 
     def __repr__(self):
         """Provide helpful representation when printed."""
-        #how do i make this look better?
-        return "<Location Rating: loc_rate_id=%s user_id=%s loc_id=%s loc_rate=%s>" % ( self.location_rating_id,
-                                                                                        self.user_id,
-                                                                                        self.location_id,
-                                                                                        self.location_rating)
+        
+        return ("<Location Rating: loc_rate_id=%s user_id=%s loc_id=%s loc_rate=%s>" 
+                % ( self.location_rating_id, self.user_id,
+                    self.location_id, self.location_rating) )
     
 class Location_comment(db.Model):
     """Location comments"""
-    #TODO
-    __tablename__ = 'location_comments'
-    #add table creation
     
-    location_comment_id = db.Column(db.Integer, autoincrement=True, nullable=False)
+    __tablename__ = 'location_comments'
+    
+    
+    location_comment_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    location_comment = db.Column(db.Text, nullable=False)
+    location_datetime = db.Column(db.Datetime, nullable=False)
+
     location_id = db.Column(db.Integer, db.ForeignKey('locations.location_id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-    location_comment 
-    location_datetime
-
-    #TODO RELATIONSHIPS
+    
+    #RELATIONSHIPS
+    location = db.relationship('Location', backref='Location_comment')
+    user = db.relationship('User', backref='Location_comment')
     
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -91,16 +96,18 @@ class Location_comment(db.Model):
 
 class Route(db.Model):
     """Climbing routes"""
-    #TODO
+    
     __tablename__ = 'routes'
 
-    route_id = db.Column(db.Integer, autoincrement=True, nullable=False)
-    location_id = db.Column(db.Integer, db.ForeignKey('locations.location_id'))
+    route_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     route_name = db.Column(db.String(200), nullable=False)
     difficulty_rate = db.Column(db.String(5), nullable=True)
-    route_description
+    route_description = db.Column(db.Text, nullable=False)
+
+    location_id = db.Column(db.Integer, db.ForeignKey('locations.location_id'))
   
-    #TODO RELATIONSHIPS
+    #RELATIONSHIPS
+    location = db.relationship('Location', backref='Route')
     
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -111,35 +118,46 @@ class Route(db.Model):
 
 class Route_rating(db.Model):
     """Route ratings"""
-    #TODO
+    
     __tablename__ = 'route_ratings'
     
-    route_rating_id = db.Column(db.Integer, autoincrement=True, nullable=False)
+    route_rating_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    route_rating = db.Column(db.Integer, nullable=True)
+    route_difficulty_rate = db.Column(db.Integer, nullable=True)
+
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     route_id = db.Column(db.Integer, db.ForeignKey('routes.route_id'))
-    route_rating = db.Column(db.Integer, nullable=True)
-    route_difficulty_rate 
 
-    #TODO RELATIONSHIPS
+    #RELATIONSHIPS
+    user = db.relationship('User', backref='Route_rating')
+    route = db.relationship('Route', backref='Route_rating')
+
 
     def __repr__(self):
         """Provide helpful representation when printed."""
-    pass
+        
+        return ("<Route Rating: id=%s route_id=%s route_rating=%s difficulty_rate=%s>"
+                % (self.route_rating_id, route_id, route_rating, route_difficulty_rate))
 
 class Route_comment(db.Model):
     """Route comments"""
-    #TODO
-    route_comment_id
-    route_id
-    user_id
-    route_comment
-    route_datetime
     
-    #TODO RELATIONSHIPS
+    __tablename__ = 'route_comments'
+
+    route_comment_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    route_comment = db.Column(db.Text, nullable=False)
+    route_datetime = db.Column(db.DateTime, nullable=False)
+
+    route_id  = db.Column(db.Integer, db.ForeignKey('routes.route_id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    
+    #RELATIONSHIPS
+    user = db.relationship('User', backref='Route_comment')
+    route = db.relationship('Route', backref='Route_comment')
     
     def __repr__(self):
         """Provide helpful representation when printed."""
-    pass
+    return "<Route Comment: id=%s route_id=%s>" % (route_comment_id, route_id)
 
 class Images(db.Model):
     """Images uploaded from users"""
@@ -154,6 +172,23 @@ class Images(db.Model):
 
 #################################
 #Helper functions
+
+def connect_to_db(app):
+    """Connect the database to our Flask app."""
+
+    # Configure to use our PstgreSQL database
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///boulders'
+    db.app = app
+    db.init_app(app)
+
+
+if __name__ == "__main__":
+    # As a convenience, if we run this module interactively, it will leave
+    # you in a state of being able to work with the database directly.
+
+    from server import app
+    connect_to_db(app)
+    print "Connected to DB."
 
 
 
