@@ -1,10 +1,19 @@
 """Models and database functions for Climbing Project"""
 
-from flask_sqlalchemy import SQLAlchemy 
+# from flask_sqlalchemy import SQLAlchemy 
 
 
 # This is the connection to the PostgreSQL database;
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+
+# app = Flask(__name__)
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///boulders'
 db = SQLAlchemy()
+
+
+
+
 
 #################################
 #Model definitions
@@ -17,7 +26,7 @@ class User(db.Model):
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     username = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(100), nullable=False)
-    password = db.Column(db.String(50), nullable=False)
+    password = db.Column(db.String(100), nullable=False)
 
 
     def __repr__(self):
@@ -179,6 +188,7 @@ def connect_to_db(app):
 
     # Configure to use our PstgreSQL database
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///boulders'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = app
     db.init_app(app)
 

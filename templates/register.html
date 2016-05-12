@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<p> This is a homepage, Yo! </p>
 
-<a href='/register'>Register</a>
-
-<form action="/login" method="POST">
+<form action="/register" method="POST">
     <label for= "field-user">Username 
         <input type="text" name="username" id="field-username">
+    </label>
+    <label for= "field-email">Email 
+        <input type="text" name="email" id="field-email">
     </label>
     <label for= "field-password">Password
         <input type="text" name="pwd" id="field-password">
