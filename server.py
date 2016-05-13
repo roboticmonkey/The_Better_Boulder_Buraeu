@@ -1,6 +1,6 @@
 """ Put something here"""
 from jinja2 import StrictUndefined
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, flash
 
 from flask_debugtoolbar import DebugToolbarExtension
 from model import connect_to_db, db, User
@@ -42,12 +42,35 @@ def register_process():
     hashed_password = hashing.hash_password(password)
     print hashed_password
 
-    new_user = User(email=email, username=username, password=hashed_password)
-    db.session.add(new_user)
-    db.session.commit()
 
-    #renders a user page
-    return render_template('user_page.html')
+    #check if username in db
+    user = User.query.filter( (User.username == username) | (User.email == email) ).first()
+
+    # if user is empty add user to db
+    if not user:
+        #add user to db
+        new_user = User(email=email, username=username, password=hashed_password)
+        flash("Welcome %s."  % (username))
+        db.session.add(new_user)
+        db.session.commit()
+
+        created_user = User.query.filter_by(username=username).first()
+
+        #create the key value pair in the session(= magic dictionary)
+        #(flask's session)
+        session['user_id'] = created_user.user_id
+        
+        # renders a user page
+        return render_template('user_page.html')
+    else:
+        if user.email == email:
+            flash("%s email already has an account."  % (email))
+            return redirect("/")
+        else:
+            flash("%s username is already taken. Choose something else." % (username)) 
+            return redirect("/")
+
+    
 
 @app.route('/login', methods=['POST'])
 def login_user():
@@ -62,24 +85,36 @@ def login_user():
 
     # no username match, got back to homepage
     if not user:
+        flash("No username registered with the name %s" % (username))
         return redirect('/')
 
     # if user object is there get hashed pwd compare w/ entered pwd
     else:
         if hashing.check_password(user.password, password):
             #if a match send to user page
+            flash("Sucessfully logged in.")
+            
+            #create the key value pair in the session(= magic dictionary)
+            #(flask's session)
+            session['user_id'] = user.user_id
+
             return render_template('user_page.html')
         # no match got back to homepage, Do Not Collect 200.
         else:
+            flash("Incorrect password entered")
             return redirect('/')
 
     
 
 @app.route('/logout')
 def logout_user():
-    """ Logs out user"""
+    """Logs out user and flashes a logout message"""
 
-    pass
+    # deletes the key and value in the session dictionary
+    del session['user_id']
+    flash("You have been logged out.")
+    
+    return redirect('/')
 
 
 @app.route('/location')
