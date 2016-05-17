@@ -67,7 +67,7 @@ class Sub_location(db.Model):
     sub_longitude = db.Column(db.Integer, nullable=True)
     sub_location_description = db.Column(db.Text, nullable=False)
 
-    location_id = db.Column(db.Integer, db.ForeignKey('location.location_id'))
+    location_id = db.Column(db.Integer, db.ForeignKey('locations.location_id'))
 
     #RELATIONSHIPS
     location = db.relationship('Location', backref='Sub_location')
@@ -92,8 +92,8 @@ class Boulder(db.Model):
     longitude = db.Column(db.Integer, nullable=True)
     boulder_description = db.Column(db.Text, nullable=False)
     
-    location_id = db.Column(db.Integer, db.ForeignKey('location.location_id'))
-    sub_location_id = db.Column(db.Integer, db.ForeignKey('sub_location.location_id'), nullable=True)
+    location_id = db.Column(db.Integer, db.ForeignKey('locations.location_id'))
+    sub_location_id = db.Column(db.Integer, db.ForeignKey('sub_locations.sub_location_id'), nullable=True)
 
     #RELATIONSHIPS
     location = db.relationship('Location', backref='Boulder')
