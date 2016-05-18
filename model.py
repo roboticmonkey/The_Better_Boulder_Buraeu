@@ -43,8 +43,8 @@ class Location(db.Model):
     location_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     location_name = db.Column(db.String(100), nullable=False)
     location_directions = db.Column(db.Text, nullable=True)
-    latitude = db.Column(db.Integer, nullable=False)
-    longitude = db.Column(db.Integer, nullable=False)
+    latitude = db.Column(db.String(15), nullable=False)
+    longitude = db.Column(db.String(15), nullable=False)
     location_description = db.Column(db.Text, nullable=False)
 
     def __repr__(self):
@@ -97,7 +97,7 @@ class Boulder(db.Model):
 
     #RELATIONSHIPS
     location = db.relationship('Location', backref='Boulder')
-    sub_location = db.relationship('User', backref='Boulder')
+    sub_location = db.relationship('Sub_location', backref='Boulder')
 
 
     def __repr__(self):
@@ -166,7 +166,7 @@ class Route(db.Model):
     route_directions = db.Column(db.Text, nullable=True)
     route_protection = db.Column(db.Text, nullable=True)
 
-    boulder_id = db.Column(db.Integer, db.ForeignKey('locations.location_id'))
+    boulder_id = db.Column(db.Integer, db.ForeignKey('boulders.boulder_id'))
   
     #RELATIONSHIPS
     boulder = db.relationship('Boulder', backref='Route')
