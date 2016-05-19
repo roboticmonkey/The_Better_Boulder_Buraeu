@@ -3,5 +3,13 @@
 {% block content %}
 
 <p>Look at this awesome location page!</p>
+<h2>Locations</h2>
+  <ul>
+  {% for location in locations %}
+    <li>
+      <a href="/locations/{{ location.location_id }}">{{ location.location_name }}</a>
+    </li>
+  {% endfor %}
+  </ul>
 
 {% endblock %}

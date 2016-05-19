@@ -63,8 +63,8 @@ class Sub_location(db.Model):
     sub_location_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     sub_location_name = db.Column(db.String(100), nullable=False)
     sub_location_directions = db.Column(db.Text, nullable=True)
-    sub_latitude = db.Column(db.Integer, nullable=True)
-    sub_longitude = db.Column(db.Integer, nullable=True)
+    sub_latitude = db.Column(db.String(15), nullable=True)
+    sub_longitude = db.Column(db.String(15), nullable=True)
     sub_location_description = db.Column(db.Text, nullable=False)
 
     location_id = db.Column(db.Integer, db.ForeignKey('locations.location_id'))
@@ -88,8 +88,8 @@ class Boulder(db.Model):
     boulder_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     boulder_name = db.Column(db.String(100), nullable=False)
     boulder_directions = db.Column(db.Text, nullable=True)
-    latitude = db.Column(db.Integer, nullable=True)
-    longitude = db.Column(db.Integer, nullable=True)
+    boulder_latitude = db.Column(db.String(15), nullable=True)
+    boulder_longitude = db.Column(db.String(15), nullable=True)
     boulder_description = db.Column(db.Text, nullable=False)
     
     location_id = db.Column(db.Integer, db.ForeignKey('locations.location_id'))
@@ -97,7 +97,7 @@ class Boulder(db.Model):
 
     #RELATIONSHIPS
     location = db.relationship('Location', backref='Boulder')
-    sub_location = db.relationship('Sub_location', backref='Boulder')
+    sub_location = db.relationship('Sub_location', backref='Boulder_rating')
 
 
     def __repr__(self):
@@ -161,7 +161,7 @@ class Route(db.Model):
 
     route_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     route_name = db.Column(db.String(200), nullable=False)
-    difficulty_rate = db.Column(db.String(5), nullable=True)
+    difficulty_rate = db.Column(db.String(7), nullable=True)
     route_description = db.Column(db.Text, nullable=False)
     route_directions = db.Column(db.Text, nullable=True)
     route_protection = db.Column(db.Text, nullable=True)

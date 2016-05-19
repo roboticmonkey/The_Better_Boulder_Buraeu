@@ -3,7 +3,7 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, request, redirect, session, flash
 
 from flask_debugtoolbar import DebugToolbarExtension
-from model import connect_to_db, db, User
+from model import connect_to_db, db, User, Location, Sub_location, Boulder, Route
 import hashing 
 
 app = Flask(__name__)
@@ -113,17 +113,40 @@ def logout_user():
     # deletes the key and value in the session dictionary
     del session['user_id']
     flash("You have been logged out.")
-    
+
     return redirect('/')
 
 
-@app.route('/location')
+@app.route('/locations')
 def display_location():
-    """Display location info page"""
+    """Display location list page"""
 
     #lists the location's routes as links
+    locations = Location.query.order_by('location_name').all()
+    return render_template("location.html", locations=locations)
 
-    pass
+@app.route("/locations/<int:location_id>", methods=['GET'])
+def location_detail(location_id):
+    """Show info about a location."""
+
+    location = Location.query.get(location_id)
+
+    sub_locations = Sub_location.query.filter_by(location_id=location_id).all()
+
+    boulders=None
+    if not sub_locations:
+        # return render_template("location_detail.html", location=location,
+                                                     # sub_locations=sub_locations)
+    # else:
+        boulders = Boulder.query.filter_by(location_id=location_id).all()
+        
+    return render_template("location_detail.html", location=location,
+                                                    
+                                                 sub_locations=sub_locations,
+                                                 boulders=boulders )
+
+    
+ 
 
 @app.route('/route')
 def display_route():
