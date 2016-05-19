@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>{{ sub_location.sub_location_name }}</h1>
+
+<ul>
+    <li>Latitude: {{ sub_location.sub_latitude }}</li>
+    <li>Longitude: {{ sub_location.sub_longitude }}</li>
+    <li>Description: {{ sub_location.sub_location_description }}</li>
+    <li>Directions: {{ sub_location.sub_location_directions }}</li>
+</ul>
+
+<h2>Boulders</h2>
+    <ul>
+{% for boulder in boulders %}
+    <li>
+        <a href="/boulders/{{ boulder.boulder_id }}">{{ boulder.boulder_name }}</a>
+    </li>
+{% endfor %}
+</ul>
+{% endblock %}

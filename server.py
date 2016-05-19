@@ -145,14 +145,48 @@ def location_detail(location_id):
                                                  sub_locations=sub_locations,
                                                  boulders=boulders )
 
+@app.route("/sub_locations/<int:sub_location_id>", methods=['GET'])
+def sub_location_detail(sub_location_id):
+    """Shows a sub location details page"""
+
+    sub = Sub_location.query.get(sub_location_id)
+
+    boulders = Boulder.query.filter_by(sub_location_id=sub_location_id).all()
+
+    return render_template("sub_location.html", sub_location=sub,
+                                                boulders=boulders)
     
  
 
-@app.route('/route')
-def display_route():
-    """Display route info page"""
 
-    pass
+@app.route("/boulders/<int:boulder_id>", methods=['GET'])
+def boulder_detail(boulder_id):
+
+    boulder = Boulder.query.get(boulder_id)
+
+    routes = Route.query.filter_by(boulder_id=boulder_id).all()
+
+    return render_template("boulders.html", boulder=boulder,
+                                            routes=routes)
+
+@app.route('/route/<int:route_id>', methods=['GET'])
+def display_route(route_id):
+    """Display route details page"""
+
+    route = Route.query.get(route_id)
+
+    near_routes = Route.query.filter_by(boulder_id=route.boulder_id).all()
+    boulder = Boulder.query.filter_by(boulder_id=route.boulder_id).first()
+    print boulder
+    if boulder.sub_location_id:
+        boulders = Boulder.query.filter_by(sub_location_id=boulder.sub_location_id).all()
+    else:
+        boulders = Boulder.query.filter_by(location_id=boulder.location_id).all()
+    return render_template("route.html", route=route,
+                                        near_routes=near_routes,
+                                        boulders=boulders)
+
+    
 
 @app.route('/add_location')
 def add_location():

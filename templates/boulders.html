@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>{{ boulder.boulder_name }}</h1>
+
+<ul>
+    <li>Latitude: {{ boulder.boulder_latitude }}</li>
+    <li>Longitude: {{ boulder.boulder_longitude }}</li>
+    <li>Description: {{ boulder.boulder_description }}</li>
+    <li>Directions: {{ boulder.boulder_directions }}</li>
+</ul>
+
+<h2>Routes</h2>
+    <ul>
+{% for route in routes %}
+    <li>
+        <a href="/route/{{ route.route_id }}">{{ route.route_name }}</a>
+    </li>
+{% endfor %}
+</ul>
+{% endblock %}

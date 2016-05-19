@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>{{ route.route_name }}</h1>
+
+<ul>
+    <li>Difficulty Level: {{ route.difficulty_rate }}</li>
+    <li>Description: {{ route.route_description }}</li>
+    <li>Directions: {{ route.route_directions }}</li>
+    <li>Protection: {{ route.route_protection }}</li>
+</ul>
+
+<h2>Routes on the same boulder</h2>
+    <ul>
+{% for n_route in near_routes %}
+    <li>
+        <a href="/route/{{ n_route.route_id }}">{{ n_route.route_name }}</a>
+    </li>
+{% endfor %}
+</ul>
+
+<h2>Near by boulders<h2>
+    <ul>
+{% for boulder in boulders %}
+    <li>
+        <a href="/boulders/{{ boulder.boulder_id }}">{{ boulder.boulder_name }}</a>
+    </li>
+{% endfor %}
+</ul>
+{% endblock %}
