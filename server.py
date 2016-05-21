@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, redirect, session, flash, jso
 from datetime import datetime
 from flask_debugtoolbar import DebugToolbarExtension
 from model import connect_to_db, db, User, Location, Sub_location, Boulder, Route
-from model import Boulder_comment, Route_comment
+from model import Boulder_comment, Route_comment, Boulder_rating, Route_rating
 import hashing 
 
 app = Flask(__name__)
@@ -297,11 +297,34 @@ def add_route_comment():
 @app.route('/rate-boulder', methods=["POST"])
 def add_rate_boulder():
     """add rating for boulder """
-
+    
+    #gets the rate from the form
     rate = request.form.get("score")
-
+    
+    # gets the user_id and boulder_id from session vars
     user_id= session.get('user_id')
     boulder_id = session.get('boulder_id')
+    
+    # checks to see if the user has already rated the boulder
+    rating = Boulder_rating.query.filter((Boulder_rating.boulder_id== route_id) &
+                                        (Boulder_rating.user_id==user_id)).first()
+    
+    # if the user already has a rating, update the db
+    if rating:
+        rating.boulder_rating = rate
+        # add to db
+        db.session.add(rating)
+    
+    # if the user has not rated the boulder before make a new rating
+    else:
+        new_rating = Boulder_rating(boulder_id=boulder_id,
+                                user_id=user_id,
+                                boulder_rating=rate)
+        # add to db
+        db.session.add(new_rating)
+    
+    # save db
+    db.session.commit()
 
     return render_template("rate.html", rating=rate)
 
@@ -310,9 +333,31 @@ def add_rate_boulder():
 def add_rate_route():
     """Add rating to db for route"""
 
+    # gets rating from form
     rate = request.form.get("score")
+
+    # gets user_id and route_id from session vars
     user_id= session.get('user_id')
     route_id = session.get('route_id')
+
+    # looks for a rating for the route by the user in db
+    rating = Route_rating.query.filter((Route_rating.route_id== route_id) &
+                                        (Route_rating.user_id==user_id)).first()
+    # If found update the db
+    if rating:
+        rating.route_rating = rate
+        #add to the db
+        db.session.add(rating)
+    # not found make a new rating
+    else:
+
+        new_rating = Route_rating(route_id=route_id,
+                                user_id=user_id,
+                                route_rating=rate)
+        # add to db
+        db.session.add(new_rating)
+    # save the db
+    db.session.commit()
 
     return render_template("rate.html", rating=rate)
 
