@@ -1,9 +1,10 @@
 """ Put something here"""
 from jinja2 import StrictUndefined
 from flask import Flask, render_template, request, redirect, session, flash, jsonify
-
+from datetime import datetime
 from flask_debugtoolbar import DebugToolbarExtension
 from model import connect_to_db, db, User, Location, Sub_location, Boulder, Route
+from model import Boulder_comment, Route_comment
 import hashing 
 
 app = Flask(__name__)
@@ -162,9 +163,13 @@ def boulder_detail(boulder_id):
     boulder = Boulder.query.get(boulder_id)
     #find all routes connected to that boulder
     routes = Route.query.filter_by(boulder_id=boulder_id).all()
+    session['boulder_id'] = boulder.boulder_id
+
+    comments = Boulder_comment.query.filter(Boulder_comment.boulder_id==boulder.boulder_id).all()
 
     return render_template("boulders.html", boulder=boulder,
-                                            routes=routes)
+                                            routes=routes,
+                                            comments=comments)
 
 @app.route('/route/<int:route_id>', methods=['GET'])
 def display_route(route_id):
@@ -176,14 +181,21 @@ def display_route(route_id):
                                     (Route.route_name != route.route_name)).all()
     #find near_by boulders
     boulder = Boulder.query.filter_by(boulder_id=route.boulder_id).first()
+    
+    session['route_id'] = route.route_id
     print boulder
     if boulder.sub_location_id:
         boulders = Boulder.query.filter_by(sub_location_id=boulder.sub_location_id).all()
     else:
         boulders = Boulder.query.filter_by(location_id=boulder.location_id).all()
+
+    comments = Route_comment.query.filter(Route_comment.route_id==route.route_id).all()
+
+
     return render_template("route.html", route=route,
                                         near_routes=near_routes,
-                                        boulders=boulders)
+                                        boulders=boulders,
+                                        comments=comments)
 
 @app.route('/search.json', methods=['GET'])
 def search():
@@ -239,9 +251,70 @@ def search():
 
     return jsonify({'data':results})
 
+@app.route('/add-b-comment', methods=["POST"])
+def add_boulder_comment():
+    """Adds a comment to a boulder"""
+    print "this shit is getting real!"
+
+    comment = request.form.get("comment")
+    boulder_id = session.get('boulder_id')
+    user_id = session.get('user_id')
+    print boulder_id
+    timestamp = datetime.now()
+    print timestamp
+
+    new_comment = Boulder_comment(boulder_comment=comment, 
+                                boulder_id=boulder_id,
+                                boulder_datetime=timestamp,
+                                user_id=user_id)
+    db.session.add(new_comment)
+    db.session.commit()
+
+    return render_template("comment.html", comment=comment)
 
 
+@app.route('/add-r-comment', methods=["POST"])
+def add_route_comment():
+    """Adds a comment to a route"""
+    print "this shit is getting real!"
 
+    comment = request.form.get("comment")
+    route_id = session.get('route_id')
+    user_id = session.get('user_id')
+    print route_id
+    timestamp = datetime.now()
+    print timestamp
+
+    new_comment = Route_comment(route_comment=comment, 
+                                route_id=route_id,
+                                route_datetime=timestamp,
+                                user_id=user_id)
+    db.session.add(new_comment)
+    db.session.commit()
+
+    return render_template("comment.html", comment=comment)
+
+@app.route('/rate-boulder', methods=["POST"])
+def add_rate_boulder():
+    """add rating for boulder """
+
+    rate = request.form.get("score")
+
+    user_id= session.get('user_id')
+    boulder_id = session.get('boulder_id')
+
+    return render_template("rate.html", rating=rate)
+
+
+@app.route('/rate-route', methods=["POST"])
+def add_rate_route():
+    """Add rating to db for route"""
+
+    rate = request.form.get("score")
+    user_id= session.get('user_id')
+    route_id = session.get('route_id')
+
+    return render_template("rate.html", rating=rate)
 
 
 @app.route('/add_location')

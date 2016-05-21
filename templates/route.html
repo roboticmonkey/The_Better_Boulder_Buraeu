@@ -9,7 +9,40 @@
     <li>Directions: {{ route.route_directions }}</li>
     <li>Protection: {{ route.route_protection }}</li>
 </ul>
+<form action="/rate-route" method="POST">
+              <div >
+                  <label>Rating:
+                    1 <input type="radio" name="score" value="1">
+                    2 <input type="radio" name="score" value="2">
+                    3 <input type="radio" name="score" value="3">
+                    4 <input type="radio" name="score" value="4">
+                    5 <input type="radio" name="score" value="5">
 
+                  </label>
+              </div>
+              <input type="submit" value="Record Rating">
+
+<h2>Comments</h2>
+    <form action="/add-r-comment" method="POST">
+        <label for="comment-field">
+            <textarea name="comment" id="comment-field">
+            </textarea>
+        </label>
+        <lable for="submit">
+        <input type="submit" value="Submit" id="submit">
+    </label>
+    </form>
+    <ul>
+    {% if comments %}  
+        {% for comment in comments %}
+        {% if comment.user_id %}
+        <li>{{ comment.user.username}} </li>
+        {% endif %}
+        <li>{{ comment.route_comment }}</li>
+        <li>{{ comment.route_datetime }}   </li>
+        {% endfor %}
+    {% endif %}
+</ul>
 <h2>Routes on the same boulder</h2>
     <ul>
 {% for n_route in near_routes %}
@@ -27,4 +60,7 @@
     </li>
 {% endfor %}
 </ul>
+
+
+
 {% endblock %}

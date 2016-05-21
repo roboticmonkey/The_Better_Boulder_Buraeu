@@ -9,13 +9,45 @@
     <li>Description: {{ boulder.boulder_description }}</li>
     <li>Directions: {{ boulder.boulder_directions }}</li>
 </ul>
+<form action="/rate-boulder" method="POST">
+              <div >
+                  <label>Rating:
+                    1 <input type="radio" name="score" value="1">
+                    2 <input type="radio" name="score" value="2">
+                    3 <input type="radio" name="score" value="3">
+                    4 <input type="radio" name="score" value="4">
+                    5 <input type="radio" name="score" value="5">
 
+                  </label>
+              </div>
+              <input type="submit" value="Record Rating">
+          </form>
 <h2>Routes</h2>
     <ul>
 {% for route in routes %}
     <li>
         <a href="/route/{{ route.route_id }}">{{ route.route_name }}</a>
     </li>
+{% endfor %}
+</ul>
+
+<h2>Comments</h2>
+    <form action="/add-b-comment" method="POST">
+        <label for="comment-field">
+            <textarea name="comment" id="comment-field">
+            </textarea>
+        </label>
+        <lable for="submit">
+        <input type="submit" value="Submit" id="submit">
+    </label>
+    </form>
+    <ul>
+{% for comment in comments %}
+{% if comment.user_id %}
+        <li>{{ comment.user.username}} </li>
+        {% endif %}
+<li>{{ comment.boulder_comment }}</li>
+<li>{{ comment.boulder_datetime }}   </li>
 {% endfor %}
 </ul>
 {% endblock %}
