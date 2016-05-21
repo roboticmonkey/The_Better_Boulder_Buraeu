@@ -1,6 +1,6 @@
 """ Put something here"""
 from jinja2 import StrictUndefined
-from flask import Flask, render_template, request, redirect, session, flash
+from flask import Flask, render_template, request, redirect, session, flash, jsonify
 
 from flask_debugtoolbar import DebugToolbarExtension
 from model import connect_to_db, db, User, Location, Sub_location, Boulder, Route
@@ -129,28 +129,25 @@ def display_location():
 def location_detail(location_id):
     """Show info about a location."""
 
+    #get the location object
     location = Location.query.get(location_id)
-
+    #find all sublocations that have the location as a parent
     sub_locations = Sub_location.query.filter_by(location_id=location_id).all()
 
-    boulders=None
-    if not sub_locations:
-        # return render_template("location_detail.html", location=location,
-                                                     # sub_locations=sub_locations)
-    # else:
-        boulders = Boulder.query.filter_by(location_id=location_id).all()
+    #find boulders that match the location_id, but dont have a
+    #assoicated sub_location_id
+    boulders = Boulder.query.filter((Boulder.location_id==location_id) & (Boulder.sub_location_id==None)).all()
         
     return render_template("location_detail.html", location=location,
-                                                    
                                                  sub_locations=sub_locations,
                                                  boulders=boulders )
 
 @app.route("/sub_locations/<int:sub_location_id>", methods=['GET'])
 def sub_location_detail(sub_location_id):
     """Shows a sub location details page"""
-
+    #find the sublocation object
     sub = Sub_location.query.get(sub_location_id)
-
+    #find the boulders that have the sublocation as a parent
     boulders = Boulder.query.filter_by(sub_location_id=sub_location_id).all()
 
     return render_template("sub_location.html", sub_location=sub,
@@ -161,9 +158,9 @@ def sub_location_detail(sub_location_id):
 
 @app.route("/boulders/<int:boulder_id>", methods=['GET'])
 def boulder_detail(boulder_id):
-
+    #find the Boulder object
     boulder = Boulder.query.get(boulder_id)
-
+    #find all routes connected to that boulder
     routes = Route.query.filter_by(boulder_id=boulder_id).all()
 
     return render_template("boulders.html", boulder=boulder,
@@ -172,10 +169,12 @@ def boulder_detail(boulder_id):
 @app.route('/route/<int:route_id>', methods=['GET'])
 def display_route(route_id):
     """Display route details page"""
-
+    #get the route object
     route = Route.query.get(route_id)
-
-    near_routes = Route.query.filter_by(boulder_id=route.boulder_id).all()
+    #find other routes that are on the same boulder
+    near_routes = Route.query.filter((Route.boulder_id==route.boulder_id) & 
+                                    (Route.route_name != route.route_name)).all()
+    #find near_by boulders
     boulder = Boulder.query.filter_by(boulder_id=route.boulder_id).first()
     print boulder
     if boulder.sub_location_id:
@@ -186,7 +185,64 @@ def display_route(route_id):
                                         near_routes=near_routes,
                                         boulders=boulders)
 
-    
+@app.route('/search.json', methods=['GET'])
+def search():
+    """searching for locations"""
+    search_term = request.args.get('term')
+
+    locations = Location.query.filter(Location.location_name.ilike('%'+search_term+'%')).all()
+    sub_locations = Sub_location.query.filter(Sub_location.sub_location_name.ilike('%'+search_term+'%')).all()
+    boulders = Boulder.query.filter(Boulder.boulder_name.ilike('%'+search_term+'%')).all()
+    routes = Route.query.filter(Route.route_name.ilike('%'+search_term+'%')).all()
+
+    results = []
+
+    for location in locations:
+        temp_dict = {}
+        temp_dict["name"] = location.location_name
+        temp_dict["lat"] = location.latitude
+        temp_dict["lon"] = location.longitude
+        temp_dict["id"] = location.location_id
+        temp_dict["route"] = "/locations/"
+
+        results.append(temp_dict)
+
+    for sub in sub_locations:
+        temp_dict = {}
+        temp_dict["name"] = sub.sub_location_name
+        temp_dict["lat"] = sub.sub_latitude
+        temp_dict["lon"] = sub.sub_longitude
+        temp_dict["id"] = sub.sub_location_id
+        temp_dict["route"] = "/sub_locations/"
+
+        results.append(temp_dict)
+
+    for boulder in boulders:
+        temp_dict = {}
+        temp_dict["name"] = boulder.boulder_name
+        temp_dict["lat"] = boulder.boulder_latitude
+        temp_dict["lon"] = boulder.boulder_longitude
+        temp_dict["id"] = boulder.boulder_id
+        temp_dict["route"] = "/boulders/"
+
+        results.append(temp_dict)
+
+    for route in routes:
+        temp_dict = {}
+        temp_dict["name"] = route.route_name
+        temp_dict["lat"] = ""
+        temp_dict["lon"] = ""
+        temp_dict["id"] = route.route_id
+        temp_dict["route"] = "/route/"
+
+        results.append(temp_dict)
+
+    return jsonify({'data':results})
+
+
+
+
+
 
 @app.route('/add_location')
 def add_location():
