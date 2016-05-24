@@ -14,18 +14,18 @@ function displayResults(data) {
     // adding the info to the page here?
     var dataDestination = $("#search-results");
     // var each = data.data[0];
-    // debugger;
+    debugger;
     // var markers = new L.MarkerClusterGroup();
 
     for (var i = 0; i < data.data.length; i++) {
         
         var each = data.data[i];
         // var title = each.name;
-        // var latlong = [each.float(lat), each.float(lon)];
+        // var latlong = [Number(each.lat), Number(each.lon)];
         var link = each.route+each.id;
-        dataDestination.append('<li><a href="'+link+'">'+each.name+'</a></li>');
+        dataDestination.append('<li><a href="'+link+'">'+each.name+'</a></li><br>'+each.lat);
 
-        // var marker = L.marker(new latlong, title), {
+        // var marker = L.marker(new L.LatLng(latlong[0], latlong[1]), {
         //     icon: L.mapbox.marker.icon({'marker-symbol': 'post', 'marker-color': '0044FF'}),
         //     title: title
         // });
@@ -58,3 +58,4 @@ function displayResults(data) {
     
 
 }
+

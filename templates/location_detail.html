@@ -15,7 +15,8 @@
 L.mapbox.accessToken = 'pk.eyJ1Ijoicm9ib3RpY21vbmtleSIsImEiOiJjaW9nZXBtajAwMWd3djFtM3Nma3FqaXB2In0.21UysS7J-Y50PVNcD0mopg';
 
 
-// var myLayer = L.mapbox.featureLayer().addTo(map);
+
+
 //converting jinja vars to js as well as string to number.
 lat = '{{ location.latitude }}';
 lat = Number(lat);
@@ -23,7 +24,9 @@ lng = '{{ location.longitude }}';
 lng = Number(lng);
 
 var map = L.mapbox.map('map', 'mapbox.pirates')
-    .setView([lat, lng], 9);
+    .setView([lat, lng], 10);
+
+    map.scrollWheelZoom.disable();
 
 L.mapbox.featureLayer({
     // this feature is in the GeoJSON format: see geojson.org
@@ -59,8 +62,41 @@ L.mapbox.featureLayer({
         <li>
           <a href="/sub_locations/{{ sub_location.sub_location_id }}">{{ sub_location.sub_location_name }}</a>
         </li>
+
+        <script>
+        //converting jinja vars to js as well as string to number.
+        lat = '{{ sub_location.sub_latitude }}';
+        lat = Number(lat);
+        lng = '{{ sub_location.sub_longitude }}';
+        lng = Number(lng);
+
+    L.mapbox.featureLayer({
+    // this feature is in the GeoJSON format: see geojson.org
+    // for the full specification
+    type: 'Feature',
+    geometry: {
+        type: 'Point',
+        // coordinates here are in longitude, latitude order because
+        // x, y is the standard for GeoJSON and many formats
+        coordinates: [
+          lng, lat
+        ]
+    },
+    properties: {
+        title: '{{ sub_location.sub_location_name }}',
+        // description: 'needs to be dynamic',
+        // one can customize markers by adding simplestyle properties
+        // https://www.mapbox.com/guides/an-open-platform/#simplestyle
+        'marker-size': 'medium',
+        'marker-color': '#ff66b3',
+        'marker-symbol': 'rocket'
+    }
+}).addTo(map);
+
+    </script>
         {% endfor %}
     </ul>
+    
 {% endif %}
 
 {% if boulders %}
@@ -70,6 +106,37 @@ L.mapbox.featureLayer({
         <li>
           <a href="/boulders/{{ boulder.boulder_id }}">{{ boulder.boulder_name }}</a>
         </li>
+        <script>
+        //converting jinja vars to js as well as string to number.
+        lat = '{{ boulder.boulder_latitude }}';
+        lat = Number(lat);
+        lng = '{{ boulder.boulder_longitude }}';
+        lng = Number(lng);
+
+    L.mapbox.featureLayer({
+    // this feature is in the GeoJSON format: see geojson.org
+    // for the full specification
+    type: 'Feature',
+    geometry: {
+        type: 'Point',
+        // coordinates here are in longitude, latitude order because
+        // x, y is the standard for GeoJSON and many formats
+        coordinates: [
+          lng, lat
+        ]
+    },
+    properties: {
+        title: '{{ boulder.boulder_name }}',
+        // description: 'needs to be dynamic',
+        // one can customize markers by adding simplestyle properties
+        // https://www.mapbox.com/guides/an-open-platform/#simplestyle
+        'marker-size': 'medium',
+        'marker-color': '#ffb84d',
+        'marker-symbol': 'rocket'
+    }
+}).addTo(map);
+
+    </script>
       {% endfor %}
       </ul>
 {% endif %}

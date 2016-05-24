@@ -9,48 +9,53 @@
     <li>Description: {{ sub_location.sub_location_description }}</li>
     <li>Directions: {{ sub_location.sub_location_directions }}</li>
 </ul>
-<div id='map' style='width: 400px; height: 300px;'></div>
 
-<script>
-L.mapbox.accessToken = 'pk.eyJ1Ijoicm9ib3RpY21vbmtleSIsImEiOiJjaW9nZXBtajAwMWd3djFtM3Nma3FqaXB2In0.21UysS7J-Y50PVNcD0mopg';
+{% if sub_location.sub_latitude %}
+    <div id='map' style='width: 400px; height: 300px;'></div>
+
+    <script>
+    L.mapbox.accessToken = 'pk.eyJ1Ijoicm9ib3RpY21vbmtleSIsImEiOiJjaW9nZXBtajAwMWd3djFtM3Nma3FqaXB2In0.21UysS7J-Y50PVNcD0mopg';
 
 
-// var myLayer = L.mapbox.featureLayer().addTo(map);
-//converting jinja vars to js as well as string to number.
-lat = '{{ sub_location.sub_latitude }}';
-lat = Number(lat);
-lng = '{{ sub_location.sub_longitude }}';
-lng = Number(lng);
+    // var myLayer = L.mapbox.featureLayer().addTo(map);
+    //converting jinja vars to js as well as string to number.
+    lat = '{{ sub_location.sub_latitude }}';
+    lat = Number(lat);
+    lng = '{{ sub_location.sub_longitude }}';
+    lng = Number(lng);
 
-var map = L.mapbox.map('map', 'mapbox.pirates')
-    .setView([lat, lng], 10);
+    var map = L.mapbox.map('map', 'mapbox.pirates')
+        .setView([lat, lng], 10);
 
-L.mapbox.featureLayer({
-    // this feature is in the GeoJSON format: see geojson.org
-    // for the full specification
-    type: 'Feature',
-    geometry: {
-        type: 'Point',
-        // coordinates here are in longitude, latitude order because
-        // x, y is the standard for GeoJSON and many formats
-        coordinates: [
-          // -122.27301,
-          // 37.89215 
-          lng, lat
-        ]
-    },
-    properties: {
-        title: '{{ sub_location.sub_location_name }}',
-        // description: 'needs to be dynamic',
-        // one can customize markers by adding simplestyle properties
-        // https://www.mapbox.com/guides/an-open-platform/#simplestyle
-        'marker-size': 'medium',
-        'marker-color': '#59b300',
-        'marker-symbol': 'rocket'
-    }
-}).addTo(map);
+    map.scrollWheelZoom.disable();
 
-</script>
+    L.mapbox.featureLayer({
+        // this feature is in the GeoJSON format: see geojson.org
+        // for the full specification
+        type: 'Feature',
+        geometry: {
+            type: 'Point',
+            // coordinates here are in longitude, latitude order because
+            // x, y is the standard for GeoJSON and many formats
+            coordinates: [
+              // -122.27301,
+              // 37.89215 
+              lng, lat
+            ]
+        },
+        properties: {
+            title: '{{ sub_location.sub_location_name }}',
+            // description: 'needs to be dynamic',
+            // one can customize markers by adding simplestyle properties
+            // https://www.mapbox.com/guides/an-open-platform/#simplestyle
+            'marker-size': 'medium',
+            'marker-color': '#59b300',
+            'marker-symbol': 'rocket'
+        }
+    }).addTo(map);
+
+    </script>
+{% endif %}
 
 <h2>Boulders</h2>
     <ul>

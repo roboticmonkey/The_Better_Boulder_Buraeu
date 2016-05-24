@@ -24,8 +24,8 @@
 
 <h2>Comments</h2>
     <form action="/add-r-comment" method="POST">
-        <label for="comment-field">
-            <textarea name="comment" id="comment-field">
+        <label for="r-comment-field">
+            <textarea name="comment" id="r-comment-field">
             </textarea>
         </label>
         <lable for="submit">
@@ -47,7 +47,7 @@
     <ul>
 {% for n_route in near_routes %}
     <li>
-        <a href="/route/{{ n_route.route_id }}">{{ n_route.route_name }}</a>
+        <a href="/route/{{ n_route.route_id }}">{{ n_route.route_name }}   {{ n_route.difficulty_rate }}</a>
     </li>
 {% endfor %}
 </ul>

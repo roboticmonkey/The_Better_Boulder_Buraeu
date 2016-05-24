@@ -10,49 +10,52 @@
     <li>Directions: {{ boulder.boulder_directions }}</li>
 </ul>
 
+{% if boulder.boulder_latitude %}
+    <div id='map' style='width: 400px; height: 300px;'></div>
 
-<div id='map' style='width: 400px; height: 300px;'></div>
-
-<script>
-L.mapbox.accessToken = 'pk.eyJ1Ijoicm9ib3RpY21vbmtleSIsImEiOiJjaW9nZXBtajAwMWd3djFtM3Nma3FqaXB2In0.21UysS7J-Y50PVNcD0mopg';
+    <script>
+    L.mapbox.accessToken = 'pk.eyJ1Ijoicm9ib3RpY21vbmtleSIsImEiOiJjaW9nZXBtajAwMWd3djFtM3Nma3FqaXB2In0.21UysS7J-Y50PVNcD0mopg';
 
 
-// var myLayer = L.mapbox.featureLayer().addTo(map);
-//converting jinja vars to js as well as string to number.
-lat = '{{ boulder.boulder_latitude }}';
-lat = Number(lat);
-lng = '{{ boulder.boulder_longitude }}';
-lng = Number(lng);
+    // var myLayer = L.mapbox.featureLayer().addTo(map);
+    //converting jinja vars to js as well as string to number.
+    lat = '{{ boulder.boulder_latitude }}';
+    lat = Number(lat);
+    lng = '{{ boulder.boulder_longitude }}';
+    lng = Number(lng);
 
-var map = L.mapbox.map('map', 'mapbox.pirates')
-    .setView([lat, lng], 11);
+    var map = L.mapbox.map('map', 'mapbox.pirates')
+        .setView([lat, lng], 11);
 
-L.mapbox.featureLayer({
-    // this feature is in the GeoJSON format: see geojson.org
-    // for the full specification
-    type: 'Feature',
-    geometry: {
-        type: 'Point',
-        // coordinates here are in longitude, latitude order because
-        // x, y is the standard for GeoJSON and many formats
-        coordinates: [
-          // -122.27301,
-          // 37.89215 
-          lng, lat
-        ]
-    },
-    properties: {
-        title: '{{ boulder.boulder_name }}',
-        // description: 'needs to be dynamic',
-        // one can customize markers by adding simplestyle properties
-        // https://www.mapbox.com/guides/an-open-platform/#simplestyle
-        'marker-size': 'medium',
-        'marker-color': '#59b300',
-        'marker-symbol': 'rocket'
-    }
-}).addTo(map);
+    map.scrollWheelZoom.disable();
 
-</script>
+    L.mapbox.featureLayer({
+        // this feature is in the GeoJSON format: see geojson.org
+        // for the full specification
+        type: 'Feature',
+        geometry: {
+            type: 'Point',
+            // coordinates here are in longitude, latitude order because
+            // x, y is the standard for GeoJSON and many formats
+            coordinates: [
+              // -122.27301,
+              // 37.89215 
+              lng, lat
+            ]
+        },
+        properties: {
+            title: '{{ boulder.boulder_name }}',
+            // description: 'needs to be dynamic',
+            // one can customize markers by adding simplestyle properties
+            // https://www.mapbox.com/guides/an-open-platform/#simplestyle
+            'marker-size': 'medium',
+            'marker-color': '#59b300',
+            'marker-symbol': 'rocket'
+        }
+    }).addTo(map);
+
+    </script>
+{% endif %}
 
 <form action="/rate-boulder" method="POST">
               <div >
@@ -71,15 +74,15 @@ L.mapbox.featureLayer({
     <ul>
 {% for route in routes %}
     <li>
-        <a href="/route/{{ route.route_id }}">{{ route.route_name }}</a>
+        <a href="/route/{{ route.route_id }}">{{ route.route_name }}    {{ route.difficulty_rate }}</a>
     </li>
 {% endfor %}
 </ul>
 
 <h2>Comments</h2>
     <form action="/add-b-comment" method="POST">
-        <label for="comment-field">
-            <textarea name="comment" id="comment-field">
+        <label for="b-comment-field">
+            <textarea name="comment" id="b-comment-field">
             </textarea>
         </label>
         <lable for="submit">
