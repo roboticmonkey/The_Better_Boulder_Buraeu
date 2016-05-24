@@ -5,6 +5,7 @@ from datetime import datetime
 from flask_debugtoolbar import DebugToolbarExtension
 from model import connect_to_db, db, User, Location, Sub_location, Boulder, Route
 from model import Boulder_comment, Route_comment, Boulder_rating, Route_rating
+from sqlalchemy import desc
 import hashing 
 
 app = Flask(__name__)
@@ -165,7 +166,7 @@ def boulder_detail(boulder_id):
     routes = Route.query.filter_by(boulder_id=boulder_id).all()
     session['boulder_id'] = boulder.boulder_id
 
-    comments = Boulder_comment.query.filter(Boulder_comment.boulder_id==boulder.boulder_id).all()
+    comments = Boulder_comment.query.filter(Boulder_comment.boulder_id==boulder.boulder_id).order_by(desc(Boulder_comment.boulder_datetime)).all()
 
     return render_template("boulders.html", boulder=boulder,
                                             routes=routes,
@@ -261,6 +262,7 @@ def add_boulder_comment():
     user_id = session.get('user_id')
     print boulder_id
     timestamp = datetime.now()
+    # timestamp= timestamp.strftime("%d %B %Y")
     print timestamp
 
     new_comment = Boulder_comment(boulder_comment=comment, 
@@ -269,10 +271,12 @@ def add_boulder_comment():
                                 user_id=user_id)
     db.session.add(new_comment)
     db.session.commit()
+    user = User.query.filter_by(user_id=user_id).first()
+    username = user.username
 
     comment_dict= {}
 
-    comment_dict['username'] = new_comment.user_id.username
+    comment_dict['username'] = username
     comment_dict['comment'] = new_comment.boulder_comment
     comment_dict['date'] = new_comment.boulder_datetime
 

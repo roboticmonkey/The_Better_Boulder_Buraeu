@@ -26,7 +26,6 @@
 
     var map = L.mapbox.map('map', 'mapbox.pirates')
         .setView([lat, lng], 10);
-
     map.scrollWheelZoom.disable();
 
     L.mapbox.featureLayer({
@@ -63,7 +62,6 @@
     <li>
         <a href="/boulders/{{ boulder.boulder_id }}" >{{ boulder.boulder_name }}</a>
     </li>
-    
 {% endfor %}
 </ul>
 {% endblock %}
