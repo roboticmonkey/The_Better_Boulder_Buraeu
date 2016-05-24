@@ -251,7 +251,7 @@ def search():
 
     return jsonify({'data':results})
 
-@app.route('/add-b-comment', methods=["POST"])
+@app.route('/add-b-comment.json', methods=["POST"])
 def add_boulder_comment():
     """Adds a comment to a boulder"""
     print "this shit is getting real!"
@@ -270,10 +270,17 @@ def add_boulder_comment():
     db.session.add(new_comment)
     db.session.commit()
 
-    return render_template("comment.html", comment=comment)
+    comment_dict= {}
+
+    comment_dict['username'] = new_comment.user_id.username
+    comment_dict['comment'] = new_comment.boulder_comment
+    comment_dict['date'] = new_comment.boulder_datetime
 
 
-@app.route('/add-r-comment', methods=["POST"])
+    return jsonify(comment_dict)
+
+
+@app.route('/add-r-comment.json', methods=["POST"])
 def add_route_comment():
     """Adds a comment to a route"""
     print "this shit is getting real!"

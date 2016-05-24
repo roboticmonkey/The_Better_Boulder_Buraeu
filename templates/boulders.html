@@ -80,16 +80,16 @@
 </ul>
 
 <h2>Comments</h2>
-    <form action="/add-b-comment" method="POST">
+    <form action="" method="POST" id="boulder-comment">
         <label for="b-comment-field">
             <textarea name="comment" id="b-comment-field">
             </textarea>
         </label>
         <lable for="submit">
-        <input type="submit" value="Submit" id="submit">
+        <input type="submit" value="Submit" id="b-comment-submit">
     </label>
     </form>
-    <ul>
+    <ul id="b-comments">
 {% for comment in comments %}
 {% if comment.user_id %}
         <li>{{ comment.user.username}} </li>
