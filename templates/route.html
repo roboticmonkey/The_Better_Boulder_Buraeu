@@ -23,7 +23,7 @@
               <input type="submit" value="Record Rating">
 
 <h2>Comments</h2>
-    <form action="/add-r-comment" method="POST">
+    <form action="" method="POST" id="route-comment">
         <label for="r-comment-field">
             <textarea name="comment" id="r-comment-field">
             </textarea>
@@ -39,7 +39,7 @@
         <li>{{ comment.user.username}} </li>
         {% endif %}
         <li>{{ comment.route_comment }}</li>
-        <li>{{ comment.route_datetime }}   </li>
+        <li>{{ comment.route_datetime.strftime('%d %B %Y') }}   </li>
         {% endfor %}
     {% endif %}
 </ul>

@@ -21,7 +21,7 @@ app.jinja_env.undefined = StrictUndefined
 @app.route('/')
 def index():
     """Homepage"""
-
+    # session['user_id'] = None 
     return render_template('homepage.html')
 
 
@@ -138,7 +138,8 @@ def location_detail(location_id):
 
     #find boulders that match the location_id, but dont have a
     #assoicated sub_location_id
-    boulders = Boulder.query.filter((Boulder.location_id==location_id) & (Boulder.sub_location_id==None)).all()
+    boulders = Boulder.query.filter((Boulder.location_id==location_id) & 
+                                    (Boulder.sub_location_id==None)).all()
         
     return render_template("location_detail.html", location=location,
                                                  sub_locations=sub_locations,
@@ -190,7 +191,7 @@ def display_route(route_id):
     else:
         boulders = Boulder.query.filter_by(location_id=boulder.location_id).all()
 
-    comments = Route_comment.query.filter(Route_comment.route_id==route.route_id).all()
+    comments = Route_comment.query.filter(Route_comment.route_id==route.route_id).order_by(desc(Route_comment.route_datetime)).all()
 
 
     return render_template("route.html", route=route,
@@ -278,7 +279,7 @@ def add_boulder_comment():
 
     comment_dict['username'] = username
     comment_dict['comment'] = new_comment.boulder_comment
-    comment_dict['date'] = new_comment.boulder_datetime
+    comment_dict['date'] = new_comment.boulder_datetime.strftime('%d %B %Y')
 
 
     return jsonify(comment_dict)
@@ -303,7 +304,17 @@ def add_route_comment():
     db.session.add(new_comment)
     db.session.commit()
 
-    return render_template("comment.html", comment=comment)
+    user = User.query.filter_by(user_id=user_id).first()
+    username = user.username
+
+    comment_dict= {}
+
+    comment_dict['username'] = username
+    comment_dict['comment'] = new_comment.route_comment
+    comment_dict['date'] = new_comment.route_datetime.strftime('%d %B %Y')
+
+
+    return jsonify(comment_dict)
 
 @app.route('/rate-boulder', methods=["POST"])
 def add_rate_boulder():

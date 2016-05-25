@@ -138,7 +138,7 @@ class Boulder_comment(db.Model):
     
     boulder_comment_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     boulder_comment = db.Column(db.Text, nullable=False)
-    boulder_datetime = db.Column(db.DateTime(timezone=False), nullable=False)
+    boulder_datetime = db.Column(db.DateTime, nullable=False)
 
     boulder_id = db.Column(db.Integer, db.ForeignKey('boulders.boulder_id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))

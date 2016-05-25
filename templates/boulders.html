@@ -4,8 +4,12 @@
 <h1>{{ boulder.boulder_name }}</h1>
 
 <ul>
+    {% if boulder.boulder_latitude %}
     <li>Latitude: {{ boulder.boulder_latitude }}</li>
+    {% endif %}
+    {% if boulder.boulder_longitude %}
     <li>Longitude: {{ boulder.boulder_longitude }}</li>
+    {% endif %}
     <li>Description: {{ boulder.boulder_description }}</li>
     <li>Directions: {{ boulder.boulder_directions }}</li>
 </ul>
@@ -37,9 +41,7 @@
             type: 'Point',
             // coordinates here are in longitude, latitude order because
             // x, y is the standard for GeoJSON and many formats
-            coordinates: [
-              // -122.27301,
-              // 37.89215 
+            coordinates: [ 
               lng, lat
             ]
         },
@@ -48,8 +50,8 @@
             // description: 'needs to be dynamic',
             // one can customize markers by adding simplestyle properties
             // https://www.mapbox.com/guides/an-open-platform/#simplestyle
-            'marker-size': 'medium',
-            'marker-color': '#59b300',
+            'marker-size': 'small',
+            'marker-color': '#ffb84d',
             'marker-symbol': 'rocket'
         }
     }).addTo(map);
@@ -57,19 +59,38 @@
     </script>
 {% endif %}
 
-<form action="/rate-boulder" method="POST">
+<!-- <form action="/rate-boulder" method="POST"> -->
               <div >
-                  <label>Rating:
-                    1 <input type="radio" name="score" value="1">
-                    2 <input type="radio" name="score" value="2">
-                    3 <input type="radio" name="score" value="3">
-                    4 <input type="radio" name="score" value="4">
-                    5 <input type="radio" name="score" value="5">
-
-                  </label>
+                 <label>Rating:
+                    1    <input type="radio" name="score" value="1">
+                    2    <input type="radio" name="score" value="2">
+                    3    <input type="radio" name="score" value="3">
+                    4    <input type="radio" name="score" value="4">
+                    5    <input type="radio" name="score" value="5">
+                </label>
+               <!--  <ul style="list-style:none">
+                    <li id="theThing">1</li>
+                    <li>2</li>
+                    <li>3</li>
+                    <li>4</li>
+                    <li>5</li>
+                </ul>
+                   -->
               </div>
+             <!-- <script>
+                
+                function saveRating(evt) {
+                    console.log("here i am")
+                }
+
+                $("#theThing").on('click', saveRating);
+            </script>  -->
+
+
               <input type="submit" value="Record Rating">
           </form>
+
+{% if routes %}
 <h2>Routes</h2>
     <ul>
 {% for route in routes %}
@@ -78,12 +99,12 @@
     </li>
 {% endfor %}
 </ul>
+{% endif %}
 
 <h2>Comments</h2>
     <form action="" method="POST" id="boulder-comment">
         <label for="b-comment-field">
-            <textarea name="comment" id="b-comment-field">
-            </textarea>
+            <textarea name="comment" id="b-comment-field"></textarea>
         </label>
         <lable for="submit">
         <input type="submit" value="Submit" id="b-comment-submit">
@@ -95,7 +116,7 @@
         <li>{{ comment.user.username}} </li>
         {% endif %}
 <li>{{ comment.boulder_comment }}</li>
-<li>{{ comment.boulder_datetime }}   </li>
+<li>{{ comment.boulder_datetime.strftime('%d %B %Y') }}   </li>
 {% endfor %}
 </ul>
 {% endblock %}

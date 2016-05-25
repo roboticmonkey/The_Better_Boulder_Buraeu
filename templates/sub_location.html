@@ -4,8 +4,12 @@
 <h1>{{ sub_location.sub_location_name }}</h1>
 
 <ul>
+    {% if sub_location.sub_latitude %}
     <li>Latitude: {{ sub_location.sub_latitude }}</li>
+    {% endif %}
+    {% if sub_location.sub_longitude %}
     <li>Longitude: {{ sub_location.sub_longitude }}</li>
+    {% endif %}
     <li>Description: {{ sub_location.sub_location_description }}</li>
     <li>Directions: {{ sub_location.sub_location_directions }}</li>
 </ul>
@@ -48,20 +52,52 @@
             // one can customize markers by adding simplestyle properties
             // https://www.mapbox.com/guides/an-open-platform/#simplestyle
             'marker-size': 'medium',
-            'marker-color': '#59b300',
+            'marker-color': '#ff66b3',
             'marker-symbol': 'rocket'
         }
     }).addTo(map);
 
     </script>
 {% endif %}
-
+{% if boulders %}
 <h2>Boulders</h2>
     <ul>
 {% for boulder in boulders %}
     <li>
         <a href="/boulders/{{ boulder.boulder_id }}" >{{ boulder.boulder_name }}</a>
     </li>
+    <script>
+        //converting jinja vars to js as well as string to number.
+        lat = '{{ boulder.boulder_latitude }}';
+        lat = Number(lat);
+        lng = '{{ boulder.boulder_longitude }}';
+        lng = Number(lng);
+
+    L.mapbox.featureLayer({
+    // this feature is in the GeoJSON format: see geojson.org
+    // for the full specification
+    type: 'Feature',
+    geometry: {
+        type: 'Point',
+        // coordinates here are in longitude, latitude order because
+        // x, y is the standard for GeoJSON and many formats
+        coordinates: [
+          lng, lat
+        ]
+    },
+    properties: {
+        title: '{{ boulder.boulder_name }}',
+        // description: 'needs to be dynamic',
+        // one can customize markers by adding simplestyle properties
+        // https://www.mapbox.com/guides/an-open-platform/#simplestyle
+        'marker-size': 'small',
+        'marker-color': '#ffb84d',
+        'marker-symbol': 'rocket'
+    }
+}).addTo(map);
+
+    </script>
 {% endfor %}
 </ul>
+{% endif %}
 {% endblock %}
