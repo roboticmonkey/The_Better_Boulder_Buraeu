@@ -7,14 +7,22 @@
         <script src="/static/my_modal.js"></script>
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"
           rel="stylesheet">
-         
-         <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+         <!-- mapbox links -->
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
     <link href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' /> 
        <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
-<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
-<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' /> 
+    <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
+    <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
+
+<!-- links to rateyo plugin -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.1.1/jquery.rateyo.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.1.1/jquery.rateyo.min.js"></script> 
+    
+
     </head>
+
 
     <body>
         <div class="nav-bar">
@@ -30,16 +38,6 @@
                 <a href='/logout'>Logout</a>
             {% endif %}
 
-            <!-- <form action="/login" method="POST">
-                <label for= "field-user">Username 
-                    <input type="text" name="username" id="field-username">
-                </label>
-                <label for= "field-password">Password
-                    <input type="password" name="pwd" id="field-password">
-                </label>
-                <input type="submit">
-            </form> -->
-
         </div>
         {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -51,8 +49,8 @@
     
     {% endif %}
     {% endwith %}
-        <!--  <script type="text/javascript" src="/static/search.js"></script> -->
-        {% block content %}ENTER SOME CONTENT{% endblock %}
+        
+    {% block content %}ENTER SOME CONTENT{% endblock %}
         <script>
         //loading the modal box jquery code
             var login_form = '<form action="/login" method="POST">'+
