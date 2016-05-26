@@ -14,47 +14,30 @@ function displayResults(data) {
     // adding the info to the page here?
     var dataDestination = $("#search-results");
     // var each = data.data[0];
-    debugger;
-    // var markers = new L.MarkerClusterGroup();
+    // debugger;
+    var markers = new L.MarkerClusterGroup();
 
     for (var i = 0; i < data.data.length; i++) {
         
         var each = data.data[i];
-        // var title = each.name;
-        // var latlong = [Number(each.lat), Number(each.lon)];
+        var title = each.name;
+        var latlong = [Number(each.lat), Number(each.lon)];
         var link = each.route+each.id;
         dataDestination.append('<li><a href="'+link+'">'+each.name+'</a></li><br>'+each.lat);
 
-        // var marker = L.marker(new L.LatLng(latlong[0], latlong[1]), {
-        //     icon: L.mapbox.marker.icon({'marker-symbol': 'post', 'marker-color': '0044FF'}),
-        //     title: title
-        // });
+        var marker = L.marker(new L.LatLng(latlong[0], latlong[1]), {
+            icon: L.mapbox.marker.icon({'marker-symbol': 'rocket', 'marker-color': '0044FF'}),
+            title: title
+        });
         
-        // marker.bindPopup(title);
-        // markers.addLayer(marker);
+        marker.bindPopup(title);
+        markers.addLayer(marker);
 
     }
 
-    // map.addLayer(markers);
+    map.addLayer(markers);
     
 
-
-
-    // for (var i = 0; i < addressPoints.length; i++) {
-    //     var a = addressPoints[i];
-    //     var title = a[2];
-    //     var marker = L.marker(new L.LatLng(a[0], a[1]), {
-    //         icon: L.mapbox.marker.icon({'marker-symbol': 'post', 'marker-color': '0044FF'}),
-    //         title: title
-    //     });
-    //     marker.bindPopup(title);
-    //     markers.addLayer(marker);
-    // }
-
-    // map.addLayer(markers);
-
-
-    // }
     
 
 }

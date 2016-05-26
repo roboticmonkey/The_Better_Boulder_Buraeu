@@ -13,8 +13,6 @@ function saveBComment(evt){
             showBComment);
 }
 
-
-
 function showBComment(results){
     $('#b-comments').prepend('<li>'+results['username']+'</li>'+
                               '<li>'+results['comment']+'</li>'+
@@ -27,9 +25,10 @@ $('#boulder-comment').on('submit', saveBComment);
 
 
 // code for route comment
+
 function saveRComment(evt){
     evt.preventDefault();
-
+    // debugger;
     var comment = $('#r-comment-field').val();
     $('#r-comment-field').val("");
 
@@ -41,14 +40,12 @@ function saveRComment(evt){
 }
 
 
-
 function showRComment(results){
     $('#r-comments').prepend('<li>'+results['username']+'</li>'+
                               '<li>'+results['comment']+'</li>'+
                                 '<li>'+results['date']+ '</li>' );
 
 }
-
 
 
 //this needs to be below the function it is calling

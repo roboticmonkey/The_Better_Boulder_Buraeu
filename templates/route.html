@@ -9,7 +9,7 @@
     <li>Directions: {{ route.route_directions }}</li>
     <li>Protection: {{ route.route_protection }}</li>
 </ul>
-<form action="/rate-route" method="POST">
+            <form action="/rate-route" method="POST">
               <div >
                   <label>Rating:
                     1 <input type="radio" name="score" value="1">
@@ -21,18 +21,18 @@
                   </label>
               </div>
               <input type="submit" value="Record Rating">
+            </form>
 
 <h2>Comments</h2>
     <form action="" method="POST" id="route-comment">
         <label for="r-comment-field">
-            <textarea name="comment" id="r-comment-field">
-            </textarea>
+            <textarea name="comment" id="r-comment-field"></textarea>
         </label>
         <lable for="submit">
         <input type="submit" value="Submit" id="r-comment-submit">
     </label>
     </form>
-    <ul>
+    <ul id="r-comments">
     {% if comments %}  
         {% for comment in comments %}
         {% if comment.user_id %}
@@ -42,7 +42,9 @@
         <li>{{ comment.route_datetime.strftime('%d %B %Y') }}   </li>
         {% endfor %}
     {% endif %}
+
 </ul>
+<script type="text/javascript" src="/static/comment.js"></script>
 <h2>Routes on the same boulder</h2>
     <ul>
 {% for n_route in near_routes %}
