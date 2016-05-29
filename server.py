@@ -169,6 +169,12 @@ def boulder_detail(boulder_id):
 
     comments = Boulder_comment.query.filter(Boulder_comment.boulder_id==boulder.boulder_id).order_by(desc(Boulder_comment.boulder_datetime)).all()
 
+    rating_objs = Boulder_rating.query.filter(Boulder_rating.boulder_id==boulder.boulder_id).all()
+    ratings = [rating.boulder_rating for rating in rating_objs]
+    print ratings
+    if ratings:
+        avg = round(float(sum(ratings))/ len(ratings), 0)
+        print avg
     return render_template("boulders.html", boulder=boulder,
                                             routes=routes,
                                             comments=comments)
@@ -321,14 +327,17 @@ def add_rate_boulder():
     """add rating for boulder """
     
     #gets the rate from the form
-    rate = request.form.get("score")
+    # rate = request.form.get("score")
+    rate = request.form.get('rate')
     
     # gets the user_id and boulder_id from session vars
-    user_id= session.get('user_id')
-    boulder_id = session.get('boulder_id')
-    
+    # user_id= session.get('user_id')
+    # boulder_id = session.get('boulder_id')
+    user_id = request.form.get('user')
+    boulder_id = request.form.get('boulder')
+    print user_id, boulder_id, rate
     # checks to see if the user has already rated the boulder
-    rating = Boulder_rating.query.filter((Boulder_rating.boulder_id== route_id) &
+    rating = Boulder_rating.query.filter((Boulder_rating.boulder_id== boulder_id) &
                                         (Boulder_rating.user_id==user_id)).first()
     
     # if the user already has a rating, update the db
@@ -348,7 +357,8 @@ def add_rate_boulder():
     # save db
     db.session.commit()
 
-    return render_template("rate.html", rating=rate)
+    # return render_template("rate.html", rating=rate)
+    return "success"
 
 
 @app.route('/rate-route', methods=["POST"])

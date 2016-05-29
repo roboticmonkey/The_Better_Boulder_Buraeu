@@ -59,9 +59,9 @@
     </script>
 {% endif %}
 
-<form action="/rate-boulder" method="POST">
-              <div >
-                 <label>Rating:
+<!--         <form action="/rate-boulder" method="POST">
+            <div >
+                <label>Rating:
                     1    <input type="radio" name="score" value="1">
                     2    <input type="radio" name="score" value="2">
                     3    <input type="radio" name="score" value="3">
@@ -69,11 +69,64 @@
                     5    <input type="radio" name="score" value="5">
                 </label>
                
-              </div>
+            </div>
 
 
-              <input type="submit" value="Record Rating">
-          </form>
+            <input type="submit" value="Record Rating">
+        </form> -->
+        <form action="#" method="POST">
+        <div id="rateYo"></div>
+
+            <input type="hidden" name="user-rating" id="star-rating">
+        <input type="hidden" id="boulder" name="boulder_id" value="{{ boulder.boulder_id }}">
+        <input type="hidden" id="user" name="user" value="{{ session.get('user_id') }}">
+            <!-- <input type="submit" value="Record Rating"> -->
+        </form>
+
+        <script type="text/javascript">
+
+        $(function(){
+            $("#rateYo").rateYo({
+                starWidth: "30px",
+                normalFill: "#B8B8B8",
+                ratedFill: "#cc0000",
+                maxValue: 5,
+                numStars: 5,
+                fullStar: true,
+                spacing: "5px",
+                // readOnly: true,
+
+            });
+        function successFunc(results){
+            // alert("boom! done");
+
+        }
+
+        $(function(){
+            var $rateYo = $('#rateYo').rateYo();
+            
+            $('#rateYo').click(function(e){
+                var rating = $rateYo.rateYo("rating");
+                $("#star-rating").val(String(rating));
+                var boulder = $("#boulder").val();
+                var user = $("#user").val();
+
+                var formInputs = {'user': user,
+                                  'boulder': boulder,
+                                  'rate': rating};
+                console.log(formInputs);
+                
+                $.post('/rate-boulder', formInputs, successFunc);
+                                  
+                console.log("The rating is " + String(rating));
+                console.log(String(boulder));
+                console.log(String(user));
+            });
+        });
+
+        });
+
+        </script>
 
 {% if routes %}
 <h2>Routes</h2>
