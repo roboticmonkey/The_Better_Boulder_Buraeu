@@ -114,6 +114,8 @@ def logout_user():
 
     # deletes the key and value in the session dictionary
     del session['user_id']
+    del session['route_id']
+    del session['boulder_id']
     flash("You have been logged out.")
 
     return redirect('/')
