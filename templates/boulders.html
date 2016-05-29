@@ -59,42 +59,50 @@
     </script>
 {% endif %}
 
-<!--         <form action="/rate-boulder" method="POST">
-            <div >
-                <label>Rating:
-                    1    <input type="radio" name="score" value="1">
-                    2    <input type="radio" name="score" value="2">
-                    3    <input type="radio" name="score" value="3">
-                    4    <input type="radio" name="score" value="4">
-                    5    <input type="radio" name="score" value="5">
-                </label>
-               
-            </div>
-
-
-            <input type="submit" value="Record Rating">
-        </form> -->
         <form action="#" method="POST">
         <div id="rateYo"></div>
 
             <input type="hidden" name="user-rating" id="star-rating">
         <input type="hidden" id="boulder" name="boulder_id" value="{{ boulder.boulder_id }}">
         <input type="hidden" id="user" name="user" value="{{ session.get('user_id') }}">
-            <!-- <input type="submit" value="Record Rating"> -->
+        <input type="hidden" id="avg" name="avg" value="{{ avg }}" >
+        <input type="hidden" id="user_score" name="user_score" value="{{ user_score }}">
+     
         </form>
 
         <script type="text/javascript">
+
+        var user = $("#user").val();
+        var avg = parseInt($("#avg").val());
+        var userScore = parseInt($("#user_score").val());
+
+        if (userScore ) {
+            var defaultVal = userScore;
+            var color = "#cc0000";
+        } else {
+            var defaultVal = avg;
+            var color = "#ff8c1a";
+        }
+
+        if (user != "None") {
+            noWrite = false;
+        } else {
+            noWrite = true;
+        }
 
         $(function(){
             $("#rateYo").rateYo({
                 starWidth: "30px",
                 normalFill: "#B8B8B8",
-                ratedFill: "#cc0000",
+                ratedFill: color,
                 maxValue: 5,
                 numStars: 5,
                 fullStar: true,
                 spacing: "5px",
-                // readOnly: true,
+                rating: defaultVal,
+                
+                readOnly: noWrite,
+                
 
             });
         function successFunc(results){
@@ -115,8 +123,12 @@
                                   'boulder': boulder,
                                   'rate': rating};
                 console.log(formInputs);
+                if (user != "None"){
+                   $.post('/rate-boulder', formInputs, successFunc); 
+                } else {
+                    alert("Please login to give ratings.");
+                }
                 
-                $.post('/rate-boulder', formInputs, successFunc);
                                   
                 console.log("The rating is " + String(rating));
                 console.log(String(boulder));
@@ -140,6 +152,7 @@
 {% endif %}
 
 <h2>Comments</h2>
+    {% if 'user_id' in session %}
     <form action="" method="POST" id="boulder-comment">
         <label for="b-comment-field">
             <textarea name="comment" id="b-comment-field"></textarea>
@@ -148,6 +161,7 @@
         <input type="submit" value="Submit" id="b-comment-submit">
     </label>
     </form>
+    {% endif %}
     <ul id="b-comments">
 {% for comment in comments %}
 {% if comment.user_id %}

@@ -166,6 +166,15 @@ def boulder_detail(boulder_id):
     #find all routes connected to that boulder
     routes = Route.query.filter_by(boulder_id=boulder_id).all()
     session['boulder_id'] = boulder.boulder_id
+    # set avg variable and user_score variable
+    avg = 0
+    user_id = session.get("user_id")
+    if user_id is not None:
+        user_rate = Boulder_rating.query.filter( (Boulder_rating.boulder_id==boulder_id) & 
+                                                (Boulder_rating.user_id==user_id)).first()
+        user_score = user_rate.boulder_rating
+    else:
+        user_score = 0
 
     comments = Boulder_comment.query.filter(Boulder_comment.boulder_id==boulder.boulder_id).order_by(desc(Boulder_comment.boulder_datetime)).all()
 
@@ -177,7 +186,9 @@ def boulder_detail(boulder_id):
         print avg
     return render_template("boulders.html", boulder=boulder,
                                             routes=routes,
-                                            comments=comments)
+                                            comments=comments,
+                                            avg=avg,
+                                            user_score=user_score)
 
 @app.route('/route/<int:route_id>', methods=['GET'])
 def display_route(route_id):

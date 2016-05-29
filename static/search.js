@@ -10,6 +10,7 @@ $("#search_btn").on('click', function(evt){
     $.get("/search.json", {"term": searchTerm}, displayResults)
 });
 console.log('loaded');
+
 function displayResults(data) {
     // adding the info to the page here?
     var dataDestination = $("#search-results");
