@@ -174,7 +174,10 @@ def boulder_detail(boulder_id):
     if user_id is not None:
         user_rate = Boulder_rating.query.filter( (Boulder_rating.boulder_id==boulder_id) & 
                                                 (Boulder_rating.user_id==user_id)).first()
-        user_score = user_rate.boulder_rating
+        if user_rate:
+            user_score = user_rate.boulder_rating
+        else:
+            user_score = 0
     else:
         user_score = 0
 
@@ -204,7 +207,22 @@ def display_route(route_id):
     boulder = Boulder.query.filter_by(boulder_id=route.boulder_id).first()
     
     session['route_id'] = route.route_id
-    print boulder
+    print route
+    # set avg variable and user_score variable
+    avg = 0
+    user_id = session.get("user_id")
+    if user_id is not None:
+        user_rate = Route_rating.query.filter( (Route_rating.route_id==route_id) & 
+                                                (Route_rating.user_id==user_id)).first()
+        print user_rate
+        if user_rate:
+            user_score = user_rate.route_rating
+            print user_score
+        else: 
+            user_score = 0
+    else:
+        user_score = 0
+    
     if boulder.sub_location_id:
         boulders = Boulder.query.filter_by(sub_location_id=boulder.sub_location_id).all()
     else:
@@ -212,11 +230,22 @@ def display_route(route_id):
 
     comments = Route_comment.query.filter(Route_comment.route_id==route.route_id).order_by(desc(Route_comment.route_datetime)).all()
 
+    
+    rating_objs = Route_rating.query.filter(Route_rating.route_id==route.route_id).all()
+    print rating_objs
+    ratings = [rating.route_rating for rating in rating_objs]
+
+    print ratings
+    if ratings:
+        avg = round(float(sum(ratings))/ len(ratings), 0)
+        print avg
 
     return render_template("route.html", route=route,
                                         near_routes=near_routes,
                                         boulders=boulders,
-                                        comments=comments)
+                                        comments=comments,
+                                        avg=avg,
+                                        user_score=user_score)
 
 @app.route('/search.json', methods=['GET'])
 def search():
@@ -379,11 +408,14 @@ def add_rate_route():
     """Add rating to db for route"""
 
     # gets rating from form
-    rate = request.form.get("score")
+    rate = request.form.get("rate")
 
     # gets user_id and route_id from session vars
-    user_id= session.get('user_id')
-    route_id = session.get('route_id')
+    # user_id= session.get('user_id')
+    # route_id = session.get('route_id')
+    user_id = request.form.get('user')
+    route_id = request.form.get('route')
+    print user_id, route_id, rate
 
     # looks for a rating for the route by the user in db
     rating = Route_rating.query.filter((Route_rating.route_id== route_id) &
@@ -404,7 +436,7 @@ def add_rate_route():
     # save the db
     db.session.commit()
 
-    return render_template("rate.html", rating=rate)
+    return "success"
 
 
 @app.route('/add_location')
