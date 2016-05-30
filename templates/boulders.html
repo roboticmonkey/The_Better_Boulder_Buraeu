@@ -128,9 +128,7 @@
                 console.log(formInputs);
                 if (user != "None"){
                    $.post('/rate-boulder', formInputs, successFunc); 
-                } else {
-                    alert("Please login to give ratings.");
-                }
+                } 
                 
                                   
                 console.log("The rating is " + String(rating));

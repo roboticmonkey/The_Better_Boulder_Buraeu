@@ -76,9 +76,7 @@
                 console.log(formInputs);
                 if (user != "None"){
                    $.post('/rate-route', formInputs, successFunc); 
-                } else {
-                    alert("Please login to give ratings.");
-                }
+                } 
                                        
                 console.log("The rating is " + String(rating));
                 console.log(String(route));
