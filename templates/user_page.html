@@ -14,7 +14,23 @@
 <div >
 <ul id="search-results"></ul>
 </div>
-
-
-
+<div>
+    <h2> Climbs Completed </h2>
+<table>
+    <tr>
+        <th>Boulder Name</th>
+        <th>Route Name</th>
+        <th>Difficulty Rating</th>
+        <th>Star Rating</th>
+    </tr>
+{% for climbed in climbed_list %}
+    <tr>
+        <td>{{ climbed['boulder_name'] }}</td>
+        <td>{{ climbed['route_name'] }}</td>
+        <td>{{ climbed['rating'] }}</td>
+        <td>{{ climbed['star_rating'] }}</td>
+    </tr>
+{% endfor %}
+</table>
+</div>
 {% endblock %}
