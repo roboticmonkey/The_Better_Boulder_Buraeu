@@ -175,7 +175,7 @@ class Route(db.Model):
         """Provide helpful representation when printed."""
 
         return ("<Routes: route_id=%s boulder_id=%s route_name=%s >" % 
-                (self.route_id, boulder_id, route_name) )
+                (self.route_id, self.boulder_id, self.route_name) )
     
 
 class Route_rating(db.Model):
@@ -199,7 +199,10 @@ class Route_rating(db.Model):
         """Provide helpful representation when printed."""
         
         return ("<Route Rating: id=%s route_id=%s route_rating=%s difficulty_rate=%s>"
-                % (self.route_rating_id, route_id, route_rating, route_difficulty_rate))
+                % (self.route_rating_id, 
+                    self.route_id, 
+                    self.route_rating, 
+                    self.route_difficulty_rate))
 
 
 class Route_comment(db.Model):
@@ -220,7 +223,8 @@ class Route_comment(db.Model):
     
     def __repr__(self):
         """Provide helpful representation when printed."""
-        return "<Route Comment: id=%s route_id=%s>" % (route_comment_id, route_id)
+        return "<Route Comment: id=%s route_id=%s>" % (self.route_comment_id, 
+                                                        self.route_id)
 
 
 # class Images(db.Model):
