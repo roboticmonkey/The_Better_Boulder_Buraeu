@@ -202,15 +202,51 @@ def boulder_detail(boulder_id):
 
     rating_objs = Boulder_rating.query.filter(Boulder_rating.boulder_id==boulder.boulder_id).all()
     ratings = [rating.boulder_rating for rating in rating_objs]
-    print ratings
+    # print ratings
     if ratings:
         avg = round(float(sum(ratings))/ len(ratings), 0)
-        print avg
+        # print avg
     return render_template("boulders.html", boulder=boulder,
                                             routes=routes,
                                             comments=comments,
                                             avg=avg,
                                             user_score=user_score)
+
+@app.route('/get_chart_info.json', methods=['GET'])
+def create_chart_data():
+    # get the boulder_id from the ajax call
+    boulder_id = request.args.get('boulder_id')
+    # print boulder_id
+    # find all routes connected to the boulder_id
+    routes = Route.query.filter_by(boulder_id=boulder_id).all()
+
+    # get route difficulty breakdown from routes
+    THE_LIST =['V0', 'V1', 'V2', 'V3', 'V4', 'V5', 'V6', 'V7', 'V8', 'V9', 'V10','V11', 'V12', 'V13', 'V14', 'V15', 'V16']
+    # numbers list will hold the number of routes at the corresponding index
+    # that match the diffficulty rating. ie. 'V1' is at index 1 in THE_LIST
+    # if there are 3 V1's on a boulder the numbers list will show 3 at index 1
+    numbers=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    for route in routes:
+        print route.route_name, route.difficulty_rate
+        # print len(route.difficulty_rate)
+        diff = route.difficulty_rate[:3]
+        # print diff
+        # print "last char of diff ", diff[-1]
+        if diff[-1] == "-" or diff[-1] == "+":
+            diff = diff[:2]
+            # print "in if:"
+        # print diff
+
+        numbers[int(diff[1:])] = numbers[int(diff[1:])] + 1
+
+    print THE_LIST
+    print numbers
+
+    chart_data = {}
+    chart_data['chart_labels'] = THE_LIST
+    chart_data['data'] = numbers
+
+    return jsonify(chart_data)
 
 @app.route('/route/<int:route_id>', methods=['GET'])
 def display_route(route_id):
@@ -455,23 +491,24 @@ def add_rate_route():
 
     return "success"
 
+# NOT PLANNING TO ADD THESE
 
-@app.route('/add_location')
-def add_location():
-    """Adds a location to the db"""
+# @app.route('/add_location')
+# def add_location():
+#     """Adds a location to the db"""
 
-    #must be logged in 
+#     #must be logged in 
 
-    pass
+#     pass
 
-@app.route('/add_route')
-def add_route():
-    """adds a route to a location in the db"""
+# @app.route('/add_route')
+# def add_route():
+#     """adds a route to a location in the db"""
 
-    #must be logged in
-    #must have a location
+#     #must be logged in
+#     #must have a location
 
-    pass
+#     pass
 
 
 
