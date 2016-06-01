@@ -237,11 +237,11 @@ def create_chart_data():
     routes = Route.query.filter_by(boulder_id=boulder_id).all()
 
     # get route difficulty breakdown from routes
-    THE_LIST =['V0', 'V1', 'V2', 'V3', 'V4', 'V5', 'V6', 'V7', 'V8', 'V9', 'V10','V11', 'V12', 'V13', 'V14', 'V15', 'V16']
+    THE_LIST =['V0', 'V1', 'V2', 'V3', 'V4', 'V5', 'V6', 'V7', 'V8', 'V9', 'V10','V11', 'V12']
     # numbers list will hold the number of routes at the corresponding index
     # that match the diffficulty rating. ie. 'V1' is at index 1 in THE_LIST
     # if there are 3 V1's on a boulder the numbers list will show 3 at index 1
-    numbers=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    numbers=[0,0,0,0,0,0,0,0,0,0,0,0,0]
     for route in routes:
         # print route.route_name, route.difficulty_rate
         # print len(route.difficulty_rate)
@@ -251,30 +251,13 @@ def create_chart_data():
         if diff:
             if diff[-1] == "-" or diff[-1] == "+":
                 diff = diff[:2]
-                # print "in if:"
-            # print diff
 
             numbers[int(diff[1:])] = numbers[int(diff[1:])] + 1
 
     # print THE_LIST
+    # print len(THE_LIST)
     # print numbers
-    index = []
-    for idx, item in enumerate(numbers):
-        # print idx, item
-        if item == 0:
-            # print idx
-            index.append(idx)
-            
-    # print index
-    index.reverse()
-    # print index
-        
-    for num in index:
-        THE_LIST.pop(num)
-        numbers.pop(num)
-
-    # print THE_LIST
-    # print numbers
+    # print len(numbers)
 
     chart_data = {}
     chart_data['chart_labels'] = THE_LIST
