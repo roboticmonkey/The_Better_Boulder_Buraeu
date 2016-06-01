@@ -101,24 +101,6 @@ def login_user():
             session['user_id'] = user.user_id
             session['username'] = user.username
 
-            # climbed_list = []
-            # #find all the routes the user has rated
-            # rated_routes = Route_rating.query.filter(Route_rating.user_id==user.user_id).all()
-            # for rated in rated_routes:
-            #     # print rated
-            #     # print rated.route.route_name
-            #     # print rated.route.difficulty_rate
-            #     # print rated.route_rating
-            #     # print rated.route.boulder.boulder_name
-            #     climbed = {}
-            #     climbed['route_name'] = rated.route.route_name
-            #     climbed['rating'] = rated.route.difficulty_rate
-            #     climbed['star_rating'] = rated.route_rating
-            #     climbed['boulder_name'] = rated.route.boulder.boulder_name
-            #     climbed_list.append(climbed)
-
-            # print climbed_list
-            # return render_template('user_page.html', climbed_list=climbed_list)
             return redirect('/user_page')
         # no match got back to homepage, Do Not Collect 200.
         else:
@@ -132,6 +114,8 @@ def view_user_page():
     user_id = session['user_id']
 
     if user_id:
+        # find matching username in db
+        user = User.query.filter_by(user_id=user_id).first()
         climbed_list = []
         #find all the routes the user has rated
         rated_routes = Route_rating.query.filter(Route_rating.user_id==user.user_id).all()
@@ -163,6 +147,7 @@ def logout_user():
     del session['route_id']
     del session['boulder_id']
     del session['username']
+    del session['boulder_route']
     flash("You have been logged out.")
 
     return redirect('/')
