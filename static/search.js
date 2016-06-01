@@ -35,7 +35,7 @@ function displayResults(data) {
         bounds._northEast._lng = Math.min(latlong[0], bounds._northEast._lng);
 
         var link = each.route+each.id;
-        dataDestination.append('<li><a href="'+link+'">'+each.name+'</a></li><br>'+each.lat);
+        dataDestination.append('<li><a href="'+link+'">'+each.name+'</a></li>');
 
         var marker = L.marker(new L.LatLng(latlong[0], latlong[1]), {
             icon: L.mapbox.marker.icon({'marker-symbol': 'rocket', 'marker-color': '0044FF'}),
