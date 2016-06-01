@@ -99,31 +99,60 @@ def login_user():
             #create the key value pair in the session(= magic dictionary)
             #(flask's session)
             session['user_id'] = user.user_id
+            session['username'] = user.username
 
-            climbed_list = []
-            #find all the routes the user has rated
-            rated_routes = Route_rating.query.filter(Route_rating.user_id==user.user_id).all()
-            for rated in rated_routes:
-                print rated
-                print rated.route.route_name
-                print rated.route.difficulty_rate
-                print rated.route_rating
-                print rated.route.boulder.boulder_name
-                climbed = {}
-                climbed['route_name'] = rated.route.route_name
-                climbed['rating'] = rated.route.difficulty_rate
-                climbed['star_rating'] = rated.route_rating
-                climbed['boulder_name'] = rated.route.boulder.boulder_name
-                climbed_list.append(climbed)
+            # climbed_list = []
+            # #find all the routes the user has rated
+            # rated_routes = Route_rating.query.filter(Route_rating.user_id==user.user_id).all()
+            # for rated in rated_routes:
+            #     # print rated
+            #     # print rated.route.route_name
+            #     # print rated.route.difficulty_rate
+            #     # print rated.route_rating
+            #     # print rated.route.boulder.boulder_name
+            #     climbed = {}
+            #     climbed['route_name'] = rated.route.route_name
+            #     climbed['rating'] = rated.route.difficulty_rate
+            #     climbed['star_rating'] = rated.route_rating
+            #     climbed['boulder_name'] = rated.route.boulder.boulder_name
+            #     climbed_list.append(climbed)
 
-            print climbed_list
-            return render_template('user_page.html', climbed_list=climbed_list)
+            # print climbed_list
+            # return render_template('user_page.html', climbed_list=climbed_list)
+            return redirect('/user_page')
         # no match got back to homepage, Do Not Collect 200.
         else:
             flash("Incorrect password entered")
             return redirect('/')
 
-    
+@app.route('/user_page')
+def view_user_page():
+    """shows the user's page"""
+
+    user_id = session['user_id']
+
+    if user_id:
+        climbed_list = []
+        #find all the routes the user has rated
+        rated_routes = Route_rating.query.filter(Route_rating.user_id==user.user_id).all()
+        for rated in rated_routes:
+            # print rated
+            # print rated.route.route_name
+            # print rated.route.difficulty_rate
+            # print rated.route_rating
+            # print rated.route.boulder.boulder_name
+            climbed = {}
+            climbed['route_name'] = rated.route.route_name
+            climbed['rating'] = rated.route.difficulty_rate
+            climbed['star_rating'] = rated.route_rating
+            climbed['boulder_name'] = rated.route.boulder.boulder_name
+            climbed_list.append(climbed)
+
+            # print climbed_list
+        return render_template('user_page.html', climbed_list=climbed_list)
+    else:
+        flash("Please login to see the user page.")
+        redirect('/')   
 
 @app.route('/logout')
 def logout_user():
@@ -133,6 +162,7 @@ def logout_user():
     del session['user_id']
     del session['route_id']
     del session['boulder_id']
+    del session['username']
     flash("You have been logged out.")
 
     return redirect('/')
@@ -185,6 +215,7 @@ def boulder_detail(boulder_id):
     #find all routes connected to that boulder
     routes = Route.query.filter_by(boulder_id=boulder_id).all()
     session['boulder_id'] = boulder.boulder_id
+    session['boulder_route'] = 'boulder'
     # set avg variable and user_score variable
     avg = 0
     user_id = session.get("user_id")
@@ -227,20 +258,38 @@ def create_chart_data():
     # if there are 3 V1's on a boulder the numbers list will show 3 at index 1
     numbers=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     for route in routes:
-        print route.route_name, route.difficulty_rate
+        # print route.route_name, route.difficulty_rate
         # print len(route.difficulty_rate)
         diff = route.difficulty_rate[:3]
         # print diff
         # print "last char of diff ", diff[-1]
-        if diff[-1] == "-" or diff[-1] == "+":
-            diff = diff[:2]
-            # print "in if:"
-        # print diff
+        if diff:
+            if diff[-1] == "-" or diff[-1] == "+":
+                diff = diff[:2]
+                # print "in if:"
+            # print diff
 
-        numbers[int(diff[1:])] = numbers[int(diff[1:])] + 1
+            numbers[int(diff[1:])] = numbers[int(diff[1:])] + 1
 
-    print THE_LIST
-    print numbers
+    # print THE_LIST
+    # print numbers
+    index = []
+    for idx, item in enumerate(numbers):
+        # print idx, item
+        if item == 0:
+            # print idx
+            index.append(idx)
+            
+    # print index
+    index.reverse()
+    # print index
+        
+    for num in index:
+        THE_LIST.pop(num)
+        numbers.pop(num)
+
+    # print THE_LIST
+    # print numbers
 
     chart_data = {}
     chart_data['chart_labels'] = THE_LIST
@@ -260,6 +309,8 @@ def display_route(route_id):
     boulder = Boulder.query.filter_by(boulder_id=route.boulder_id).first()
     
     session['route_id'] = route.route_id
+    session['boulder_route'] = 'route'
+
     print route
     # set avg variable and user_score variable
     avg = 0
