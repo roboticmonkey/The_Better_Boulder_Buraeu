@@ -40,11 +40,22 @@ function putMarkersOnMap(data){
         var link = each.route+each.id;
         var content = '<a href="'+link+'">'+title+'</a>';
         console.log(content)
+
+        if (each.route === "/locations/"){
+            var mColor = "#59b300";
+            var mSize = "large";
+        } else if (each.route === "/sub_locations/"){
+            var mColor = '#ff66b3';
+            var mSize = "medium";
+        } else if (each.route === "/boulders/"){
+            var mColor = '#ffb84d';
+            var mSize = 'small';
+        }
         
         if (each.lat !== ""){
             var latlong = [Number(each.lat), Number(each.lon)];
             var marker = L.marker(new L.LatLng(latlong[0], latlong[1]), {
-            icon: L.mapbox.marker.icon({'marker-symbol': 'rocket', 'marker-color': '#59b300'}),
+            icon: L.mapbox.marker.icon({'marker-symbol': 'rocket', 'marker-color': mColor, 'marker-size': mSize}),
             title: title
             });
 

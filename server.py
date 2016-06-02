@@ -321,6 +321,66 @@ def display_route(route_id):
                                         avg=avg,
                                         user_score=user_score)
 
+@app.route('/location.json', methods=['GET'])
+def find_location_kids():
+    """returns a location's children"""
+    search_term = request.args.get('term')
+
+    location = Location.query.filter(Location.location_id == search_term).first()
+    sub_locations = Sub_location.query.filter(Sub_location.location_id == search_term).all()
+    boulders = Boulder.query.filter(Boulder.location_id == search_term).all()
+
+    results = []
+
+
+    for sub in sub_locations:
+        temp_dict = {}
+        temp_dict["name"] = sub.sub_location_name
+        temp_dict["lat"] = sub.sub_latitude
+        temp_dict["lon"] = sub.sub_longitude
+        temp_dict["id"] = sub.sub_location_id
+        temp_dict["route"] = "/sub_locations/"
+
+        results.append(temp_dict)
+
+    for boulder in boulders:
+        temp_dict = {}
+        temp_dict["name"] = boulder.boulder_name
+        temp_dict["lat"] = boulder.boulder_latitude
+        temp_dict["lon"] = boulder.boulder_longitude
+        temp_dict["id"] = boulder.boulder_id
+        temp_dict["route"] = "/boulders/"
+
+        results.append(temp_dict)
+
+    print results
+
+    return jsonify({'data':results})
+
+@app.route('/sub_location.json', methods=['GET'])
+def find_sub_location_kids():
+    """returns a sub.location's children"""
+    search_term = request.args.get('term')
+
+    boulders = Boulder.query.filter(Boulder.sub_location_id == search_term).all()
+
+    results = []
+
+    for boulder in boulders:
+        temp_dict = {}
+        temp_dict["name"] = boulder.boulder_name
+        temp_dict["lat"] = boulder.boulder_latitude
+        temp_dict["lon"] = boulder.boulder_longitude
+        temp_dict["id"] = boulder.boulder_id
+        temp_dict["route"] = "/boulders/"
+
+        results.append(temp_dict)
+
+    print results
+    
+    return jsonify({'data':results})
+
+
 @app.route('/search.json', methods=['GET'])
 def search():
     """searching for locations"""
