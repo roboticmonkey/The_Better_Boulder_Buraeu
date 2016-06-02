@@ -2,15 +2,23 @@
 
 {% block content %}
 
-<p> Holy shit this is a user page! What !? </p>
 
-<p>Hello, {{ session['user_id'] }}! </p>
+<p>Hello, {{ session['username'] }}! </p>
 
 <label for="field-search">Search:
         <input type="text" name="search" id="field-search">
      </label>
      <button id="search_btn">search</button>
+<div id='map' style='width: 400px; height: 300px;'></div>
+<script>
+L.mapbox.accessToken = 'pk.eyJ1Ijoicm9ib3RpY21vbmtleSIsImEiOiJjaW9nZXBtajAwMWd3djFtM3Nma3FqaXB2In0.21UysS7J-Y50PVNcD0mopg';
+var map = L.mapbox.map('map', 'mapbox.pirates')
+    .setView([37.7749, -122.4194], 9);
 
+// var myLayer = L.mapbox.featureLayer().addTo(map);
+map.scrollWheelZoom.disable();
+
+</script> 
 <div >
 <ul id="search-results"></ul>
 </div>
@@ -25,8 +33,8 @@
     </tr>
 {% for climbed in climbed_list %}
     <tr>
-        <td>{{ climbed['boulder_name'] }}</td>
-        <td>{{ climbed['route_name'] }}</td>
+        <td><a href="/boulders/{{climbed['boulder_id']}}">{{ climbed['boulder_name'] }}</a></td>
+        <td><a href="/route/{{ climbed['route_id'] }}">{{ climbed['route_name'] }}</a></td>
         <td>{{ climbed['rating'] }}</td>
         <td>{{ climbed['star_rating'] }}</td>
     </tr>

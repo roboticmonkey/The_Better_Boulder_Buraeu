@@ -9,12 +9,12 @@ $("#search_btn").on('click', function(evt){
 
     $.get("/search.json", {"term": searchTerm}, displayResults)
 });
-console.log('loaded');
+// console.log('loaded');
 
 function displayResults(data) {
     // adding the info to the page here?
     var dataDestination = $("#search-results");
-    
+    // debugger;
     //clear results
     dataDestination.empty();
     map.featureLayer.clearLayers();
@@ -50,9 +50,6 @@ function displayResults(data) {
     map.featureLayer.addLayer(markers);
 
     map.fitBounds(bounds);
-    
-
-    
+      
 
 }
-

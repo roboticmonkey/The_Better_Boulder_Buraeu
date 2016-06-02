@@ -9,12 +9,10 @@
     <li>Description: {{ location.location_description }} </li>
     <li>Directions: {{ location.location_directions }} </li>
 </ul>
-<div id='map' style='width: 400px; height: 300px;'></div>
-
+<div id='map' style='width: 600px; height: 400px;'></div>
+<!-- <script type="text/javascript" src="/static/mapbox.js"></script> -->
 <script>
 L.mapbox.accessToken = 'pk.eyJ1Ijoicm9ib3RpY21vbmtleSIsImEiOiJjaW9nZXBtajAwMWd3djFtM3Nma3FqaXB2In0.21UysS7J-Y50PVNcD0mopg';
-
-
 
 
 //converting jinja vars to js as well as string to number.
@@ -22,34 +20,73 @@ lat = '{{ location.latitude }}';
 lat = Number(lat);
 lng = '{{ location.longitude }}';
 lng = Number(lng);
-
-var map = L.mapbox.map('map', 'mapbox.pirates')
-    .setView([lat, lng], 10);
-
-    map.scrollWheelZoom.disable();
-
-L.mapbox.featureLayer({
-    // this feature is in the GeoJSON format: see geojson.org
-    // for the full specification
-    type: 'Feature',
-    geometry: {
-        type: 'Point',
-        // coordinates here are in longitude, latitude order because
-        // x, y is the standard for GeoJSON and many formats
-        coordinates: [
-          lng, lat
+ 
+var geojson = [
+    {
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    lng, lat
+                ]
+            },
+            "properties": {
+              title: '{{ location.location_name }}',
+            // description: 'needs to be dynamic',
+            // one can customize markers by adding simplestyle properties
+            // https://www.mapbox.com/guides/an-open-platform/#simplestyle
+            'marker-size': 'large',
+            'marker-color': '#59b300',
+            'marker-symbol': 'rocket'  
+            }
+            }
         ]
-    },
-    properties: {
-        title: '{{ location.location_name }}',
-        // description: 'needs to be dynamic',
-        // one can customize markers by adding simplestyle properties
-        // https://www.mapbox.com/guides/an-open-platform/#simplestyle
-        'marker-size': 'large',
-        'marker-color': '#59b300',
-        'marker-symbol': 'rocket'
+
     }
-}).addTo(map);
+];
+
+var map = L.mapbox.map('map', 'mapbox.pirates',{
+    scrollWheelZoom: false
+}).setView([lat, lng], 12);
+
+var myLayer = L.mapbox.featureLayer().addTo(map);
+myLayer.setGeoJSON(geojson);
+
+myLayer.on('ready', function(){
+    map.fitBounds(featureLayer.getBounds());
+});
+// var map = L.mapbox.map('map', 'mapbox.pirates')
+    // .setView([lat, lng], 10);
+
+// map.scrollWheelZoom.disable();
+
+
+
+// L.mapbox.featureLayer({
+//     // this feature is in the GeoJSON format: see geojson.org
+//     // for the full specification
+//     type: 'Feature',
+//     geometry: {
+//         type: 'Point',
+//         // coordinates here are in longitude, latitude order because
+//         // x, y is the standard for GeoJSON and many formats
+//         coordinates: [
+//           lng, lat
+//         ]
+//     },
+//     properties: {
+//         title: '{{ location.location_name }}',
+//         // description: 'needs to be dynamic',
+//         // one can customize markers by adding simplestyle properties
+//         // https://www.mapbox.com/guides/an-open-platform/#simplestyle
+//         'marker-size': 'large',
+//         'marker-color': '#59b300',
+//         'marker-symbol': 'rocket'
+//     }
+// }).addTo(map);
 
 </script>
 
@@ -110,6 +147,7 @@ L.mapbox.featureLayer({
         lat = Number(lat);
         lng = '{{ boulder.boulder_longitude }}';
         lng = Number(lng);
+        
 
     L.mapbox.featureLayer({
     // this feature is in the GeoJSON format: see geojson.org
@@ -125,6 +163,7 @@ L.mapbox.featureLayer({
     },
     properties: {
         title: '{{ boulder.boulder_name }}',
+        
         // description: 'needs to be dynamic',
         // one can customize markers by adding simplestyle properties
         // https://www.mapbox.com/guides/an-open-platform/#simplestyle

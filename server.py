@@ -127,9 +127,11 @@ def view_user_page():
             # print rated.route.boulder.boulder_name
             climbed = {}
             climbed['route_name'] = rated.route.route_name
+            climbed['route_id'] = rated.route.route_id
             climbed['rating'] = rated.route.difficulty_rate
             climbed['star_rating'] = rated.route_rating
             climbed['boulder_name'] = rated.route.boulder.boulder_name
+            climbed['boulder_id'] = rated.route.boulder.boulder_id
             climbed_list.append(climbed)
 
             # print climbed_list
@@ -509,27 +511,6 @@ def add_rate_route():
     db.session.commit()
 
     return "success"
-
-# NOT PLANNING TO ADD THESE
-
-# @app.route('/add_location')
-# def add_location():
-#     """Adds a location to the db"""
-
-#     #must be logged in 
-
-#     pass
-
-# @app.route('/add_route')
-# def add_route():
-#     """adds a route to a location in the db"""
-
-#     #must be logged in
-#     #must have a location
-
-#     pass
-
-
 
 
 

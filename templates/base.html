@@ -39,7 +39,7 @@
 
             {% if 'user_id' in session %}
                 <a href='/logout'>Logout</a>
-                <a href='user_page'>{{ session['username'] }}</a>
+                <a href='/user_page'>{{ session['username'] }}</a>
             {% endif %}
 
         </div>
@@ -54,6 +54,7 @@
     {% endif %}
     {% endwith %}
         
+
     {% block content %}ENTER SOME CONTENT{% endblock %}
         <script>
         //loading the modal box jquery code
