@@ -48,14 +48,14 @@ $(function(){
     });
 
     function successFunc(results){
-        flash("Rating Saved")
+        // flash("Rating Saved");
 
     }
 
     function boulderAjax(rating){
         var boulder = $("#boulder").val();
         var user = $("#user").val();
-        debugger;
+        // debugger;
         var formInputs = {'user': user,
                           'boulder': boulder,
                           'rate': rating};

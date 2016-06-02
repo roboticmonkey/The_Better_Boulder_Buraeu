@@ -372,7 +372,7 @@ def search():
         temp_dict["route"] = "/route/"
 
         results.append(temp_dict)
-
+    print results
     return jsonify({'data':results})
 
 @app.route('/add-b-comment.json', methods=["POST"])

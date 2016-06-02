@@ -13,7 +13,7 @@
 <a href='/locations'>Locations</a>
         
           
-<div id='map' style='width: 400px; height: 300px;'></div>
+<div id='map' style='width: 600px; height: 400px;'></div>
 
 <!-- <script type="text/javascript" src="/static/mapbox.js"></script> -->
 
@@ -25,6 +25,12 @@ var map = L.mapbox.map('map', 'mapbox.pirates')
 
 // var myLayer = L.mapbox.featureLayer().addTo(map);
 map.scrollWheelZoom.disable();
+
+// $.get('/search.json', displayResults);
+$(document).ready(function(){
+    // alert("hhh")
+  $.get("/search.json", {"term": ""}, putMarkersOnMap);
+});
 
 </script> 
 
