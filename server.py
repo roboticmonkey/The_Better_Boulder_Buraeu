@@ -388,14 +388,6 @@ def find_sub_location_kids():
 
 
     boulder_dict = convert_boulders_dict(boulders)
-    # for boulder in boulders:
-    #     temp_dict = {}
-    #     temp_dict["name"] = boulder.boulder_name
-    #     temp_dict["lat"] = boulder.boulder_latitude
-    #     temp_dict["lon"] = boulder.boulder_longitude
-    #     temp_dict["id"] = boulder.boulder_id
-    #     temp_dict["route"] = "/boulders/"
-
     results.extend(boulder_dict)
 
     print results
@@ -415,49 +407,17 @@ def search():
 
     results = []
 
-    # for location in locations:
-    #     temp_dict = {}
-    #     temp_dict["name"] = location.location_name
-    #     temp_dict["lat"] = location.latitude
-    #     temp_dict["lon"] = location.longitude
-    #     temp_dict["id"] = location.location_id
-    #     temp_dict["route"] = "/locations/"
-
     location_dict = convert_locations_dict(locations)
-
     results.extend(location_dict)
 
-    # for sub in sub_locations:
-    #     temp_dict = {}
-    #     temp_dict["name"] = sub.sub_location_name
-    #     temp_dict["lat"] = sub.sub_latitude
-    #     temp_dict["lon"] = sub.sub_longitude
-    #     temp_dict["id"] = sub.sub_location_id
-    #     temp_dict["route"] = "/sub_locations/"
     sub_dict = convert_sublocations_dict(sub_locations)
     results.extend(sub_dict)
 
-    # for boulder in boulders:
-    #     temp_dict = {}
-    #     temp_dict["name"] = boulder.boulder_name
-    #     temp_dict["lat"] = boulder.boulder_latitude
-    #     temp_dict["lon"] = boulder.boulder_longitude
-    #     temp_dict["id"] = boulder.boulder_id
-    #     temp_dict["route"] = "/boulders/"
     boulder_dict = convert_boulders_dict(boulders)
     results.extend(boulder_dict)
 
-    for route in routes:
-        # temp_dict = {}
-        # temp_dict["name"] = route.route_name
-        # temp_dict["lat"] = ""
-        # temp_dict["lon"] = ""
-        # temp_dict["id"] = route.route_id
-        # temp_dict["route"] = "/route/"
-
-        route_dict = convert_routes_dict(routes)
-
-        results.extend(route_dict)
+    route_dict = convert_routes_dict(routes)
+    results.extend(route_dict)
     
     print results
     return jsonify({'data':results})
@@ -472,7 +432,7 @@ def add_boulder_comment():
     user_id = session.get('user_id')
     print boulder_id
     timestamp = datetime.now()
-    # timestamp= timestamp.strftime("%d %B %Y")
+    
     print timestamp
 
     new_comment = Boulder_comment(boulder_comment=comment, 
