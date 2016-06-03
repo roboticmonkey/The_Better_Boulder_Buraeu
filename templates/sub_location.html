@@ -31,28 +31,28 @@
         .setView([lat, lng], 11);
     map.scrollWheelZoom.disable();
 
-    L.mapbox.featureLayer({
-        // this feature is in the GeoJSON format: see geojson.org
-        // for the full specification
-        type: 'Feature',
-        geometry: {
-            type: 'Point',
-            // coordinates here are in longitude, latitude order because
-            // x, y is the standard for GeoJSON and many formats
-            coordinates: [
-              lng, lat
-            ]
-        },
-        properties: {
-            title: '{{ sub_location.sub_location_name }}',
-            // description: 'needs to be dynamic',
-            // one can customize markers by adding simplestyle properties
-            // https://www.mapbox.com/guides/an-open-platform/#simplestyle
-            'marker-size': 'medium',
-            'marker-color': '#ff0000',
-            'marker-symbol': 'rocket'
-        }
-    }).addTo(map);
+    // L.mapbox.featureLayer({
+    //     // this feature is in the GeoJSON format: see geojson.org
+    //     // for the full specification
+    //     type: 'Feature',
+    //     geometry: {
+    //         type: 'Point',
+    //         // coordinates here are in longitude, latitude order because
+    //         // x, y is the standard for GeoJSON and many formats
+    //         coordinates: [
+    //           lng, lat
+    //         ]
+    //     },
+    //     properties: {
+    //         title: '{{ sub_location.sub_location_name }}',
+    //         // description: 'needs to be dynamic',
+    //         // one can customize markers by adding simplestyle properties
+    //         // https://www.mapbox.com/guides/an-open-platform/#simplestyle
+    //         'marker-size': 'medium',
+    //         'marker-color': '#ff0000',
+    //         'marker-symbol': 'rocket'
+    //     }
+    // }).addTo(map);
 
     </script>
 {% endif %}

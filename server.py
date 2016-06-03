@@ -9,7 +9,8 @@ from sqlalchemy import desc
 import hashing 
 
 from helper import convert_sublocations_dict, convert_boulders_dict
-from helper import convert_locations_dict, convert_location_dict
+from helper import convert_locations_dict, convert_location_dict, convert_route_dict
+from helper import convert_sublocation_dict, convert_boulder_dict, convert_routes_dict
 
 app = Flask(__name__)
 
@@ -344,15 +345,22 @@ def find_location_kids():
      
     location_dict = convert_location_dict(location)
     
-    results.extend(location_dict)
-    # print "results list so far"
-    # print results
+    results.append(location_dict)
+    print "\n results list after location helper function"
+    print results
 
-    # print "inside to server.py sub_locations object"
-    # print sub_locations
-    if sub_locations:
+    print "inside to server.py sub_locations object"
+    print sub_locations
+    print len(sub_locations)
+    
+    if sub_locations: 
         sub_dict = convert_sublocations_dict(sub_locations)
+        
         results.extend(sub_dict)
+        print "\n back in server.py"
+        print " results", results
+
+    print results
     
     # print "boulders part of server.py"
     # print boulders
@@ -370,19 +378,25 @@ def find_sub_location_kids():
     """returns a sub.location's children"""
     search_term = request.args.get('term')
 
+    sub_location = Sub_location.query.filter(Sub_location.sub_location_id == search_term).first()
     boulders = Boulder.query.filter(Boulder.sub_location_id == search_term).all()
 
     results = []
 
-    for boulder in boulders:
-        temp_dict = {}
-        temp_dict["name"] = boulder.boulder_name
-        temp_dict["lat"] = boulder.boulder_latitude
-        temp_dict["lon"] = boulder.boulder_longitude
-        temp_dict["id"] = boulder.boulder_id
-        temp_dict["route"] = "/boulders/"
+    sub_dict = convert_sublocation_dict(sub_location)
+    results.append(sub_dict)
 
-        results.append(temp_dict)
+
+    boulder_dict = convert_boulders_dict(boulders)
+    # for boulder in boulders:
+    #     temp_dict = {}
+    #     temp_dict["name"] = boulder.boulder_name
+    #     temp_dict["lat"] = boulder.boulder_latitude
+    #     temp_dict["lon"] = boulder.boulder_longitude
+    #     temp_dict["id"] = boulder.boulder_id
+    #     temp_dict["route"] = "/boulders/"
+
+    results.extend(boulder_dict)
 
     print results
     
@@ -401,45 +415,50 @@ def search():
 
     results = []
 
-    for location in locations:
-        temp_dict = {}
-        temp_dict["name"] = location.location_name
-        temp_dict["lat"] = location.latitude
-        temp_dict["lon"] = location.longitude
-        temp_dict["id"] = location.location_id
-        temp_dict["route"] = "/locations/"
+    # for location in locations:
+    #     temp_dict = {}
+    #     temp_dict["name"] = location.location_name
+    #     temp_dict["lat"] = location.latitude
+    #     temp_dict["lon"] = location.longitude
+    #     temp_dict["id"] = location.location_id
+    #     temp_dict["route"] = "/locations/"
 
-        results.append(temp_dict)
+    location_dict = convert_locations_dict(locations)
 
-    for sub in sub_locations:
-        temp_dict = {}
-        temp_dict["name"] = sub.sub_location_name
-        temp_dict["lat"] = sub.sub_latitude
-        temp_dict["lon"] = sub.sub_longitude
-        temp_dict["id"] = sub.sub_location_id
-        temp_dict["route"] = "/sub_locations/"
+    results.extend(location_dict)
 
-        results.append(temp_dict)
+    # for sub in sub_locations:
+    #     temp_dict = {}
+    #     temp_dict["name"] = sub.sub_location_name
+    #     temp_dict["lat"] = sub.sub_latitude
+    #     temp_dict["lon"] = sub.sub_longitude
+    #     temp_dict["id"] = sub.sub_location_id
+    #     temp_dict["route"] = "/sub_locations/"
+    sub_dict = convert_sublocations_dict(sub_locations)
+    results.extend(sub_dict)
 
-    for boulder in boulders:
-        temp_dict = {}
-        temp_dict["name"] = boulder.boulder_name
-        temp_dict["lat"] = boulder.boulder_latitude
-        temp_dict["lon"] = boulder.boulder_longitude
-        temp_dict["id"] = boulder.boulder_id
-        temp_dict["route"] = "/boulders/"
-
-        results.append(temp_dict)
+    # for boulder in boulders:
+    #     temp_dict = {}
+    #     temp_dict["name"] = boulder.boulder_name
+    #     temp_dict["lat"] = boulder.boulder_latitude
+    #     temp_dict["lon"] = boulder.boulder_longitude
+    #     temp_dict["id"] = boulder.boulder_id
+    #     temp_dict["route"] = "/boulders/"
+    boulder_dict = convert_boulders_dict(boulders)
+    results.extend(boulder_dict)
 
     for route in routes:
-        temp_dict = {}
-        temp_dict["name"] = route.route_name
-        temp_dict["lat"] = ""
-        temp_dict["lon"] = ""
-        temp_dict["id"] = route.route_id
-        temp_dict["route"] = "/route/"
+        # temp_dict = {}
+        # temp_dict["name"] = route.route_name
+        # temp_dict["lat"] = ""
+        # temp_dict["lon"] = ""
+        # temp_dict["id"] = route.route_id
+        # temp_dict["route"] = "/route/"
 
-        results.append(temp_dict)
+        route_dict = convert_routes_dict(routes)
+
+        results.extend(route_dict)
+    
     print results
     return jsonify({'data':results})
 

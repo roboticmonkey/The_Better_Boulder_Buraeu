@@ -6,19 +6,48 @@ def convert_sublocations_dict(sub_locations):
 
     results = []
 
-    print "this is the start of helper function"
-    print sub_locations
+    print "\n this is the start of helper function: multiple"
+    print sub_locations, " is of type: ", type(sub_locations)
 
     for sub in sub_locations:
-        temp_dict = {}
-        temp_dict["name"] = sub.sub_location_name
-        temp_dict["lat"] = sub.sub_latitude
-        temp_dict["lon"] = sub.sub_longitude
-        temp_dict["id"] = sub.sub_location_id
-        temp_dict["route"] = "/sub_locations/"
+        # temp_dict = {}
+        # temp_dict["name"] = sub.sub_location_name
+        # temp_dict["lat"] = sub.sub_latitude
+        # temp_dict["lon"] = sub.sub_longitude
+        # temp_dict["id"] = sub.sub_location_id
+        # temp_dict["route"] = "/sub_locations/"
+        print sub
+        sub_dict = convert_sublocation_dict(sub)
 
-        results.append(temp_dict)
-    print "these are the results from helper function:"
+        results.append(sub_dict)
+    print "\n these are the results from helper function: multiple"
+    print results
+
+    return results
+
+def convert_sublocation_dict(sub_location):
+    """Takes a sub location object and returns
+        a dictionary for converting to json"""
+
+    sub = sub_location
+    
+    results = []
+
+    print "\n this is the start of helper function: single"
+    print sub
+    print type(sub)
+
+    # for sub in sub_locations:
+    temp_dict = {}
+    temp_dict["name"] = sub.sub_location_name
+    temp_dict["lat"] = sub.sub_latitude
+    temp_dict["lon"] = sub.sub_longitude
+    temp_dict["id"] = sub.sub_location_id
+    temp_dict["route"] = "/sub_locations/"
+
+    # results.append(temp_dict)
+    results = temp_dict
+    print "\n these are the results from helper function: single"
     print results
 
     return results
@@ -29,20 +58,44 @@ def convert_boulders_dict(boulders):
 
     results = []
 
-    print "this is the start of helper function"
-    print boulders
+    # print "this is the start of helper function"
+    # print boulders
 
     for boulder in boulders:
-        temp_dict = {}
-        temp_dict["name"] = boulder.boulder_name
-        temp_dict["lat"] = boulder.boulder_latitude
-        temp_dict["lon"] = boulder.boulder_longitude
-        temp_dict["id"] = boulder.boulder_id
-        temp_dict["route"] = "/boulders/"
+        # temp_dict = {}
+        # temp_dict["name"] = boulder.boulder_name
+        # temp_dict["lat"] = boulder.boulder_latitude
+        # temp_dict["lon"] = boulder.boulder_longitude
+        # temp_dict["id"] = boulder.boulder_id
+        # temp_dict["route"] = "/boulders/"
+        boulder_dict = convert_boulder_dict(boulder)
 
-        results.append(temp_dict)
-    print "these are the results from helper function:"
-    print results
+        results.append(boulder_dict)
+    # print "these are the results from helper function:"
+    # print results
+
+    return results
+
+def convert_boulder_dict(boulder):
+    """Takes a boulder object and returns
+        a dictionary for converting to json"""
+
+    results = []
+
+    # print "this is the start of helper function"
+    # print boulder
+
+    
+    temp_dict = {}
+    temp_dict["name"] = boulder.boulder_name
+    temp_dict["lat"] = boulder.boulder_latitude
+    temp_dict["lon"] = boulder.boulder_longitude
+    temp_dict["id"] = boulder.boulder_id
+    temp_dict["route"] = "/boulders/"
+
+    results = temp_dict
+    # print "these are the results from helper function:"
+    # print results
 
     return results
 
@@ -52,8 +105,8 @@ def convert_locations_dict(locations):
 
     results = []
 
-    print "this is the start of helper function"
-    print locations
+    # print "this is the start of helper function"
+    # print locations
 
     for location in locations:
         # temp_dict = {}
@@ -62,23 +115,23 @@ def convert_locations_dict(locations):
         # temp_dict["lon"] = location.longitude
         # temp_dict["id"] = location.location_id
         # temp_dict["route"] = "/locations/"
-        convert_location_dict(location)
+        location_dict = convert_location_dict(location)
 
-        results.append(temp_dict)
+        results.append(location_dict)
 
-    print "these are the results from helper function:"
-    print results
+    # print "these are the results from helper function:"
+    # print results
 
     return results
 
 def convert_location_dict(location):
-    """Takes a list of location object and returns
+    """Takes a location object and returns
         a dictionary for converting to json"""
 
     results = []
 
-    print "this is the start of helper function"
-    print location
+    # print "this is the start of helper function"
+    # print location
 
     
     temp_dict = {}
@@ -88,9 +141,48 @@ def convert_location_dict(location):
     temp_dict["id"] = location.location_id
     temp_dict["route"] = "/locations/"
 
-    results.append(temp_dict)
+    results = temp_dict
         
-    print "these are the results from helper function:"
-    print results
+    # print "these are the results from helper function:"
+    # print results
 
     return results
+
+def convert_routes_dict(routes):
+    """Takes a list of route objects and returns
+        a list of dictionaries for converting to json"""
+
+    results = []
+
+    for route in routes:
+        # temp_dict = {}
+        # temp_dict["name"] = route.route_name
+        # temp_dict["lat"] = ""
+        # temp_dict["lon"] = ""
+        # temp_dict["id"] = route.route_id
+        # temp_dict["route"] = "/route/"
+        route_dict = convert_route_dict(route)
+
+        results.append(route_dict)
+
+    return results
+
+def convert_route_dict(route):
+    """Takes a route object and returns a 
+        dictionary for converting to json """
+
+    results = []
+
+    temp_dict = {}
+    temp_dict["name"] = route.route_name
+    temp_dict["lat"] = ""
+    temp_dict["lon"] = ""
+    temp_dict["id"] = route.route_id
+    temp_dict["route"] = "/route/"
+
+    results = temp_dict
+
+    return results
+
+
+
