@@ -329,8 +329,8 @@ def find_location_kids():
     """returns a location's children"""
     search_term = request.args.get('term')
 
-    print "this is the search term"
-    print search_term
+    # print "this is the search term"
+    # print search_term
 
     location = Location.query.filter(Location.location_id == search_term).first()
     sub_locations = Sub_location.query.filter(Sub_location.location_id == search_term).all()
@@ -338,55 +338,30 @@ def find_location_kids():
 
     results = []
 
-    print "this is the location object"
-    print location
-    print type(location)
+    # print "this is the location object"
+    # print location
+    # print type(location)
      
     location_dict = convert_location_dict(location)
-    # temp_dict = {}
-    # temp_dict["name"] = location.location_name
-    # temp_dict["lat"] = location.latitude
-    # temp_dict["lon"] = location.longitude
-    # temp_dict["id"] = location.location_id
-    # temp_dict["route"] = "/locations/"
-
     
     results.extend(location_dict)
-    print "results list so far"
-    print results
+    # print "results list so far"
+    # print results
 
-    print "inside to server.py sub_locations object"
-    print sub_locations
+    # print "inside to server.py sub_locations object"
+    # print sub_locations
     if sub_locations:
         sub_dict = convert_sublocations_dict(sub_locations)
         results.extend(sub_dict)
-    # for sub in sub_locations:
-    #     temp_dict = {}
-    #     temp_dict["name"] = sub.sub_location_name
-    #     temp_dict["lat"] = sub.sub_latitude
-    #     temp_dict["lon"] = sub.sub_longitude
-    #     temp_dict["id"] = sub.sub_location_id
-    #     temp_dict["route"] = "/sub_locations/"
-
-    #     results.append(temp_dict)
-    print "boulders part of server.py"
-    print boulders
-    print type(boulders)
+    
+    # print "boulders part of server.py"
+    # print boulders
+    # print type(boulders)
     if boulders:
         boulder_dict = convert_boulders_dict(boulders)
         results.extend(boulder_dict)
 
-    # for boulder in boulders:
-    #     temp_dict = {}
-    #     temp_dict["name"] = boulder.boulder_name
-    #     temp_dict["lat"] = boulder.boulder_latitude
-    #     temp_dict["lon"] = boulder.boulder_longitude
-    #     temp_dict["id"] = boulder.boulder_id
-    #     temp_dict["route"] = "/boulders/"
-
-    #     results.append(temp_dict)
-
-    print results
+    # print results
 
     return jsonify({'data':results})
 
