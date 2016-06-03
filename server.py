@@ -46,7 +46,7 @@ def register_process():
     username = request.form.get('username')
 
     hashed_password = hashing.hash_password(password)
-    print hashed_password
+    # print hashed_password
 
 
     #check if username in db
@@ -285,17 +285,17 @@ def display_route(route_id):
     session['route_id'] = route.route_id
     session['boulder_route'] = 'route'
 
-    print route
+    # print route
     # set avg variable and user_score variable
     avg = 0
     user_id = session.get("user_id")
     if user_id is not None:
         user_rate = Route_rating.query.filter( (Route_rating.route_id==route_id) & 
                                                 (Route_rating.user_id==user_id)).first()
-        print user_rate
+        # print user_rate
         if user_rate:
             user_score = user_rate.route_rating
-            print user_score
+            # print user_score
         else: 
             user_score = 0
     else:
@@ -310,13 +310,13 @@ def display_route(route_id):
 
     
     rating_objs = Route_rating.query.filter(Route_rating.route_id==route.route_id).all()
-    print rating_objs
+    # print rating_objs
     ratings = [rating.route_rating for rating in rating_objs]
 
-    print ratings
+    # print ratings
     if ratings:
         avg = round(float(sum(ratings))/ len(ratings), 0)
-        print avg
+        # print avg
 
     return render_template("route.html", route=route,
                                         near_routes=near_routes,
@@ -346,21 +346,21 @@ def find_location_kids():
     location_dict = convert_location_dict(location)
     
     results.append(location_dict)
-    print "\n results list after location helper function"
-    print results
+    # print "\n results list after location helper function"
+    # print results
 
-    print "inside to server.py sub_locations object"
-    print sub_locations
-    print len(sub_locations)
+    # print "inside to server.py sub_locations object"
+    # print sub_locations
+    # print len(sub_locations)
     
     if sub_locations: 
         sub_dict = convert_sublocations_dict(sub_locations)
         
         results.extend(sub_dict)
-        print "\n back in server.py"
-        print " results", results
+        # print "\n back in server.py"
+        # print " results", results
 
-    print results
+    # print results
     
     # print "boulders part of server.py"
     # print boulders
@@ -390,7 +390,7 @@ def find_sub_location_kids():
     boulder_dict = convert_boulders_dict(boulders)
     results.extend(boulder_dict)
 
-    print results
+    # print results
     
     return jsonify({'data':results})
 
@@ -407,33 +407,37 @@ def search():
 
     results = []
 
-    location_dict = convert_locations_dict(locations)
-    results.extend(location_dict)
-
-    sub_dict = convert_sublocations_dict(sub_locations)
-    results.extend(sub_dict)
-
-    boulder_dict = convert_boulders_dict(boulders)
-    results.extend(boulder_dict)
-
-    route_dict = convert_routes_dict(routes)
-    results.extend(route_dict)
+    if locations:
+        location_dict = convert_locations_dict(locations)
+        results.extend(location_dict)
     
-    print results
+    if sub_locations:
+        sub_dict = convert_sublocations_dict(sub_locations)
+        results.extend(sub_dict)
+    
+    if boulders:
+        boulder_dict = convert_boulders_dict(boulders)
+        results.extend(boulder_dict)
+
+    if routes:
+        route_dict = convert_routes_dict(routes)
+        results.extend(route_dict)
+    
+    # print results
     return jsonify({'data':results})
 
 @app.route('/add-b-comment.json', methods=["POST"])
 def add_boulder_comment():
     """Adds a comment to a boulder"""
-    print "this shit is getting real!"
+    # print "this shit is getting real!"
 
     comment = request.form.get("comment")
     boulder_id = session.get('boulder_id')
     user_id = session.get('user_id')
-    print boulder_id
+    # print boulder_id
     timestamp = datetime.now()
     
-    print timestamp
+    # print timestamp
 
     new_comment = Boulder_comment(boulder_comment=comment, 
                                 boulder_id=boulder_id,
@@ -457,14 +461,14 @@ def add_boulder_comment():
 @app.route('/add-r-comment.json', methods=["POST"])
 def add_route_comment():
     """Adds a comment to a route"""
-    print "this shit is getting real!"
+    # print "this shit is getting real!"
 
     comment = request.form.get("comment")
     route_id = session.get('route_id')
     user_id = session.get('user_id')
-    print route_id
+    # print route_id
     timestamp = datetime.now()
-    print timestamp
+    # print timestamp
 
     new_comment = Route_comment(route_comment=comment, 
                                 route_id=route_id,
@@ -490,15 +494,11 @@ def add_rate_boulder():
     """add rating for boulder """
     
     #gets the rate from the form
-    # rate = request.form.get("score")
     rate = request.form.get('rate')
     
-    # gets the user_id and boulder_id from session vars
-    # user_id= session.get('user_id')
-    # boulder_id = session.get('boulder_id')
     user_id = request.form.get('user')
     boulder_id = request.form.get('boulder')
-    print user_id, boulder_id, rate
+    # print user_id, boulder_id, rate
     # checks to see if the user has already rated the boulder
     rating = Boulder_rating.query.filter((Boulder_rating.boulder_id== boulder_id) &
                                         (Boulder_rating.user_id==user_id)).first()
@@ -531,12 +531,9 @@ def add_rate_route():
     # gets rating from form
     rate = request.form.get("rate")
 
-    # gets user_id and route_id from session vars
-    # user_id= session.get('user_id')
-    # route_id = session.get('route_id')
     user_id = request.form.get('user')
     route_id = request.form.get('route')
-    print user_id, route_id, rate
+    # print user_id, route_id, rate
 
     # looks for a rating for the route by the user in db
     rating = Route_rating.query.filter((Route_rating.route_id== route_id) &
