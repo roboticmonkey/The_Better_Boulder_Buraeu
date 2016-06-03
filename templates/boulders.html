@@ -16,17 +16,15 @@
 
 {% if boulder.boulder_latitude %}
     <div id='map' style='width: 600px; height: 400px;'></div>
-    <!-- // <script type="text/javascript" src="/static/mapbox.js"></script> -->
-    <script>
-    // L.mapbox.accessToken = 'pk.eyJ1Ijoicm9ib3RpY21vbmtleSIsImEiOiJjaW9nZXBtajAwMWd3djFtM3Nma3FqaXB2In0.21UysS7J-Y50PVNcD0mopg';
-
     
-    // var myLayer = L.mapbox.featureLayer().addTo(map);
+    <script>
     //converting jinja vars to js as well as string to number.
     lat = '{{ boulder.boulder_latitude }}';
     lat = Number(lat);
     lng = '{{ boulder.boulder_longitude }}';
     lng = Number(lng);
+
+//CODE TO PUT THE BOULDER MARKER ON THE MAP
 
     var map = L.mapbox.map('map', 'mapbox.pirates')
         .setView([lat, lng], 11);
@@ -62,7 +60,7 @@
         <form action="#" method="POST">
         <div id="rateYo"></div>
 
-            <input type="hidden" name="user-rating" id="star-rating">
+        <input type="hidden" name="user-rating" id="star-rating">
         <input type="hidden" id="boulder" name="boulder_id" value="{{ boulder.boulder_id }}">
         <input type="hidden" id="user" name="user" value="{{ session.get('user_id') }}">
         <input type="hidden" id="avg" name="avg" value="{{ avg }}" >

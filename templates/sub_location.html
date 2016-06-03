@@ -17,13 +17,10 @@
 {% if sub_location.sub_latitude %}
 <input type ="hidden" value='{{ sub_location.sub_location_id }}' name='sub-location-id' class='id'>
     <div id='map' style='width: 600px; height: 400px;'></div>
-    <!-- // <script type="text/javascript" src="/static/mapbox.js"></script> -->
 
     <script>
-    // L.mapbox.accessToken = 'pk.eyJ1Ijoicm9ib3RpY21vbmtleSIsImEiOiJjaW9nZXBtajAwMWd3djFtM3Nma3FqaXB2In0.21UysS7J-Y50PVNcD0mopg';
-
-
-    // var myLayer = L.mapbox.featureLayer().addTo(map);
+    //CODE TO PUT THE SUB-LOCATION MARKER ON THE MAP
+  
     //converting jinja vars to js as well as string to number.
     lat = '{{ sub_location.sub_latitude }}';
     lat = Number(lat);
@@ -43,8 +40,6 @@
             // coordinates here are in longitude, latitude order because
             // x, y is the standard for GeoJSON and many formats
             coordinates: [
-              // -122.27301,
-              // 37.89215 
               lng, lat
             ]
         },
@@ -68,42 +63,13 @@
     <li>
         <a href="/boulders/{{ boulder.boulder_id }}" >{{ boulder.boulder_name }}</a>
     </li>
- <!--   <script>
-        //converting jinja vars to js as well as string to number.
-//         lat = '{{ boulder.boulder_latitude }}';
-//         lat = Number(lat);
-//         lng = '{{ boulder.boulder_longitude }}';
-//         lng = Number(lng);
 
-//     L.mapbox.featureLayer({
-//     // this feature is in the GeoJSON format: see geojson.org
-//     // for the full specification
-//     type: 'Feature',
-//     geometry: {
-//         type: 'Point',
-//         // coordinates here are in longitude, latitude order because
-//         // x, y is the standard for GeoJSON and many formats
-//         coordinates: [
-//           lng, lat
-//         ]
-//     },
-//     properties: {
-//         title: '{{ boulder.boulder_name }}',
-//         // description: 'needs to be dynamic',
-//         // one can customize markers by adding simplestyle properties
-//         // https://www.mapbox.com/guides/an-open-platform/#simplestyle
-//         'marker-size': 'small',
-//         'marker-color': '#ffb84d',
-//         'marker-symbol': 'rocket'
-//     }
-// }).addTo(map);
-
-    </script> -->
 {% endfor %}
 </ul>
 {% endif %}
 
 <script>
+//AJAX TO PUT THE SUB-LOCATION'S CHILDREN AS MARKERS ON THE MAP
 var searchTerm = $('.id').val();
 $(document).ready(function(){
     // alert("hhh")
