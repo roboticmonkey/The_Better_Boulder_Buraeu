@@ -21,39 +21,39 @@ lat = Number(lat);
 lng = '{{ location.longitude }}';
 lng = Number(lng);
  
-var geojson = [
-    {
-    "type": "FeatureCollection",
-    "features": [
-        {
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    lng, lat
-                ]
-            },
-            "properties": {
-              title: '{{ location.location_name }}',
-            // description: 'needs to be dynamic',
-            // one can customize markers by adding simplestyle properties
-            // https://www.mapbox.com/guides/an-open-platform/#simplestyle
-            'marker-size': 'large',
-            'marker-color': '#ff0000',
-            'marker-symbol': 'rocket'  
-            }
-            }
-        ]
+// var geojson = [
+//     {
+//     "type": "FeatureCollection",
+//     "features": [
+//         {
+//             "type": "Feature",
+//             "geometry": {
+//                 "type": "Point",
+//                 "coordinates": [
+//                     lng, lat
+//                 ]
+//             },
+//             "properties": {
+//               title: '{{ location.location_name }}',
+//             // description: 'needs to be dynamic',
+//             // one can customize markers by adding simplestyle properties
+//             // https://www.mapbox.com/guides/an-open-platform/#simplestyle
+//             'marker-size': 'large',
+//             'marker-color': '#ff0000',
+//             'marker-symbol': 'rocket'  
+//             }
+//             }
+//         ]
 
-    }
-];
+//     }
+// ];
 
 var map = L.mapbox.map('map', 'mapbox.pirates',{
     scrollWheelZoom: false
 }).setView([lat, lng], 12);
 
-var myLayer = L.mapbox.featureLayer().addTo(map);
-myLayer.setGeoJSON(geojson);
+// var myLayer = L.mapbox.featureLayer().addTo(map);
+// myLayer.setGeoJSON(geojson);
 
 </script>
 
