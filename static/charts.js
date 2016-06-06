@@ -39,8 +39,8 @@ $(function() {
 
 
         }
-        console.log(results['chart_labels']);
-        console.log(results['data']);
+        // console.log(results['chart_labels']);
+        // console.log(results['data']);
         var barChart = new Chart(ctx, {
             type: "bar",
             data: data,
