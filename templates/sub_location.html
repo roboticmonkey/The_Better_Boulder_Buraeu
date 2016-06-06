@@ -1,24 +1,28 @@
 {% extends 'base.html' %}
 {% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8">
+            <h1>{{ sub_location.sub_location_name }}</h1>
 
-<h1>{{ sub_location.sub_location_name }}</h1>
-
-<ul>
+            <ul>
+                {% if sub_location.sub_latitude %}
+                <li>Latitude: {{ sub_location.sub_latitude }}</li>
+                {% endif %}
+                {% if sub_location.sub_longitude %}
+                <li>Longitude: {{ sub_location.sub_longitude }}</li>
+                {% endif %}
+                <li>Description: {{ sub_location.sub_location_description }}</li>
+                <li>Directions: {{ sub_location.sub_location_directions }}</li>
+                <li>Main Location: <a href="/locations/{{ sub_location.location_id }}">{{ sub_location.location.location_name }}</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
     {% if sub_location.sub_latitude %}
-    <li>Latitude: {{ sub_location.sub_latitude }}</li>
-    {% endif %}
-    {% if sub_location.sub_longitude %}
-    <li>Longitude: {{ sub_location.sub_longitude }}</li>
-    {% endif %}
-    <li>Description: {{ sub_location.sub_location_description }}</li>
-    <li>Directions: {{ sub_location.sub_location_directions }}</li>
-    <li>Main Location: <a href="/locations/{{ sub_location.location_id }}">{{ sub_location.location.location_name }}</a></li>
-</ul>
-
-{% if sub_location.sub_latitude %}
-<input type ="hidden" value='{{ sub_location.sub_location_id }}' name='sub-location-id' class='id'>
-    <div id='map' style='width: 600px; height: 400px;'></div>
-
+    <input type ="hidden" value='{{ sub_location.sub_location_id }}' name='sub-location-id' class='id'>
+        <div class="col-md-8" id='map' style='width: 600px; height: 400px;'></div>
+       
     <script>
     //CODE TO PUT THE SUB-LOCATION MARKER ON THE MAP
   
@@ -32,43 +36,23 @@
         .setView([lat, lng], 11);
     map.scrollWheelZoom.disable();
 
-    // L.mapbox.featureLayer({
-    //     // this feature is in the GeoJSON format: see geojson.org
-    //     // for the full specification
-    //     type: 'Feature',
-    //     geometry: {
-    //         type: 'Point',
-    //         // coordinates here are in longitude, latitude order because
-    //         // x, y is the standard for GeoJSON and many formats
-    //         coordinates: [
-    //           lng, lat
-    //         ]
-    //     },
-    //     properties: {
-    //         title: '{{ sub_location.sub_location_name }}',
-    //         // description: 'needs to be dynamic',
-    //         // one can customize markers by adding simplestyle properties
-    //         // https://www.mapbox.com/guides/an-open-platform/#simplestyle
-    //         'marker-size': 'medium',
-    //         'marker-color': '#ff0000',
-    //         'marker-symbol': 'rocket'
-    //     }
-    // }).addTo(map);
-
     </script>
-{% endif %}
-{% if boulders %}
-<h2>Boulders</h2>
+    {% endif %}
+     <div class="col-md-4">
+    {% if boulders %}
+        <h2>Boulders</h2>
     <ul>
-{% for boulder in boulders %}
-    <li>
-        <a href="/boulders/{{ boulder.boulder_id }}" >{{ boulder.boulder_name }}</a>
-    </li>
+        {% for boulder in boulders %}
+        <li>
+            <a href="/boulders/{{ boulder.boulder_id }}" >{{ boulder.boulder_name }}</a>
+        </li>
 
-{% endfor %}
-</ul>
+        {% endfor %}
+    </ul>
 {% endif %}
 
+        </div>
+    </div>
 <script>
 //AJAX TO PUT THE SUB-LOCATION'S CHILDREN AS MARKERS ON THE MAP
 var searchTerm = $('.id').val();
@@ -78,4 +62,5 @@ $(document).ready(function(){
 });
 
 </script>
+</div>
 {% endblock %}
