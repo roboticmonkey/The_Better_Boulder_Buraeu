@@ -1,95 +1,72 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>{{ location.location_name }}</h1>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-8">
+      <h1>{{ location.location_name }}</h1>
 
-<ul>
-    <li>Latitude: {{ location.latitude }} </li>
-    <li>Longitude: {{ location.longitude }} </li>
-    <li>Description: {{ location.location_description }} </li>
-    <li>Directions: {{ location.location_directions }} </li>
-</ul>
-<input type ="hidden" value='{{ location.location_id }}' name='location-id' class='id'>
-<div id='map' style='width: 600px; height: 400px;'></div>
-<script>
-
-//TO DISPLAY THE LOCATION MARKER FOR THE SPECIFIC PAGE
-
-//converting jinja vars to js as well as string to number.
-lat = '{{ location.latitude }}';
-lat = Number(lat);
-lng = '{{ location.longitude }}';
-lng = Number(lng);
- 
-// var geojson = [
-//     {
-//     "type": "FeatureCollection",
-//     "features": [
-//         {
-//             "type": "Feature",
-//             "geometry": {
-//                 "type": "Point",
-//                 "coordinates": [
-//                     lng, lat
-//                 ]
-//             },
-//             "properties": {
-//               title: '{{ location.location_name }}',
-//             // description: 'needs to be dynamic',
-//             // one can customize markers by adding simplestyle properties
-//             // https://www.mapbox.com/guides/an-open-platform/#simplestyle
-//             'marker-size': 'large',
-//             'marker-color': '#ff0000',
-//             'marker-symbol': 'rocket'  
-//             }
-//             }
-//         ]
-
-//     }
-// ];
-
-var map = L.mapbox.map('map', 'mapbox.pirates',{
-    scrollWheelZoom: false
-}).setView([lat, lng], 12);
-
-// var myLayer = L.mapbox.featureLayer().addTo(map);
-// myLayer.setGeoJSON(geojson);
-
-</script>
-
-{% if sub_locations %}
-    <h2>Sub Locations</h2>
-    <ul>
-        {% for sub_location in sub_locations %}
-        <li>
-          <a href="/sub_locations/{{ sub_location.sub_location_id }}">{{ sub_location.sub_location_name }}</a>
-        </li>
-
-        {% endfor %}
-    </ul>
-    
-{% endif %}
-
-{% if boulders %}
-    <h2>Boulders</h2>
-    <ul>
-      {% for boulder in boulders %}
-        <li>
-          <a href="/boulders/{{ boulder.boulder_id }}">{{ boulder.boulder_name }}</a>
-        </li>
-
-      {% endfor %}
+      <ul>
+          <li>Latitude: {{ location.latitude }} </li>
+          <li>Longitude: {{ location.longitude }} </li>
+          <li>Description: {{ location.location_description }} </li>
+          <li>Directions: {{ location.location_directions }} </li>
       </ul>
-{% endif %}
+      <input type ="hidden" value='{{ location.location_id }}' name='location-id' class='id'>
+    </div>
 
-<script>
-// ajax call to put the location and all its children as markers on the map
-var searchTerm = $('.id').val();
-$(document).ready(function(){
-    
-  $.get("/location.json", {"term": searchTerm}, putMarkersOnMap);
-});
+  </div>
+  <div class="row">
+    <div class="col-md-8" id='map' style='width: 600px; height: 400px;'></div>
+        <div class="col-md-4">
+      {% if sub_locations %}
+        
+        <h2>Sub Locations</h2>
+        
+        <ul>
+            {% for sub_location in sub_locations %}
+            <li>
+              <a href="/sub_locations/{{ sub_location.sub_location_id }}">{{ sub_location.sub_location_name }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+      {% endif %}
+      
+      {% if boulders %}
+        <h2>Boulders</h2>
+        
+        <ul>
+          {% for boulder in boulders %}
+            <li>
+              <a href="/boulders/{{ boulder.boulder_id }}">{{ boulder.boulder_name }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  </div>
+  <script>
+    //TO DISPLAY THE LOCATION MARKER FOR THE SPECIFIC PAGE
+    //converting jinja vars to js as well as string to number.
+    lat = '{{ location.latitude }}';
+    lat = Number(lat);
+    lng = '{{ location.longitude }}';
+    lng = Number(lng);
 
-</script>
+    var map = L.mapbox.map('map', 'mapbox.pirates',{
+        scrollWheelZoom: false
+    }).setView([lat, lng], 12);
+  </script>
 
+  
+
+  <script>
+    // ajax call to put the location and all its children as markers on the map
+    var searchTerm = $('.id').val();
+    $(document).ready(function(){
+        
+      $.get("/location.json", {"term": searchTerm}, putMarkersOnMap);
+    });
+  </script>
+</div>
 {% endblock %}
