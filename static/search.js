@@ -38,7 +38,13 @@ function putMarkersOnMap(data){
         var each = data.data[i];
         var title = each.name;
         var link = each.route+each.id;
-        var content = '<a href="'+link+'">'+title+'</a>';
+        var num = each.route_num
+        if (num) {
+            var content = '<a href="'+link+'">'+title+'</a><br><p># of routes: '+ num + '</p>';
+        } else {
+            var content = '<a href="'+link+'">'+title+'</a>';
+        }
+        
         console.log(content)
 
         if (each.route === "/locations/"){

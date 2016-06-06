@@ -158,7 +158,7 @@ def logout_user():
 
     return redirect('/')
 
-
+#REMOVE THIS ROUTE>>>> NOT NEEDED
 @app.route('/locations')
 def display_location():
     """Display location list page"""
@@ -205,6 +205,9 @@ def boulder_detail(boulder_id):
     boulder = Boulder.query.get(boulder_id)
     #find all routes connected to that boulder
     routes = Route.query.filter_by(boulder_id=boulder_id).all()
+    
+    num_of_routes = len(routes)
+
     session['boulder_id'] = boulder.boulder_id
     session['boulder_route'] = 'boulder'
     # set avg variable and user_score variable
@@ -322,46 +325,28 @@ def find_location_kids():
     """returns a location's children"""
     search_term = request.args.get('term')
 
-    # print "this is the search term"
-    # print search_term
 
+    #QUERIES TO FIND LOCATION INFORMATION
     location = Location.query.filter(Location.location_id == search_term).first()
     sub_locations = Sub_location.query.filter(Sub_location.location_id == search_term).all()
     boulders = Boulder.query.filter(Boulder.location_id == search_term).all()
 
+    #TO HOLD ALL THE LOCATIONS THAT HAVE BEEN FOUND
     results = []
-
-    # print "this is the location object"
-    # print location
-    # print type(location)
      
     location_dict = convert_location_dict(location)
     
     results.append(location_dict)
-    # print "\n results list after location helper function"
-    # print results
-
-    # print "inside to server.py sub_locations object"
-    # print sub_locations
-    # print len(sub_locations)
     
     if sub_locations: 
         sub_dict = convert_sublocations_dict(sub_locations)
         
         results.extend(sub_dict)
-        # print "\n back in server.py"
-        # print " results", results
 
-    # print results
-    
-    # print "boulders part of server.py"
-    # print boulders
-    # print type(boulders)
     if boulders:
         boulder_dict = convert_boulders_dict(boulders)
         results.extend(boulder_dict)
 
-    # print results
 
     return jsonify({'data':results})
 
