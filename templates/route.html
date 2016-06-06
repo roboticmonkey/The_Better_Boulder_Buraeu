@@ -52,7 +52,7 @@
 
 </ul>
 <script type="text/javascript" src="/static/comment.js"></script>
-<h2>Routes on the same boulder</h2>
+<h2>Routes on {{ route.boulder.boulder_name }}</h2>
     <table>
         <tr>
             <th>Route Name</th>
@@ -67,15 +67,22 @@
 </table>
 
 <h2>Near by boulders</h2>
-    <ul>
+    <table>
+        <tr>
+            <th>Boulder Name</th>
+            <th>Number of Routes</th>
+        </tr>
 {% for boulder in boulders %}
     {% if (route.boulder_id != boulder.boulder_id) %}
-    <li>
-        <a href="/boulders/{{ boulder.boulder_id }}">{{ boulder.boulder_name }}</a>
-    </li>
+    <tr>
+        <td><a href="/boulders/{{ boulder.boulder_id }}">{{ boulder.boulder_name }}</a></td>
+        <td>{{ num_dict[ boulder.boulder_id ]}}</td>
+        
+    </tr>
+
     {% endif %}
 {% endfor %}
-</ul>
+</table>
 
 
 

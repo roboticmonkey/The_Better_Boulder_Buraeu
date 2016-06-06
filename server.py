@@ -301,6 +301,19 @@ def display_route(route_id):
 
     comments = Route_comment.query.filter(Route_comment.route_id==route.route_id).order_by(desc(Route_comment.route_datetime)).all()
 
+    num_dict = {}
+    for boulder in boulders:
+        #find all routes connected to that boulder
+        boulder_id = boulder.boulder_id
+        routes = Route.query.filter_by(boulder_id=boulder.boulder_id).all()
+        
+        print boulder_id
+
+        num_of_routes = len(routes)
+        num_dict[boulder_id] = num_of_routes
+
+    print num_dict
+
     
     rating_objs = Route_rating.query.filter(Route_rating.route_id==route.route_id).all()
     # print rating_objs
@@ -316,7 +329,8 @@ def display_route(route_id):
                                         boulders=boulders,
                                         comments=comments,
                                         avg=avg,
-                                        user_score=user_score)
+                                        user_score=user_score,
+                                        num_dict=num_dict)
 
 @app.route('/location.json', methods=['GET'])
 def find_location_kids():
