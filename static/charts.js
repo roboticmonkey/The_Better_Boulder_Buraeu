@@ -6,6 +6,9 @@ $(function() {
     $.get("/get_chart_info.json", {"boulder_id":$("#bar_chart").data("boulder")}, createChart);
     
     function createChart(results){
+        // if there is no data hide the div the shows the chart
+        // or else do the shit below
+        
         var ctx = $("#route_rating");
         var data = {
                 labels: results['chart_labels'],

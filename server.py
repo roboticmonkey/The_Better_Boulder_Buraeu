@@ -249,21 +249,13 @@ def create_chart_data():
     # if there are 3 V1's on a boulder the numbers list will show 3 at index 1
     numbers=[0,0,0,0,0,0,0,0,0,0,0,0,0]
     for route in routes:
-        # print route.route_name, route.difficulty_rate
-        # print len(route.difficulty_rate)
         diff = route.difficulty_rate[:3]
-        # print diff
-        # print "last char of diff ", diff[-1]
+        
         if diff:
             if diff[-1] == "-" or diff[-1] == "+":
                 diff = diff[:2]
 
             numbers[int(diff[1:])] = numbers[int(diff[1:])] + 1
-
-    # print THE_LIST
-    # print len(THE_LIST)
-    # print numbers
-    # print len(numbers)
 
     chart_data = {}
     chart_data['chart_labels'] = THE_LIST
