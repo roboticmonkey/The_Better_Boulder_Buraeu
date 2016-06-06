@@ -1,48 +1,47 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div>
-<p>Welcome to The Better Boulder Bureau!</p>
-<p>Click on the map to find some local spots to Boulder or Search for the name
-    of a place you'd like to find.</p>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Welcome to The Better Boulder Bureau!</h1>
+            <p>Click on the map to find some local spots to Boulder or Search for the name
+            of a place you'd like to find.</p>
+        </div>
+    </div>
+    <div class="row">         
+        <div class="col-md-8" id='map' style='width: 600px; height: 400px;'></div>
+        <div class="col-md-4"> 
+            <label for="field-search">Search:
+            <input type="text" name="search" id="field-search">
+            </label>
+            <button id="search_btn">search</button>
+            <div >
+                <h2 id="boulder-results">Unmapped Boulders</h2>
+                <ul id="Bsearch-results"></ul>
+                <h2 id="route-results">Routes Matching Search</h2> 
+                <ul id="Rsearch-results"></ul>
+            </div>
+         </div>
+    </div>
+    <script>
+    var map = L.mapbox.map('map', 'mapbox.pirates')
+        .setView([37.7749, -122.4194], 9);
+
+    map.scrollWheelZoom.disable();
+
+    // ajax call to put all locations as markers on the map
+    $(document).ready(function(){ 
+      $.get("/search.json", {"term": ""}, putMarkersOnMap);
+    });
+
+    </script> 
+
+    <script>
+        $("#Bsearch-results").hide();
+        $("#boulder-results").hide();
+        $("#route-results").hide();
+        $("#Rsearch-results").hide();
+    </script>
 </div>
-    <label for="field-search">Search:
-        <input type="text" name="search" id="field-search">
-     </label>
-     <button id="search_btn">search</button>
-
-<!-- 
-<a href='/locations'>Locations</a> -->
-        
-          
-<div id='map' style='width: 600px; height: 400px;'></div>
-
-<script>
-var map = L.mapbox.map('map', 'mapbox.pirates')
-    .setView([37.7749, -122.4194], 9);
-
-map.scrollWheelZoom.disable();
-
-// ajax call to put all locations as markers on the map
-$(document).ready(function(){
-    
-  $.get("/search.json", {"term": ""}, putMarkersOnMap);
-});
-
-</script> 
-
-
-<div >
-    <h2 id="boulder-results">Unmapped Boulders</h2>
-    <ul id="Bsearch-results"></ul>
-    <h2 id="route-results">Routes Matching Search</h2> 
-    <ul id="Rsearch-results"></ul>
-</div>
-<script>
-    $("#Bsearch-results").hide();
-    $("#boulder-results").hide();
-    $("#route-results").hide();
-    $("#Rsearch-results").hide();
-</script>
-
 {% endblock %}
