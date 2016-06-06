@@ -87,7 +87,6 @@ $(function(){
         // console.log(String(user));
     }
 
-    // $(function(){
     var $rateYo = $('#rateYo').rateYo();
     
     $('#rateYo').click(function(e){
@@ -101,26 +100,7 @@ $(function(){
         if (boulderRoute === 'route'){
             routeAjax(rating);
         }
-        
-        
-        // var boulder = $("#boulder").val();
-        // var user = $("#user").val();
-
-        // var formInputs = {'user': user,
-        //                   'boulder': boulder,
-        //                   'rate': rating};
-        // console.log(formInputs);
-        // if (user != "None"){
-        //    $.post('/rate-boulder', formInputs, successFunc); 
-        // } 
-        
-                          
-        // console.log("The rating is " + String(rating));
-        // console.log(String(boulder));
-        // console.log(String(user));
     });
-    // });
-
 });
 
 
