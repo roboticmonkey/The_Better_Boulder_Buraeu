@@ -43,31 +43,24 @@ $(function(){
         rating: defaultVal,
         
         readOnly: noWrite,
-        
-
     });
 
-    function successFunc(results){
-        // flash("Rating Saved");
+    function successFunc(results){  
 
     }
 
     function boulderAjax(rating){
         var boulder = $("#boulder").val();
         var user = $("#user").val();
-        // debugger;
+     
         var formInputs = {'user': user,
                           'boulder': boulder,
                           'rate': rating};
-        // console.log(formInputs);
+ 
         if (user != "None"){
            $.post('/rate-boulder', formInputs, successFunc); 
         } 
-        
-                          
-        console.log("The rating is " + String(rating));
-        // console.log(String(boulder));
-        // console.log(String(user));
+
     }
 
     function routeAjax(rating){
@@ -77,14 +70,10 @@ $(function(){
         var formInputs = {'user': user,
                           'route': route,
                           'rate': rating};
-        // console.log(formInputs);
+        
         if (user != "None"){
            $.post('/rate-route', formInputs, successFunc); 
         } 
-                               
-        console.log("The rating is " + String(rating));
-        // console.log(String(route));
-        // console.log(String(user));
     }
 
     var $rateYo = $('#rateYo').rateYo();
@@ -102,5 +91,8 @@ $(function(){
         }
     });
 });
+
+
+
 
 

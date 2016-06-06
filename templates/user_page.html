@@ -29,16 +29,18 @@ map.scrollWheelZoom.disable();
         <th>Boulder Name</th>
         <th>Route Name</th>
         <th>Difficulty Rating</th>
-        <th>Star Rating</th>
+        <th >Star Rating</th>
     </tr>
 {% for climbed in climbed_list %}
     <tr>
         <td><a href="/boulders/{{climbed['boulder_id']}}">{{ climbed['boulder_name'] }}</a></td>
         <td><a href="/route/{{ climbed['route_id'] }}">{{ climbed['route_name'] }}</a></td>
         <td>{{ climbed['rating'] }}</td>
-        <td>{{ climbed['star_rating'] }}</td>
+        <td class="StarRating" value="{{ climbed['star_rating'] }}">{{ climbed['star_rating'] }}</td>
     </tr>
+       
 {% endfor %}
 </table>
+       
 </div>
 {% endblock %}

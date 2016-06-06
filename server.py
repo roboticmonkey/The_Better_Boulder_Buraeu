@@ -115,6 +115,7 @@ def login_user():
 def view_user_page():
     """shows the user's page"""
 
+    #gets user id from the session variable
     user_id = session['user_id']
 
     if user_id:
@@ -124,11 +125,7 @@ def view_user_page():
         #find all the routes the user has rated
         rated_routes = Route_rating.query.filter(Route_rating.user_id==user.user_id).all()
         for rated in rated_routes:
-            # print rated
-            # print rated.route.route_name
-            # print rated.route.difficulty_rate
-            # print rated.route_rating
-            # print rated.route.boulder.boulder_name
+          
             climbed = {}
             climbed['route_name'] = rated.route.route_name
             climbed['route_id'] = rated.route.route_id
@@ -138,7 +135,6 @@ def view_user_page():
             climbed['boulder_id'] = rated.route.boulder.boulder_id
             climbed_list.append(climbed)
 
-            # print climbed_list
         return render_template('user_page.html', climbed_list=climbed_list)
     else:
         flash("Please login to see the user page.")
@@ -192,9 +188,11 @@ def sub_location_detail(sub_location_id):
     sub = Sub_location.query.get(sub_location_id)
     #find the boulders that have the sublocation as a parent
     boulders = Boulder.query.filter_by(sub_location_id=sub_location_id).all()
+    location = Location.query.filter(Location.location_id==sub.location_id).first()
 
     return render_template("sub_location.html", sub_location=sub,
-                                                boulders=boulders)
+                                                boulders=boulders,
+                                                location=location)
     
  
 

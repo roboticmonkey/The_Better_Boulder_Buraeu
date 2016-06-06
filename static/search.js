@@ -40,7 +40,7 @@ function putMarkersOnMap(data){
         var link = each.route+each.id;
         var num = each.route_num
         if (num) {
-            var content = '<a href="'+link+'">'+title+'</a><br><p># of routes: '+ num + '</p>';
+            var content = '<a href="'+link+'">'+title+'</a><br><p>Number of Routes: '+ num + '</p>';
         } else {
             var content = '<a href="'+link+'">'+title+'</a>';
         }
