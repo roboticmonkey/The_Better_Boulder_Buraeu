@@ -8,6 +8,7 @@
     <li>Description: {{ route.route_description }}</li>
     <li>Directions: {{ route.route_directions }}</li>
     <li>Protection: {{ route.route_protection }}</li>
+    <li>Main Boulder: <a href="/boulders/{{ route.boulder_id }}">{{ route.boulder.boulder_name }}</a></li>
 </ul>
 
         <form action="#" method="POST">
@@ -52,20 +53,27 @@
 </ul>
 <script type="text/javascript" src="/static/comment.js"></script>
 <h2>Routes on the same boulder</h2>
-    <ul>
+    <table>
+        <tr>
+            <th>Route Name</th>
+            <th>Difficulty Rating</th>
+        </tr>
 {% for n_route in near_routes %}
-    <li>
-        <a href="/route/{{ n_route.route_id }}">{{ n_route.route_name }}   {{ n_route.difficulty_rate }}</a>
-    </li>
+    <tr>
+        <td><a href="/route/{{ n_route.route_id }}">{{ n_route.route_name }}</a></td>   
+        <td>{{ n_route.difficulty_rate }}</td>
+    </tr>
 {% endfor %}
-</ul>
+</table>
 
 <h2>Near by boulders</h2>
     <ul>
 {% for boulder in boulders %}
+    {% if (route.boulder_id != boulder.boulder_id) %}
     <li>
         <a href="/boulders/{{ boulder.boulder_id }}">{{ boulder.boulder_name }}</a>
     </li>
+    {% endif %}
 {% endfor %}
 </ul>
 

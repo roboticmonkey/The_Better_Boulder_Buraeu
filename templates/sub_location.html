@@ -12,6 +12,7 @@
     {% endif %}
     <li>Description: {{ sub_location.sub_location_description }}</li>
     <li>Directions: {{ sub_location.sub_location_directions }}</li>
+    <li>Main Location: <a href="/locations/{{ sub_location.location_id }}">{{ sub_location.location.location_name }}</a></li>
 </ul>
 
 {% if sub_location.sub_latitude %}

@@ -12,6 +12,11 @@
     {% endif %}
     <li>Description: {{ boulder.boulder_description }}</li>
     <li>Directions: {{ boulder.boulder_directions }}</li>
+    {% if boulder.sub_location_id %}
+        <li>Main Location: <a href="/sub_locations/{{boulder.sub_location_id}}">{{ boulder.sub_location.sub_location_name }}</a></li>
+    {% else %}
+        <li>Main Location: <a href="/locations/{{boulder.location_id}}">{{ boulder.location.location_name }}</a></li>
+    {% endif %}
 </ul>
 
 {% if boulder.boulder_latitude %}
@@ -85,13 +90,18 @@
 
 {% if routes %}
 <h2>Routes</h2>
-    <ul>
+    <table>
+        <tr>
+            <th> Route Name </th>
+            <th> Difficulty Rating </th>
+        </tr>
 {% for route in routes %}
-    <li>
-        <a href="/route/{{ route.route_id }}">{{ route.route_name }}    {{ route.difficulty_rate }}</a>
-    </li>
+    <tr>
+        <td><a href="/route/{{ route.route_id }}">{{ route.route_name }}</a></td>
+        <td>    {{ route.difficulty_rate }}</td>
+    </tr>
 {% endfor %}
-</ul>
+</table>
 {% endif %}
 
 <h2>Comments</h2>
