@@ -23,7 +23,9 @@ map.scrollWheelZoom.disable();
 <ul id="search-results"></ul>
 </div>
 <div>
+    
     <h2> Climbs Completed </h2>
+    {% if climbed_list %}
 <table>
     <tr>
         <th>Boulder Name</th>
@@ -31,6 +33,7 @@ map.scrollWheelZoom.disable();
         <th>Difficulty Rating</th>
         <th >Star Rating</th>
     </tr>
+
 {% for climbed in climbed_list %}
     <tr>
         <td><a href="/boulders/{{climbed['boulder_id']}}">{{ climbed['boulder_name'] }}</a></td>
@@ -41,6 +44,10 @@ map.scrollWheelZoom.disable();
        
 {% endfor %}
 </table>
+{% else %}
+<p>You have no complete climbs yet. Rate your climbs and they will show up here. </p>
+{% endif %}
+
        
 </div>
 {% endblock %}

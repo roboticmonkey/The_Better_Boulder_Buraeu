@@ -45,7 +45,7 @@ function putMarkersOnMap(data){
             var content = '<a href="'+link+'">'+title+'</a>';
         }
         
-        console.log(content)
+        // console.log(content)
 
         if (each.route === "/locations/"){
             var mColor = "#59b300";

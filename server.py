@@ -65,6 +65,7 @@ def register_process():
         #create the key value pair in the session(= magic dictionary)
         #(flask's session)
         session['user_id'] = created_user.user_id
+        session['username'] = created_user.username
         
         # renders a user page
         return render_template('user_page.html')
@@ -134,7 +135,8 @@ def view_user_page():
             climbed['boulder_name'] = rated.route.boulder.boulder_name
             climbed['boulder_id'] = rated.route.boulder.boulder_id
             climbed_list.append(climbed)
-
+        if climbed_list == []:
+            climbed_list = None
         return render_template('user_page.html', climbed_list=climbed_list)
     else:
         flash("Please login to see the user page.")
