@@ -191,7 +191,7 @@ def sub_location_detail(sub_location_id):
     #find the boulders that have the sublocation as a parent
     boulders = Boulder.query.filter_by(sub_location_id=sub_location_id).all()
     location = Location.query.filter(Location.location_id==sub.location_id).first()
-
+    print sub
     return render_template("sub_location.html", sub_location=sub,
                                                 boulders=boulders,
                                                 location=location)

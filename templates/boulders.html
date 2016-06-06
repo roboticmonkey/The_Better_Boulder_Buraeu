@@ -5,13 +5,13 @@
 
 <ul>
     {% if boulder.boulder_latitude %}
-    <li>Latitude: {{ boulder.boulder_latitude }}</li>
+        <li>Latitude: {{ boulder.boulder_latitude }}</li>
     {% endif %}
     {% if boulder.boulder_longitude %}
-    <li>Longitude: {{ boulder.boulder_longitude }}</li>
+        <li>Longitude: {{ boulder.boulder_longitude }}</li>
     {% endif %}
-    <li>Description: {{ boulder.boulder_description }}</li>
-    <li>Directions: {{ boulder.boulder_directions }}</li>
+        <li>Description: {{ boulder.boulder_description }}</li>
+        <li>Directions: {{ boulder.boulder_directions }}</li>
     {% if boulder.sub_location_id %}
         <li>Main Location: <a href="/sub_locations/{{boulder.sub_location_id}}">{{ boulder.sub_location.sub_location_name }}</a></li>
     {% else %}
@@ -19,8 +19,9 @@
     {% endif %}
 </ul>
 
+
 {% if boulder.boulder_latitude %}
-    <div id='map' style='width: 600px; height: 400px;'></div>
+<div id='map' style='width: 600px; height: 400px;'></div>
     
     <script>
     //converting jinja vars to js as well as string to number.
@@ -28,6 +29,7 @@
     lat = Number(lat);
     lng = '{{ boulder.boulder_longitude }}';
     lng = Number(lng);
+    name = '{{ boulder.boulder_name }}';
 
 //CODE TO PUT THE BOULDER MARKER ON THE MAP
 
@@ -49,7 +51,7 @@
             ]
         },
         properties: {
-            title: '{{ boulder.boulder_name }}',
+            title: name,
             // description: 'needs to be dynamic',
             // one can customize markers by adding simplestyle properties
             // https://www.mapbox.com/guides/an-open-platform/#simplestyle
@@ -58,8 +60,89 @@
             'marker-symbol': 'rocket'
         }
     }).addTo(map);
-
     </script>
+{% elif boulder.sub_location %}
+<div id='map' style='width: 600px; height: 400px;'></div>
+    
+    <script>
+    //converting jinja vars to js as well as string to number.
+    lat = '{{ boulder.sub_location.sub_location_latitude }}';
+    lat = Number(lat);
+    lng = '{{ boulder.sub_location.sub_location_longitude }}';
+    lng = Number(lng);
+    name = '{{ boulder.sub_location.sub_location_name }}';
+
+//CODE TO PUT THE BOULDER MARKER ON THE MAP
+
+    var map = L.mapbox.map('map', 'mapbox.pirates')
+        .setView([lat, lng], 11);
+
+    map.scrollWheelZoom.disable();
+
+    L.mapbox.featureLayer({
+        // this feature is in the GeoJSON format: see geojson.org
+        // for the full specification
+        type: 'Feature',
+        geometry: {
+            type: 'Point',
+            // coordinates here are in longitude, latitude order because
+            // x, y is the standard for GeoJSON and many formats
+            coordinates: [ 
+              lng, lat
+            ]
+        },
+        properties: {
+            title: name,
+            // description: 'needs to be dynamic',
+            // one can customize markers by adding simplestyle properties
+            // https://www.mapbox.com/guides/an-open-platform/#simplestyle
+            'marker-size': 'small',
+            'marker-color': '#ffb84d',
+            'marker-symbol': 'rocket'
+        }
+    }).addTo(map);
+    </script>
+{% else %}
+<div id='map' style='width: 600px; height: 400px;'></div>
+    
+    <script>
+    //converting jinja vars to js as well as string to number.
+    lat = '{{ boulder.location.latitude }}';
+    lat = Number(lat);
+    lng = '{{ boulder.location.longitude }}';
+    lng = Number(lng);
+    name = '{{ boulder.location.location_name }}';
+
+//CODE TO PUT THE BOULDER MARKER ON THE MAP
+
+    var map = L.mapbox.map('map', 'mapbox.pirates')
+        .setView([lat, lng], 11);
+
+    map.scrollWheelZoom.disable();
+
+    L.mapbox.featureLayer({
+        // this feature is in the GeoJSON format: see geojson.org
+        // for the full specification
+        type: 'Feature',
+        geometry: {
+            type: 'Point',
+            // coordinates here are in longitude, latitude order because
+            // x, y is the standard for GeoJSON and many formats
+            coordinates: [ 
+              lng, lat
+            ]
+        },
+        properties: {
+            title: name,
+            // description: 'needs to be dynamic',
+            // one can customize markers by adding simplestyle properties
+            // https://www.mapbox.com/guides/an-open-platform/#simplestyle
+            'marker-size': 'small',
+            'marker-color': '#ffb84d',
+            'marker-symbol': 'rocket'
+        }
+    }).addTo(map);
+    </script>    
 {% endif %}
 
         <form action="#" method="POST">
@@ -117,12 +200,13 @@
     {% endif %}
     <ul id="b-comments">
 {% for comment in comments %}
-{% if comment.user_id %}
-        <li>{{ comment.user.username}} </li>
-        {% endif %}
+    {% if comment.user_id %}
+            <li>{{ comment.user.username}} </li>
+    {% endif %}
 <li>{{ comment.boulder_comment }}</li>
 <li>{{ comment.boulder_datetime.strftime('%d %B %Y') }}   </li>
 {% endfor %}
 </ul>
 <script type="text/javascript" src="/static/comment.js"></script>
+
 {% endblock %}

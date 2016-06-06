@@ -34,7 +34,7 @@ def convert_sublocation_dict(sub_location):
     # print sub
     # print type(sub)
 
-    # for sub in sub_locations:
+    
     temp_dict = {}
     temp_dict["name"] = sub.sub_location_name
     temp_dict["lat"] = sub.sub_latitude
@@ -42,7 +42,7 @@ def convert_sublocation_dict(sub_location):
     temp_dict["id"] = sub.sub_location_id
     temp_dict["route"] = "/sub_locations/"
 
-    # results.append(temp_dict)
+    
     results = temp_dict
     # print "\n these are the results from helper function: single"
     # print results
