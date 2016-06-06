@@ -33,7 +33,16 @@ $(document).ready(function(){
 
 
 <div >
-<ul id="search-results"></ul>
+    <h2 id="boulder-results">Unmapped Boulders</h2>
+    <ul id="Bsearch-results"></ul>
+    <h2 id="route-results">Routes Matching Search</h2> 
+    <ul id="Rsearch-results"></ul>
 </div>
+<script>
+    $("#Bsearch-results").hide();
+    $("#boulder-results").hide();
+    $("#route-results").hide();
+    $("#Rsearch-results").hide();
+</script>
 
 {% endblock %}

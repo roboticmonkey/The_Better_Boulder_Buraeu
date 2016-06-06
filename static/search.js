@@ -12,18 +12,35 @@ $("#search_btn").on('click', function(evt){
 // console.log('loaded');
 
 function renderList(data){
-    var dataDestination = $("#search-results");
+    var r_dataDestination = $("#Rsearch-results");
+    var b_dataDestination = $("#Bsearch-results");
     // debugger;
     //clear results
-    dataDestination.empty();
+    r_dataDestination.empty();
+    b_dataDestination.empty();
+    $("#Bsearch-results").hide();
+    $("#boulder-results").hide();
+    $("#route-results").hide();
+    $("#Rsearch-results").hide();
 
     for (var i = 0; i < data.data.length; i++) {
         var each = data.data[i];
         var link = each.route+each.id;
-        if ((each.route === "/route/") || (each.lat === "")){
-            dataDestination.append('<li><a href="'+link+'">'+each.name+'</a></li>');
-
+        
+        if (each.route === "/route/") {
+            r_dataDestination.append('<li><a href="'+link+'">'+each.name+'</a></li>');
+            $("#route-results").show();
+            $("#Rsearch-results").show();
         }
+        if (each.lat === "" && each.route !== "/route/"){
+            b_dataDestination.append('<li><a href="'+link+'">'+each.name+'</a></li>');
+            $("#Bsearch-results").show();
+            $("#boulder-results").show();
+        }
+        // if ((each.route === "/route/") || (each.lat === "")){
+        //     dataDestination.append('<li><a href="'+link+'">'+each.name+'</a></li>');
+
+        // }
     }
 }
 
