@@ -27,7 +27,9 @@ $(function() {
                 ]
             };
         var options = {
-            responsive: false,
+            // responsive: false,
+            responsive: true,
+
             scales: {
                 yAxes: [{
                     ticks: {

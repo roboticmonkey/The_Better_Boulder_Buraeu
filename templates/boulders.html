@@ -1,7 +1,14 @@
+
 {% extends 'base.html' %}
 {% block content %}
 
 <h1>{{ boulder.boulder_name }}</h1>
+
+{% if boulder.sub_location_id %}
+    <p>Main Location: <a href="/sub_locations/{{boulder.sub_location_id}}">{{ boulder.sub_location.sub_location_name }}</a></p>
+{% else %}
+    <p>Main Location: <a href="/locations/{{boulder.location_id}}">{{ boulder.location.location_name }}</a></p>
+{% endif %}
 
 <ul>
     {% if boulder.boulder_latitude %}
@@ -12,17 +19,11 @@
     {% endif %}
         <li>Description: {{ boulder.boulder_description }}</li>
         <li>Directions: {{ boulder.boulder_directions }}</li>
-    {% if boulder.sub_location_id %}
-        <li>Main Location: <a href="/sub_locations/{{boulder.sub_location_id}}">{{ boulder.sub_location.sub_location_name }}</a></li>
-    {% else %}
-        <li>Main Location: <a href="/locations/{{boulder.location_id}}">{{ boulder.location.location_name }}</a></li>
-    {% endif %}
+    
 </ul>
 
-
-{% if boulder.boulder_latitude %}
 <div id='map' style='width: 600px; height: 400px;'></div>
-    
+{% if boulder.boulder_latitude %}
     <script>
     //converting jinja vars to js as well as string to number.
     lat = '{{ boulder.boulder_latitude }}';
@@ -30,14 +31,11 @@
     lng = '{{ boulder.boulder_longitude }}';
     lng = Number(lng);
     name = '{{ boulder.boulder_name }}';
-
+    
 //CODE TO PUT THE BOULDER MARKER ON THE MAP
-
     var map = L.mapbox.map('map', 'mapbox.pirates')
         .setView([lat, lng], 11);
-
     map.scrollWheelZoom.disable();
-
     L.mapbox.featureLayer({
         // this feature is in the GeoJSON format: see geojson.org
         // for the full specification
@@ -71,14 +69,10 @@
     lng = '{{ boulder.sub_location.sub_location_longitude }}';
     lng = Number(lng);
     name = '{{ boulder.sub_location.sub_location_name }}';
-
 //CODE TO PUT THE BOULDER MARKER ON THE MAP
-
     var map = L.mapbox.map('map', 'mapbox.pirates')
         .setView([lat, lng], 11);
-
     map.scrollWheelZoom.disable();
-
     L.mapbox.featureLayer({
         // this feature is in the GeoJSON format: see geojson.org
         // for the full specification
@@ -112,14 +106,10 @@
     lng = '{{ boulder.location.longitude }}';
     lng = Number(lng);
     name = '{{ boulder.location.location_name }}';
-
 //CODE TO PUT THE BOULDER MARKER ON THE MAP
-
     var map = L.mapbox.map('map', 'mapbox.pirates')
         .setView([lat, lng], 11);
-
     map.scrollWheelZoom.disable();
-
     L.mapbox.featureLayer({
         // this feature is in the GeoJSON format: see geojson.org
         // for the full specification
@@ -210,3 +200,5 @@
 <script type="text/javascript" src="/static/comment.js"></script>
 
 {% endblock %}
+Status API Training Shop Blog About
+© 2016 GitHub, Inc. Terms Privacy Security Contact Help

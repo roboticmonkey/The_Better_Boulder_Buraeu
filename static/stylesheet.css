@@ -1,0 +1,9 @@
+span.latlng {
+    font-size: 12px;
+    font-weight: bold;
+    display: inline;
+}
+
+.parent-loc {
+    font-size: 11px;
+}
