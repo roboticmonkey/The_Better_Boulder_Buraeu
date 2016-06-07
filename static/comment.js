@@ -14,9 +14,11 @@ function saveBComment(evt){
 }
 
 function showBComment(results){
-    $('#b-comments').prepend('<li>'+results['username']+'</li>'+
-                              '<li>'+results['comment']+'</li>'+
-                                '<li>'+results['date']+ '</li>' );
+    $('#b-comments').prepend('<div class="row comment"><div class="col-md-3">'+
+                            '<h4>'+results['username']+'</h4></div>'+
+                            '<div class="comment-user col-md-8">'+
+                            '<h5>'+results['date']+'</h5>'+
+                            '<p>'+results['comment']+'</p></div></div>' );
 
 }
 

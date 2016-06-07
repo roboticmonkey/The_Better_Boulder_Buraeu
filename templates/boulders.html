@@ -19,7 +19,7 @@
 
             <!-- start code for bar graph -->
             <div id="bar_chart" data-boulder="{{ session['boulder_id'] }}">
-                <canvas id="route_rating" width="600" height="200"></canvas>
+                <canvas id="route_rating" width="600" height="400"></canvas>
             </div>
         </div>
         
@@ -159,27 +159,35 @@
     
     <hr>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-8">
         <h2>Comments</h2>
             {% if 'user_id' in session %}
             <form action="" method="POST" id="boulder-comment">
                 <label for="b-comment-field">
-                    <textarea name="comment" id="b-comment-field"></textarea>
+                    <textarea class="comment-box" name="comment" id="b-comment-field"></textarea>
                 </label>
                 <lable for="submit">
                 <input type="submit" value="Submit" id="b-comment-submit">
             </label>
             </form>
             {% endif %}
-            <ul id="b-comments">
-        {% for comment in comments %}
-            {% if comment.user_id %}
-                    <li>{{ comment.user.username}} </li>
-            {% endif %}
-        <li>{{ comment.boulder_comment }}</li>
-        <li>{{ comment.boulder_datetime.strftime('%d %B %Y') }}   </li>
-        {% endfor %}
-        </ul>
+            <div id="b-comments">
+            {% for comment in comments %}
+                <div class="row comment">
+                    {% if comment.user_id %}
+                    
+                    <div class="col-md-3">
+                        <h4>{{ comment.user.username}} </h4>
+                    {% endif %}
+                    </div>
+                    <div class="comment-user col-md-8">
+                        <h5>{{ comment.boulder_datetime.strftime('%d %B %Y') }}   </h5>
+                        <p>{{ comment.boulder_comment }}</p>
+                        
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
         </div>
     </div>
     <!-- form for the star rating -->

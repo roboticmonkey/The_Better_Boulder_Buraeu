@@ -7,6 +7,17 @@
 
 }
 
-/*.map {
-    margin-right: 1em;
-}*/
+.comment {
+    border: 1px solid black;
+    margin-bottom: 2em;
+}
+
+.comment-user {
+    border-left: 1px solid black;
+}
+
+.comment-box{
+    width: 600px;
+    height: 200px;
+    font-size: 16px;
+}
