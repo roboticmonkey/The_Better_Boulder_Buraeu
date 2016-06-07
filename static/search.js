@@ -65,13 +65,13 @@ function putMarkersOnMap(data){
         // console.log(content)
 
         if (each.route === "/locations/"){
-            var mColor = "#59b300";
+            var mColor = "#803a17";
             var mSize = "large";
         } else if (each.route === "/sub_locations/"){
-            var mColor = '#ff66b3';
+            var mColor = '#aac24b';
             var mSize = "medium";
         } else if (each.route === "/boulders/"){
-            var mColor = '#ffb84d';
+            var mColor = '#92d2c2';
             var mSize = 'small';
         }
         

@@ -1,5 +1,6 @@
 .container-fluid {
     padding-left: 2em;
+     background-color: #fdf8ef;
 }
 
 .desc {
@@ -22,6 +23,33 @@
     font-size: 16px;
 }
 
-.difficult {
-    vertical-align: bottom;
+.chart {
+    /*border: 1px solid #803a17;*/
+    margin-top: 175px;
+}
+
+#map {
+    border: 1px solid #803a17;
+}
+
+h1 {
+    color:#431e0e;
+}
+body {
+    color:#431e0e;
+    background-color: #fdf8ef;
+
+}
+
+hr{
+   border-top: 1px solid #803a17;
+
+    
+}
+a {
+    color: #985943;
+}
+
+#field-search {
+    border: 1px solid #803a17;
 }

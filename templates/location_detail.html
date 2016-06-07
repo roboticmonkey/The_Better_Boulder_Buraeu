@@ -15,8 +15,14 @@
       <p>{{ location.location_directions }}</p>
     </div>
     <div class="col-md-6">
-      <p>Latitude: {{ location.latitude }} </p>
-      <p>Longitude: {{ location.longitude }} </p>
+      <div class="row">
+        <div class="col-md-3">
+        <p>Latitude: {{ location.latitude }} </p>
+        </div>
+        <div class="col-md-4">
+        <p>Longitude: {{ location.longitude }} </p>
+        </div>
+      </div>
       <div id='map' style='width: 550px; height: 400px;'></div>
     </div>
   </div>

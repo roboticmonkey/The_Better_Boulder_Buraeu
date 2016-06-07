@@ -15,14 +15,24 @@ $(function() {
                 datasets: [
                     {
                         label: "Route Rating Breakdown",
-                        backgroundColor: "rgba(0, 204, 163,0.2)",
-                        borderColor: "rgba(0, 204, 163,1)",
+                        backgroundColor: "rgba(146, 210, 194,0.4)",
+                        borderColor: "rgba(146, 210, 194,1)",
                         borderWidth: 1,
-                        hoverBackgroundColor: "rgba(0, 204, 163,0.4)",
-                        hoverBorderColor: "rgba(0, 204, 163,1)",
+                        hoverBackgroundColor: "rgba(146, 210, 194,0.7)",
+                        hoverBorderColor: "rgba(146, 210, 194,1)",
                         data: results['data'],
                         xAxesID: "Rating Scale",
                         yAxesID: "",
+
+                        // label: "Route Rating Breakdown",
+                        // backgroundColor: "rgba(0, 204, 163,0.2)",
+                        // borderColor: "rgba(0, 204, 163,1)",
+                        // borderWidth: 1,
+                        // hoverBackgroundColor: "rgba(0, 204, 163,0.4)",
+                        // hoverBorderColor: "rgba(0, 204, 163,1)",
+                        // data: results['data'],
+                        // xAxesID: "Rating Scale",
+                        // yAxesID: "",
                     }
                 ]
             };
@@ -30,11 +40,13 @@ $(function() {
             // responsive: false,
             responsive: true,
 
+
             scales: {
                 yAxes: [{
                     ticks: {
                         min: 0,
                         stepSize: 1,
+                        
                     }
                 }]
             }

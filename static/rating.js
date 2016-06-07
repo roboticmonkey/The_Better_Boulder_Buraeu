@@ -17,7 +17,7 @@ if (userScore ) {
     var color = "#cc0000";
 } else if (user && !(avg)){
     var defaultVal = avg;
-    var color = "#cc0000";
+    var color = "#cdc675";
 } else {
     var defaultVal = avg;
     var color = "#ff8c1a";
