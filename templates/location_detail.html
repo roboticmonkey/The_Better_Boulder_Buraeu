@@ -3,22 +3,29 @@
 {% block content %}
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-12">
       <h1>{{ location.location_name }}</h1>
-
-      <ul>
-          <li>Latitude: {{ location.latitude }} </li>
-          <li>Longitude: {{ location.longitude }} </li>
-          <li>Description: {{ location.location_description }} </li>
-          <li>Directions: {{ location.location_directions }} </li>
-      </ul>
-      <input type ="hidden" value='{{ location.location_id }}' name='location-id' class='id'>
     </div>
-
   </div>
   <div class="row">
-    <div class="col-md-8" id='map' style='width: 600px; height: 400px;'></div>
-        <div class="col-md-4">
+    <div class="col-md-6">
+      <h3>Description:</h3>
+      <p>{{ location.location_description }}</p>
+      <h3>Directions:</h3>
+      <p>{{ location.location_directions }}</p>
+    </div>
+    <div class="col-md-6">
+      <p>Latitude: {{ location.latitude }} </p>
+      <p>Longitude: {{ location.longitude }} </p>
+      <div id='map' style='width: 550px; height: 400px;'></div>
+    </div>
+  </div>
+
+      <input type ="hidden" value='{{ location.location_id }}' name='location-id' class='id'>
+  <hr>
+  <div class="row">
+    
+    <div class="col-md-6">
       {% if sub_locations %}
         
         <h2>Sub Locations</h2>
@@ -31,7 +38,9 @@
             {% endfor %}
         </ul>
       {% endif %}
+      </div>
       
+      <div class="col-md-6">
       {% if boulders %}
         <h2>Boulders</h2>
         
@@ -43,8 +52,11 @@
           {% endfor %}
         </ul>
       {% endif %}
+      </div>
+    
     </div>
   </div>
+  
   <script>
     //TO DISPLAY THE LOCATION MARKER FOR THE SPECIFIC PAGE
     //converting jinja vars to js as well as string to number.
@@ -58,8 +70,6 @@
     }).setView([lat, lng], 12);
   </script>
 
-  
-
   <script>
     // ajax call to put the location and all its children as markers on the map
     var searchTerm = $('.id').val();
@@ -68,5 +78,5 @@
       $.get("/location.json", {"term": searchTerm}, putMarkersOnMap);
     });
   </script>
-</div>
+
 {% endblock %}
