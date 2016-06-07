@@ -1,204 +1,201 @@
-
 {% extends 'base.html' %}
 {% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <h1>{{ boulder.boulder_name }}</h1>
 
-<h1>{{ boulder.boulder_name }}</h1>
+            {% if boulder.sub_location_id %}
+                <p>Main Location: <a href="/sub_locations/{{boulder.sub_location_id}}">{{ boulder.sub_location.sub_location_name }}</a></p>
+            {% else %}
+                <p>Main Location: <a href="/locations/{{boulder.location_id}}">{{ boulder.location.location_name }}</a></p>
+            {% endif %}
+            
+            <div id="rateYo"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
 
-{% if boulder.sub_location_id %}
-    <p>Main Location: <a href="/sub_locations/{{boulder.sub_location_id}}">{{ boulder.sub_location.sub_location_name }}</a></p>
-{% else %}
-    <p>Main Location: <a href="/locations/{{boulder.location_id}}">{{ boulder.location.location_name }}</a></p>
-{% endif %}
+            <!-- start code for bar graph -->
+            <div id="bar_chart" data-boulder="{{ session['boulder_id'] }}">
+                <canvas id="route_rating" width="600" height="200"></canvas>
+            </div>
+        </div>
+        
+        <div class="col-md-6 map">
+            <div>
+            {% if boulder.boulder_latitude %}
 
-<ul>
-    {% if boulder.boulder_latitude %}
-        <li>Latitude: {{ boulder.boulder_latitude }}</li>
-    {% endif %}
-    {% if boulder.boulder_longitude %}
-        <li>Longitude: {{ boulder.boulder_longitude }}</li>
-    {% endif %}
-        <li>Description: {{ boulder.boulder_description }}</li>
-        <li>Directions: {{ boulder.boulder_directions }}</li>
+                    <p>Latitude: {{ boulder.boulder_latitude }}</p>
+            {% endif %}
+            {% if boulder.boulder_longitude %}
+                    <p>Longitude: {{ boulder.boulder_longitude }}</p>
+            {% endif %}
+            </div>
+            {% if boulder.boulder_latitude %}
+            <div id='map' style='width: 550px; height: 400px;'></div>
     
-</ul>
+            <script>
+            //converting jinja vars to js as well as string to number.
+            lat = '{{ boulder.boulder_latitude }}';
+            lat = Number(lat);
+            lng = '{{ boulder.boulder_longitude }}';
+            lng = Number(lng);
+            name = '{{ boulder.boulder_name }}';
+            // CODE TO PUT THE BOULDER MARKER ON THE MAP
+            var map = L.mapbox.map('map', 'mapbox.pirates')
+                .setView([lat, lng], 11);
+            map.scrollWheelZoom.disable();
+            L.mapbox.featureLayer({
 
-<div id='map' style='width: 600px; height: 400px;'></div>
-{% if boulder.boulder_latitude %}
-    <script>
-    //converting jinja vars to js as well as string to number.
-    lat = '{{ boulder.boulder_latitude }}';
-    lat = Number(lat);
-    lng = '{{ boulder.boulder_longitude }}';
-    lng = Number(lng);
-    name = '{{ boulder.boulder_name }}';
+                type: 'Feature',
+                geometry: {
+                    type: 'Point',
+                    coordinates: [ 
+                      lng, lat
+                    ]
+                },
+                properties: {
+                    title: name,
+                    'marker-size': 'small',
+                    'marker-color': '#ffb84d',
+                    'marker-symbol': 'rocket'
+                }
+            }).addTo(map);
+            </script>
+            {% elif boulder.sub_location %}
+            <div id='map' style='width: 550px; height: 400px;'></div>
     
-//CODE TO PUT THE BOULDER MARKER ON THE MAP
-    var map = L.mapbox.map('map', 'mapbox.pirates')
-        .setView([lat, lng], 11);
-    map.scrollWheelZoom.disable();
-    L.mapbox.featureLayer({
-        // this feature is in the GeoJSON format: see geojson.org
-        // for the full specification
-        type: 'Feature',
-        geometry: {
-            type: 'Point',
-            // coordinates here are in longitude, latitude order because
-            // x, y is the standard for GeoJSON and many formats
-            coordinates: [ 
-              lng, lat
-            ]
-        },
-        properties: {
-            title: name,
-            // description: 'needs to be dynamic',
-            // one can customize markers by adding simplestyle properties
-            // https://www.mapbox.com/guides/an-open-platform/#simplestyle
-            'marker-size': 'small',
-            'marker-color': '#ffb84d',
-            'marker-symbol': 'rocket'
-        }
-    }).addTo(map);
-    </script>
-{% elif boulder.sub_location %}
-<div id='map' style='width: 600px; height: 400px;'></div>
+            <script>
+            //converting jinja vars to js as well as string to number.
+            lat = '{{ boulder.sub_location.sub_location_latitude }}';
+            lat = Number(lat);
+            lng = '{{ boulder.sub_location.sub_location_longitude }}';
+            lng = Number(lng);
+            name = '{{ boulder.sub_location.sub_location_name }}';
+        //CODE TO PUT THE BOULDER MARKER ON THE MAP
+            var map = L.mapbox.map('map', 'mapbox.pirates')
+                .setView([lat, lng], 11);
+            map.scrollWheelZoom.disable();
+            L.mapbox.featureLayer({
+                type: 'Feature',
+                geometry: {
+                    type: 'Point',
+                    coordinates: [ 
+                      lng, lat
+                    ]
+                },
+                properties: {
+                    title: name,
+                    'marker-size': 'small',
+                    'marker-color': '#ffb84d',
+                    'marker-symbol': 'rocket'
+                }
+            }).addTo(map);
+            </script>
+            {% else %}
+            <div id='map' style='width: 550px; height: 400px;'></div>
     
-    <script>
-    //converting jinja vars to js as well as string to number.
-    lat = '{{ boulder.sub_location.sub_location_latitude }}';
-    lat = Number(lat);
-    lng = '{{ boulder.sub_location.sub_location_longitude }}';
-    lng = Number(lng);
-    name = '{{ boulder.sub_location.sub_location_name }}';
-//CODE TO PUT THE BOULDER MARKER ON THE MAP
-    var map = L.mapbox.map('map', 'mapbox.pirates')
-        .setView([lat, lng], 11);
-    map.scrollWheelZoom.disable();
-    L.mapbox.featureLayer({
-        // this feature is in the GeoJSON format: see geojson.org
-        // for the full specification
-        type: 'Feature',
-        geometry: {
-            type: 'Point',
-            // coordinates here are in longitude, latitude order because
-            // x, y is the standard for GeoJSON and many formats
-            coordinates: [ 
-              lng, lat
-            ]
-        },
-        properties: {
-            title: name,
-            // description: 'needs to be dynamic',
-            // one can customize markers by adding simplestyle properties
-            // https://www.mapbox.com/guides/an-open-platform/#simplestyle
-            'marker-size': 'small',
-            'marker-color': '#ffb84d',
-            'marker-symbol': 'rocket'
-        }
-    }).addTo(map);
-    </script>
-{% else %}
-<div id='map' style='width: 600px; height: 400px;'></div>
-    
-    <script>
-    //converting jinja vars to js as well as string to number.
-    lat = '{{ boulder.location.latitude }}';
-    lat = Number(lat);
-    lng = '{{ boulder.location.longitude }}';
-    lng = Number(lng);
-    name = '{{ boulder.location.location_name }}';
-//CODE TO PUT THE BOULDER MARKER ON THE MAP
-    var map = L.mapbox.map('map', 'mapbox.pirates')
-        .setView([lat, lng], 11);
-    map.scrollWheelZoom.disable();
-    L.mapbox.featureLayer({
-        // this feature is in the GeoJSON format: see geojson.org
-        // for the full specification
-        type: 'Feature',
-        geometry: {
-            type: 'Point',
-            // coordinates here are in longitude, latitude order because
-            // x, y is the standard for GeoJSON and many formats
-            coordinates: [ 
-              lng, lat
-            ]
-        },
-        properties: {
-            title: name,
-            // description: 'needs to be dynamic',
-            // one can customize markers by adding simplestyle properties
-            // https://www.mapbox.com/guides/an-open-platform/#simplestyle
-            'marker-size': 'small',
-            'marker-color': '#ffb84d',
-            'marker-symbol': 'rocket'
-        }
-    }).addTo(map);
-    </script>    
-{% endif %}
+            <script>
+            //converting jinja vars to js as well as string to number.
+            lat = '{{ boulder.location.latitude }}';
+            lat = Number(lat);
+            lng = '{{ boulder.location.longitude }}';
+            lng = Number(lng);
+            name = '{{ boulder.location.location_name }}';
+        //CODE TO PUT THE BOULDER MARKER ON THE MAP
+            var map = L.mapbox.map('map', 'mapbox.pirates')
+                .setView([lat, lng], 11);
+            map.scrollWheelZoom.disable();
+            L.mapbox.featureLayer({
+                type: 'Feature',
+                geometry: {
+                    type: 'Point',
+                    coordinates: [ 
+                      lng, lat
+                    ]
+                },
+                properties: {
+                    title: name,
+                    'marker-size': 'small',
+                    'marker-color': '#ffb84d',
+                        'marker-symbol': 'rocket'
+                    }
+                }).addTo(map);
+                </script>    
+            {% endif %}
+        </div>
 
+    </div>
+
+    <hr>
+    <div class="row">
+        <div class="col-md-8 desc">
+            <h3>Description:</h3>
+            <p>{{ boulder.boulder_description }}</p>
+            <h3>Directions:</h3>
+            <p>{{ boulder.boulder_directions }}</p>
+        </div>
+        
+        <div class="col-md-4">
+        {% if routes %}
+        <h2>Routes</h2>
+            <table>
+                <tr>
+                    <th> Route Name </th>
+                    <th> Difficulty Rating </th>
+                </tr>
+        {% for route in routes %}
+            <tr>
+                <td><a href="/route/{{ route.route_id }}">{{ route.route_name }}</a></td>
+                <td>    {{ route.difficulty_rate }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+        {% endif %}
+        </div>
+    </div>
+    
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+        <h2>Comments</h2>
+            {% if 'user_id' in session %}
+            <form action="" method="POST" id="boulder-comment">
+                <label for="b-comment-field">
+                    <textarea name="comment" id="b-comment-field"></textarea>
+                </label>
+                <lable for="submit">
+                <input type="submit" value="Submit" id="b-comment-submit">
+            </label>
+            </form>
+            {% endif %}
+            <ul id="b-comments">
+        {% for comment in comments %}
+            {% if comment.user_id %}
+                    <li>{{ comment.user.username}} </li>
+            {% endif %}
+        <li>{{ comment.boulder_comment }}</li>
+        <li>{{ comment.boulder_datetime.strftime('%d %B %Y') }}   </li>
+        {% endfor %}
+        </ul>
+        </div>
+    </div>
+    <!-- form for the star rating -->
         <form action="#" method="POST">
-        <div id="rateYo"></div>
-
         <input type="hidden" name="user-rating" id="star-rating">
         <input type="hidden" id="boulder" name="boulder_id" value="{{ boulder.boulder_id }}">
         <input type="hidden" id="user" name="user" value="{{ session.get('user_id') }}">
         <input type="hidden" id="avg" name="avg" value="{{ avg }}" >
         <input type="hidden" id="user_score" name="user_score" value="{{ user_score }}">
         <input type="hidden" id="boulder-route" name="boulder-route" value="{{ session.get('boulder_route') }}">
-     
         </form>
-
-        <!-- js to display the star rating -->
-        <script type="text/javascript" src="/static/rating.js"></script>
-
-
-<!-- start code for bar graph -->
-    <div id="bar_chart" data-boulder="{{ session['boulder_id'] }}">
-    <canvas id="route_rating" width="600" height="200"></canvas>
-    </div>
+    <!-- js to display the star rating -->
+    <script type="text/javascript" src="/static/rating.js"></script>
     <!-- js to display the bar chart -->
-    
     <script type="text/javascript" src="/static/charts.js"></script>
-
-
-
-{% if routes %}
-<h2>Routes</h2>
-    <table>
-        <tr>
-            <th> Route Name </th>
-            <th> Difficulty Rating </th>
-        </tr>
-{% for route in routes %}
-    <tr>
-        <td><a href="/route/{{ route.route_id }}">{{ route.route_name }}</a></td>
-        <td>    {{ route.difficulty_rate }}</td>
-    </tr>
-{% endfor %}
-</table>
-{% endif %}
-
-<h2>Comments</h2>
-    {% if 'user_id' in session %}
-    <form action="" method="POST" id="boulder-comment">
-        <label for="b-comment-field">
-            <textarea name="comment" id="b-comment-field"></textarea>
-        </label>
-        <lable for="submit">
-        <input type="submit" value="Submit" id="b-comment-submit">
-    </label>
-    </form>
-    {% endif %}
-    <ul id="b-comments">
-{% for comment in comments %}
-    {% if comment.user_id %}
-            <li>{{ comment.user.username}} </li>
-    {% endif %}
-<li>{{ comment.boulder_comment }}</li>
-<li>{{ comment.boulder_datetime.strftime('%d %B %Y') }}   </li>
-{% endfor %}
-</ul>
-<script type="text/javascript" src="/static/comment.js"></script>
-
+    <!-- comment js -->
+    <script type="text/javascript" src="/static/comment.js"></script>
+</div>
 {% endblock %}
-Status API Training Shop Blog About
-© 2016 GitHub, Inc. Terms Privacy Security Contact Help

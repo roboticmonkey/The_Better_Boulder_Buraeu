@@ -1,9 +1,12 @@
-span.latlng {
-    font-size: 12px;
-    font-weight: bold;
-    display: inline;
+.container-fluid {
+    padding-left: 2em;
 }
 
-.parent-loc {
-    font-size: 11px;
+.desc {
+    padding-right: 4em;
+
 }
+
+/*.map {
+    margin-right: 1em;
+}*/
