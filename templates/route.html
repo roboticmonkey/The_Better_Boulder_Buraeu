@@ -25,26 +25,31 @@
             {% if 'user_id' in session %}
             <form action="" method="POST" id="route-comment">
                 <label for="r-comment-field">
-                    <textarea name="comment" id="r-comment-field"></textarea>
+                    <textarea class="comment-box" name="comment" id="r-comment-field"></textarea>
                 </label>
                 <lable for="submit">
                 <input type="submit" value="Submit" id="r-comment-submit">
             </label>
             </form>
             {% endif %}
-            <ul id="r-comments">
-            {% if comments %}  
-                {% for comment in comments %}
-                {% if comment.user_id %}
-                <li>{{ comment.user.username}} </li>
-                {% endif %}
-                <li>{{ comment.route_comment }}</li>
-                <li>{{ comment.route_datetime.strftime('%d %B %Y') }}   </li>
-                {% endfor %}
-            {% endif %}
-
-            </ul>
-        </div>
+            <div id="r-comments">
+            {% for comment in comments %}
+                <div class="row comment">
+                    {% if comment.user_id %}
+                    
+                    <div class="col-md-3">
+                        <h4>{{ comment.user.username}} </h4>
+                    {% endif %}
+                    </div>
+                    <div class="comment-user col-md-8">
+                        <h5>{{ comment.route_datetime.strftime('%d %B %Y') }}   </h5>
+                        <p>{{ comment.route_comment }}</p>
+                        
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        </div> 
         <div class="col-md-4">
             <h2>Routes on {{ route.boulder.boulder_name }}</h2>
                 <table>
