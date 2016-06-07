@@ -8,7 +8,7 @@
             <div id="rateYo"></div>
         </div>
         <div class="col-md-6">
-            <p>Difficulty Level: {{ route.difficulty_rate }}</p>
+            <p class="difficult">Difficulty Level: {{ route.difficulty_rate }}</p>
         </div>
     </div>
     <div class="row">
@@ -51,6 +51,7 @@
             </div>
         </div> 
         <div class="col-md-4">
+            {% if near_routes %}
             <h2>Routes on {{ route.boulder.boulder_name }}</h2>
                 <table>
                     <tr>
@@ -65,6 +66,8 @@
             {% endfor %}
             </table>
             <hr>
+            {% endif %}
+            {% if boulders %}
             <h2>Near by boulders</h2>
                 <table>
                     <tr>
@@ -82,7 +85,7 @@
                 {% endif %}
             {% endfor %}
             </table>
-
+            {% endif %}
         </div>
     </div>
 
