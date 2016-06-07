@@ -1,26 +1,93 @@
 {% extends 'base.html' %}
 {% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <h1>{{ route.route_name }}</h1>
+            <p>Main Boulder: <a href="/boulders/{{ route.boulder_id }}">{{ route.boulder.boulder_name }}</a></p>
+            <div id="rateYo"></div>
+        </div>
+        <div class="col-md-6">
+            <p>Difficulty Level: {{ route.difficulty_rate }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <h3>Description:</h3> <p>{{ route.route_description }}</p>
+            {% if route.route_directions %}
+            <h3>Directions:</h3> <p>{{ route.route_directions }}</p>
+            {% endif %}
+            <h3>Protection:</h3> <p>{{ route.route_protection }}</p>
 
-<h1>{{ route.route_name }}</h1>
+            <hr>
 
-<ul>
-    <li>Difficulty Level: {{ route.difficulty_rate }}</li>
-    <li>Description: {{ route.route_description }}</li>
-    <li>Directions: {{ route.route_directions }}</li>
-    <li>Protection: {{ route.route_protection }}</li>
-    <li>Main Boulder: <a href="/boulders/{{ route.boulder_id }}">{{ route.boulder.boulder_name }}</a></li>
-</ul>
+            <h2>Comments</h2>
+            {% if 'user_id' in session %}
+            <form action="" method="POST" id="route-comment">
+                <label for="r-comment-field">
+                    <textarea name="comment" id="r-comment-field"></textarea>
+                </label>
+                <lable for="submit">
+                <input type="submit" value="Submit" id="r-comment-submit">
+            </label>
+            </form>
+            {% endif %}
+            <ul id="r-comments">
+            {% if comments %}  
+                {% for comment in comments %}
+                {% if comment.user_id %}
+                <li>{{ comment.user.username}} </li>
+                {% endif %}
+                <li>{{ comment.route_comment }}</li>
+                <li>{{ comment.route_datetime.strftime('%d %B %Y') }}   </li>
+                {% endfor %}
+            {% endif %}
+
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <h2>Routes on {{ route.boulder.boulder_name }}</h2>
+                <table>
+                    <tr>
+                        <th>Route Name</th>
+                        <th>Difficulty Rating</th>
+                    </tr>
+            {% for n_route in near_routes %}
+                <tr>
+                    <td><a href="/route/{{ n_route.route_id }}">{{ n_route.route_name }}</a></td>   
+                    <td>{{ n_route.difficulty_rate }}</td>
+                </tr>
+            {% endfor %}
+            </table>
+            <hr>
+            <h2>Near by boulders</h2>
+                <table>
+                    <tr>
+                        <th>Boulder Name</th>
+                        <th>Number of Routes</th>
+                    </tr>
+            {% for boulder in boulders %}
+                {% if (route.boulder_id != boulder.boulder_id) %}
+                <tr>
+                    <td><a href="/boulders/{{ boulder.boulder_id }}">{{ boulder.boulder_name }}</a></td>
+                    <td>{{ num_dict[ boulder.boulder_id ]}}</td>
+                    
+                </tr>
+
+                {% endif %}
+            {% endfor %}
+            </table>
+
+        </div>
+    </div>
 
         <form action="#" method="POST">
-        <div id="rateYo"></div>
-
         <input type="hidden" name="user-rating" id="star-rating">
         <input type="hidden" id="route" name="route_id" value="{{ route.route_id }}">
         <input type="hidden" id="user" name="user" value="{{ session.get('user_id') }}">
         <input type="hidden" id="avg" name="avg" value="{{ avg }}" >
         <input type="hidden" id="user_score" name="user_score" value="{{ user_score }}">
         <input type="hidden" id="boulder-route" name="boulder-route" value="{{ session.get('boulder_route') }}">
-     
         </form>
 
         <!-- js to display the star rating -->
@@ -28,62 +95,9 @@
 
       
 
-<h2>Comments</h2>
-    {% if 'user_id' in session %}
-    <form action="" method="POST" id="route-comment">
-        <label for="r-comment-field">
-            <textarea name="comment" id="r-comment-field"></textarea>
-        </label>
-        <lable for="submit">
-        <input type="submit" value="Submit" id="r-comment-submit">
-    </label>
-    </form>
-    {% endif %}
-    <ul id="r-comments">
-    {% if comments %}  
-        {% for comment in comments %}
-        {% if comment.user_id %}
-        <li>{{ comment.user.username}} </li>
-        {% endif %}
-        <li>{{ comment.route_comment }}</li>
-        <li>{{ comment.route_datetime.strftime('%d %B %Y') }}   </li>
-        {% endfor %}
-    {% endif %}
-
-</ul>
+    
 <script type="text/javascript" src="/static/comment.js"></script>
-<h2>Routes on {{ route.boulder.boulder_name }}</h2>
-    <table>
-        <tr>
-            <th>Route Name</th>
-            <th>Difficulty Rating</th>
-        </tr>
-{% for n_route in near_routes %}
-    <tr>
-        <td><a href="/route/{{ n_route.route_id }}">{{ n_route.route_name }}</a></td>   
-        <td>{{ n_route.difficulty_rate }}</td>
-    </tr>
-{% endfor %}
-</table>
 
-<h2>Near by boulders</h2>
-    <table>
-        <tr>
-            <th>Boulder Name</th>
-            <th>Number of Routes</th>
-        </tr>
-{% for boulder in boulders %}
-    {% if (route.boulder_id != boulder.boulder_id) %}
-    <tr>
-        <td><a href="/boulders/{{ boulder.boulder_id }}">{{ boulder.boulder_name }}</a></td>
-        <td>{{ num_dict[ boulder.boulder_id ]}}</td>
-        
-    </tr>
-
-    {% endif %}
-{% endfor %}
-</table>
-
-
-
+<hr>
+</div>
 {% endblock %}
