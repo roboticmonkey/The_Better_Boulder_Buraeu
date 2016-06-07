@@ -46,10 +46,41 @@ hr{
 
     
 }
+ul {
+    list-style-type: none;
+}
 a {
     color: #985943;
 }
+a:hover {
+    color: #39524C;
+    text-decoration: none;
+    font-weight: bold;
+}
 
+a.mapbox-link {
+    color: #985943;
+    text-align: center;
+}
+a:hover.mapbox-link {
+    color: #39524C;
+}
+
+p.mapbox-p {
+    color:#431e0e;
+    font-size: 12px;
+    text-align: center;
+    /*border: 1px solid #803a17;*/
+    margin-top: -2em;
+}
+
+div.leaflet-popup-content {
+    background-color: #fdf8ef;
+}
+div.marker-title {
+    color:#431e0e;
+    font-size: 1.5em;
+}
 #field-search {
     border: 1px solid #803a17;
 }

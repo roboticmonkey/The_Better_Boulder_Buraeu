@@ -14,13 +14,13 @@ var userScore = parseInt($("#user_score").val());
 
 if (userScore ) {
     var defaultVal = userScore;
-    var color = "#cc0000";
+    var color = "#92d2c2";
 } else if (user && !(avg)){
     var defaultVal = avg;
-    var color = "#cdc675";
+    var color = "#92d2c2";
 } else {
     var defaultVal = avg;
-    var color = "#ff8c1a";
+    var color = "#c5c163";
 }
 
 if (user != "None") {

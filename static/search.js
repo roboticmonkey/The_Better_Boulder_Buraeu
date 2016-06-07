@@ -57,9 +57,9 @@ function putMarkersOnMap(data){
         var link = each.route+each.id;
         var num = each.route_num
         if (num) {
-            var content = '<a href="'+link+'">'+title+'</a><br><p>Number of Routes: '+ num + '</p>';
+            var content = '<a class="mapbox-link" href="'+link+'"><h2>'+title+'</h2></a><br><p class="mapbox-p">Number of Routes: '+ num + '</p>';
         } else {
-            var content = '<a href="'+link+'">'+title+'</a>';
+            var content = '<a class="mapbox-link" href="'+link+'"><h2>'+title+'</h2></a>';
         }
         
         // console.log(content)
