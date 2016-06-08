@@ -3,7 +3,7 @@
 
 $("#search_btn").on('click', function(evt){
     // alert("hello");
-    // evt.preventDefault(); // do i need this?
+    evt.preventDefault(); // do i need this?
 
     var searchTerm = $("#field-search").val();
 
