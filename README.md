@@ -36,9 +36,12 @@ Click on a pin to see the name of the location.
 ###Searching for the name of a location
 Search results will appear as clusters of map pins.
 Non-mappable locations will be listed on the side.
-Click on a pin to see the name of the location.
+
 
 ![The Better Boulder Bureau Search](/static/main_page_search.png)
+
+Click on a pin to see the name of the location.
+
 ![The Better Boulder Bureau Map Flag](/static/map_flag.png)
 
 ###The Boulder Page
