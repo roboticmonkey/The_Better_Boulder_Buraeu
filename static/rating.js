@@ -12,12 +12,12 @@ var user = $("#user").val();
 var avg = parseInt($("#avg").val());
 var userScore = parseInt($("#user_score").val());
 
-if (userScore ) {
+if (userScore) {
     var defaultVal = userScore;
     var color = "#92d2c2";
-} else if (user && !(avg)){
+} else if (user && !(userScore)){
     var defaultVal = avg;
-    var color = "#92d2c2";
+    var color = "c5c163";
 } else {
     var defaultVal = avg;
     var color = "#c5c163";
