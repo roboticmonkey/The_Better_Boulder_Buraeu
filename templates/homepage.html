@@ -4,19 +4,30 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
-            <p>Click on the map to find some local spots to Boulder or Search for the name
-            of a place you'd like to find.</p>
+            <p class="intro">Click on the map for local spots to Boulder or Search for the name
+            of a place.</p>
         </div>
     </div>
     <div class="row"> 
         <div class="col-md-6">        
         <div id='map' style='width: 550px; height: 600px;'></div>
         </div>
-        <div class="col-md-6"> 
-            <label for="field-search"><!-- Search: -->
+        <div class="col-md-6">
+            <div class="row">
+            <div class="col-md-7">
+            <form class="" role="search">
+                <div class="form-group">
+                    <input type="text" name="search" id="field-search" class="form-control" placeholder="Search" >
+                </div>
+                <button type="submit" id="search_btn" class="btn btn-default">Submit</button>
+            </form> 
+            </div>
+            </div>
+
+            <!-- <label for="field-search">  Search: 
             <input type="text" name="search" id="field-search">
             </label>
-            <button id="search_btn">search</button>
+            <button id="search_btn">search</button> -->
             <div >
                 <h2 id="boulder-results">Unmapped Boulders</h2>
                 <ul id="Bsearch-results"></ul>

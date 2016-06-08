@@ -1,6 +1,12 @@
+/*div {
+   border: 1px solid #803a17; 
+}*/
+h1.name {
+    margin-left: -.75em;
+}
 .container-fluid {
     padding-left: 2em;
-     background-color: #fdf8ef;
+    background-color: #fdf8ef;
 }
 
 .desc {
@@ -9,18 +15,32 @@
 }
 
 .comment {
-    border: 1px solid black;
+    border: 1px solid #803a17;
     margin-bottom: 2em;
+    margin-left: 0.1em;
 }
 
 .comment-user {
-    border-left: 1px solid black;
+    border-left: 1px solid #803a17;
 }
 
 .comment-box{
-    width: 600px;
-    height: 200px;
+    width: 570px;
     font-size: 16px;
+    background-color: #F0ECE3;
+    border: 1px solid #803a17;
+}
+.r-comment-box{
+    width: 640px;
+    font-size: 16px;
+    border: 1px solid #803a17;
+    background-color: #F0ECE3;
+}
+
+.btn {
+    border: 1px solid #803a17;
+    color: #985943;
+
 }
 
 .chart {
@@ -42,12 +62,37 @@ body {
 }
 
 hr{
-   border-top: 1px solid #803a17;
-
-    
+   border-top: 1px solid #803a17; 
 }
+
+.navbar {
+    border: 1px solid #803a17;
+}
+
 ul {
     list-style-type: none;
+}
+th:first-child.route{
+    padding-right: 2em;
+    font-size: 16px;
+    /*text-align: center;*/
+}
+
+th.route {
+    font-size: 16px;
+}
+td:first-child.route{
+    padding-right: 2em;
+    padding-top: .5em;
+    
+}
+td.route + td.route {
+    text-align: center;
+}
+
+div.difficult {
+    vertical-align: bottom;
+    padding-top: 2.5em;
 }
 a {
     color: #985943;
@@ -55,9 +100,11 @@ a {
 a:hover {
     color: #39524C;
     text-decoration: none;
-    font-weight: bold;
+    /*font-weight: bold;*/
 }
-
+a.navbar-brand {
+   color: #985943; 
+}
 a.mapbox-link {
     color: #985943;
     text-align: center;
@@ -83,4 +130,14 @@ div.marker-title {
 }
 #field-search {
     border: 1px solid #803a17;
+}
+
+p.intro {
+    padding-bottom: 1em;
+    font-size: 1.5em;
+}
+
+.well {
+    margin-right: 0px;
+    background-color: #F0ECE3;
 }

@@ -14,7 +14,7 @@ function saveBComment(evt){
 }
 
 function showBComment(results){
-    $('#b-comments').prepend('<div class="row comment"><div class="col-md-3">'+
+    $('#b-comments').prepend('<div class=" well row comment"><div class="col-md-3">'+
                             '<h4>'+results['username']+'</h4></div>'+
                             '<div class="comment-user col-md-8">'+
                             '<h5>'+results['date']+'</h5>'+
@@ -43,7 +43,7 @@ function saveRComment(evt){
 
 
 function showRComment(results){
-    $('#r-comments').prepend('<div class="row comment"><div class="col-md-3">'+
+    $('#r-comments').prepend('<div class="well row comment"><div class="col-md-3">'+
                             '<h4>'+results['username']+'</h4></div>'+
                             '<div class="comment-user col-md-8">'+
                             '<h5>'+results['date']+'</h5>'+

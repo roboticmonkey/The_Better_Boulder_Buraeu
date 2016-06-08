@@ -32,22 +32,39 @@
 
 
     <body>
-        <div class="nav-bar">
-            <h1>The Better Boulder Bureau</h1>
-            <a href="/">homepage</a>
-            {% if 'user_id' not in session %}
-                <a href='#' class="register_modal">Register</a>
-           
-            <!-- <button type="button" class="login_modal">Login</button> -->
-                <a href="#" class="login_modal">Login</a>
-            {% endif %}
+        <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">The Better Boulder Bureau</a>
+    </div>
 
-            {% if 'user_id' in session %}
-                <a href='/logout'>Logout</a>
-                <a href='/user_page'>{{ session['username'] }}</a>
-            {% endif %}
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+        {% if 'user_id' not in session %}
+        <li><a href="#" class="login_modal">Login</a></li>
+        <li><a href="#" class="register_modal">Register</a></li>
+        
+        {% endif %}
+        {% if 'user_id' in session %}
+                <li><a href='/user_page'>{{ session['username'] }}</a></li>
+                <li><a href='/logout'>Logout</a></li>
+                
+        {% endif %}
 
-        </div>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>  
+
         {% with messages = get_flashed_messages() %}
         {% if messages %}
     <ul class=flashes>

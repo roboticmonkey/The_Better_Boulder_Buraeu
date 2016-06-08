@@ -135,13 +135,14 @@
 
     <hr>
     <div class="row">
-        <div class="col-md-8 desc">
+        <div class="col-md-6 desc">
             <h3>Description:</h3>
             <p>{{ boulder.boulder_description }}</p>
             <h3>Directions:</h3>
             <p>{{ boulder.boulder_directions }}</p>
         </div>
-        
+        <div class="col-md-2">
+        </div>
         <div class="col-md-4">
         {% if routes %}
         <h2>Routes</h2>
@@ -163,37 +164,50 @@
     
     <hr>
     <div class="row">
-        <div class="col-md-8">
-        <h2>Comments</h2>
-            {% if 'user_id' in session %}
-            <form action="" method="POST" id="boulder-comment">
-                <label for="b-comment-field">
-                    <textarea class="comment-box" name="comment" id="b-comment-field"></textarea>
-                </label>
-                <lable for="submit">
-                <input type="submit" value="Submit" id="b-comment-submit">
-            </label>
-            </form>
-            {% endif %}
-            <div id="b-comments">
-            {% for comment in comments %}
-                <div class="row comment">
-                    {% if comment.user_id %}
-                    
-                    <div class="col-md-3">
-                        <h4>{{ comment.user.username}} </h4>
-                    {% endif %}
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Comments</h2>
+                    {% if 'user_id' in session %}
+                    <form action="" method="POST" id="boulder-comment">
+                    <div class="form-group">
+                        <label for="b-comment-field">
+                            <textarea class="comment-box form-control" rows="3" name="comment" id="b-comment-field"></textarea>
+                        </label>
+                    </div>                  
+                    <div class="form-group">
+                        <label for="submit">
+                        <input class="btn btn-default" type="submit" value="Submit" id="b-comment-submit">
+                        </label>
                     </div>
-                    <div class="comment-user col-md-8">
-                        <h5>{{ comment.boulder_datetime.strftime('%d %B %Y') }}   </h5>
-                        <p>{{ comment.boulder_comment }}</p>
-                        
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="b-comments">
+                    {% for comment in comments %}
+                        <div class="well row comment">
+                            {% if comment.user_id %}
+                            
+                            <div class="col-md-3">
+                                <h4>{{ comment.user.username}} </h4>
+                            {% endif %}
+                            </div>
+                            <div class="comment-user col-md-8">
+                                <h5>{{ comment.boulder_datetime.strftime('%d %B %Y') }}   </h5>
+                                <p>{{ comment.boulder_comment }}</p>
+                                
+                            </div>
+                        </div>
+                    {% endfor %}
                     </div>
                 </div>
-            {% endfor %}
             </div>
         </div>
     </div>
+
     <!-- form for the star rating -->
         <form action="#" method="POST">
         <input type="hidden" name="user-rating" id="star-rating">
