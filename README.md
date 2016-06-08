@@ -27,8 +27,8 @@ The Better Boulder Bureau (TBBB) helps rock climbers find outdoor places to boul
 
 ## <a name="use"></a>How to use The Better Boulder Bureau
 
-###When the main page loads all bouldering locations
-All locations will appear as clusters of map pins.
+###The Main page
+All locations will appear as clusters of map pins when the page loads.
 Click on a pin to see the name of the location.
  
 ![The Better Boulder Bureau Main page](/static/main_page.png)
@@ -45,13 +45,13 @@ Click on a pin to see the name of the location.
 ![The Better Boulder Bureau Map Flag](/static/map_flag.png)
 
 ###The Boulder Page
-The Boulder page shows the location plotted on a map
-It also show a graph of the difficulty rating break down of all the climbing routes for that boulder.
+The Boulder page shows the location plotted on a map.
+It also shows a graph of the difficulty rating break down of all the climbing routes for that boulder.
 For a user that is not logged in Boulder star ratings shown are the average star rating and is shown in green.
 
 ![The Better Boulder Bureau Boulder page](/static/boulder_page_1.png)
 
-There is also location specific information about the boulder as well as the names and ratings of it's climbing routes.
+There is also location specific information about the boulder as well as the names and ratings of its climbing routes.
 
 ![The Better Boulder Bureau Boulder page](/static/boulder_page_2.png)
 
@@ -78,13 +78,13 @@ They also can see a table of all the climbing routes they have completed.
 
 ###The Boulder Page 'User View'
 When a user is logged in they have the ability to rate the location or add comments.
-If they have not rated the particulare location they will see the average rating for that location, also in green.
+If they have not rated the particular location they will see the average rating for that location, also in green.
 
 ![The Better Boulder Bureau User View Boulder page ](/static/user_view_boulder.png)
 
 ###The Route Page 'User View'
 When a user is logged in they have the ability to rate the route or add comments.
-If they have rated the climbing route they will see their rating for that location, also in blue.
+If they have rated the climbing route they will see their rating for that location, in blue.
 
 ![The Better Boulder Bureau User View Route page ](/static/user_view_route.png)
 
