@@ -7,8 +7,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
-# app = Flask(__name__)
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///boulders'
 db = SQLAlchemy()
 
 
@@ -226,16 +224,6 @@ class Route_comment(db.Model):
         return "<Route Comment: id=%s route_id=%s>" % (self.route_comment_id, 
                                                         self.route_id)
 
-
-# class Images(db.Model):
-#     """Images uploaded from users"""
-#     #TODO AFTER FIRST SPRINT
-#     #add table creation
-
-#     #add column creation
-#     def __repr__(self):
-#         """Provide helpful representation when printed."""
-#     pass 
 
 
 #################################

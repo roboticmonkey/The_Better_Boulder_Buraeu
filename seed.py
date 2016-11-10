@@ -31,15 +31,7 @@ def load_locations():
     # unpack each row
             parent_name, name, lat_long, desc, directions, sub_locations = row
 
-            # print parent_name
-            # print name
-            # print lat_long
-            # print desc
-            # print directions
-            # print sub_locations
             lat, lon = lat_long.split(', ')
-            # print lat
-            # print lon
 
             # create a new location object
             location = Location(location_name=name,
@@ -76,13 +68,6 @@ def load_sub_locations():
             # unpack each row
             parent_name, name, lat_long, desc, directions, sub_loc = row
 
-            # print parent_name
-            # print name
-            # print lat_long
-            
-            # print desc
-            # print directions
-            # print sub_loc
 
             if lat_long:
 
@@ -90,20 +75,15 @@ def load_sub_locations():
             else:
                 lat = ""
                 lon = ""
-            # print temp
-            # print type(temp)
-            # lat= temp[0]  #WHAT THE HELL? WHY? ASK FOR HELP IN AM
-            # lon=temp[-1]
-            # print lat
-            # print lon
+      
 
             #use flask-sqlalchemy to query the db
             # query the db to get the location_id of a matching location name
             parent = Location.query.filter_by(location_name=parent_name).first()
-            # print parent
+ 
             
             parent_id = parent.location_id
-            # print parent_id
+
 
     # create a new sub_location object
             sub = Sub_location(sub_location_name=name, 
@@ -140,14 +120,7 @@ def load_boulders():
             # unpack each row
             parent_name, name, lat_long, desc, directions, routes = row
             parent_name = parent_name.strip()
-            # print "\n\n"
-            # print parent_name
-            # print name
-            # print lat_long
-            
-            # print desc
-            # print directions
-            # print routes
+
 
             #checks if lat_long is empty string
             if lat_long:
@@ -182,9 +155,9 @@ def load_boulders():
     # name and retreive the location_id
             if not parent:
                 parent = Location.query.filter_by(location_name=parent_name).first()
-                # print "location look", parent
+                
                 parent_id = parent.location_id
-                # print "parent: %i " % (parent_id)
+                
                 
                 #     create a new boulder object
                 rock = Boulder(boulder_name=name,
@@ -203,8 +176,7 @@ def load_boulders():
 
 def load_routes(the_file):
     """Load routes from bouldering_routes2.csv, bouldering_routes_1.csv into db"""
-    # print the_file
-    # print "\n\n"
+    
     # open file
     with open(the_file, 'r,') as csvfile:
         #checks to see if the file has a header
@@ -222,20 +194,13 @@ def load_routes(the_file):
             # unpack each row
             parent_name, name, difficulty, desc, directions, protection = row
             parent_name = parent_name.strip()
-            # print parent_name
-            # print name
-            # print difficulty
-            # print desc
-            # print directions
-            # print protection
-            # print "\n\n"
+           
 
     # query the db to get the boulder_id of a matching boulder name
             parent = Boulder.query.filter_by(boulder_name=parent_name).first()
-            # print type(parent)
-            # print parent
+            
             parent_id=parent.boulder_id
-            # print parent_id
+            
 
     # create a new route object
             route = Route(route_name=name,

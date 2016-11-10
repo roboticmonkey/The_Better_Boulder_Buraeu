@@ -46,7 +46,7 @@ def register_process():
     username = request.form.get('username')
 
     hashed_password = hashing.hash_password(password)
-    # print hashed_password
+    
 
 
     #check if username in db
@@ -227,10 +227,10 @@ def boulder_detail(boulder_id):
 
     rating_objs = Boulder_rating.query.filter(Boulder_rating.boulder_id==boulder.boulder_id).all()
     ratings = [rating.boulder_rating for rating in rating_objs]
-    # print ratings
+    
     if ratings:
         avg = round(float(sum(ratings))/ len(ratings), 0)
-        # print avg
+        
     return render_template("boulders.html", boulder=boulder,
                                             routes=routes,
                                             comments=comments,
@@ -241,7 +241,7 @@ def boulder_detail(boulder_id):
 def create_chart_data():
     # get the boulder_id from the ajax call
     boulder_id = request.args.get('boulder_id')
-    # print boulder_id
+    
     # find all routes connected to the boulder_id
     routes = Route.query.filter_by(boulder_id=boulder_id).all()
 
@@ -280,17 +280,17 @@ def display_route(route_id):
     session['route_id'] = route.route_id
     session['boulder_route'] = 'route'
 
-    # print route
+    
     # set avg variable and user_score variable
     avg = 0
     user_id = session.get("user_id")
     if user_id is not None:
         user_rate = Route_rating.query.filter( (Route_rating.route_id==route_id) & 
                                                 (Route_rating.user_id==user_id)).first()
-        # print user_rate
+        
         if user_rate:
             user_score = user_rate.route_rating
-            # print user_score
+            
         else: 
             user_score = 0
     else:
@@ -318,13 +318,13 @@ def display_route(route_id):
 
     
     rating_objs = Route_rating.query.filter(Route_rating.route_id==route.route_id).all()
-    # print rating_objs
+    
     ratings = [rating.route_rating for rating in rating_objs]
 
-    # print ratings
+    
     if ratings:
         avg = round(float(sum(ratings))/ len(ratings), 0)
-        # print avg
+        
 
     return render_template("route.html", route=route,
                                         near_routes=near_routes,
@@ -380,8 +380,6 @@ def find_sub_location_kids():
 
     boulder_dict = convert_boulders_dict(boulders)
     results.extend(boulder_dict)
-
-    # print results
     
     return jsonify({'data':results})
 
@@ -414,21 +412,19 @@ def search():
         route_dict = convert_routes_dict(routes)
         results.extend(route_dict)
     
-    # print results
+
     return jsonify({'data':results})
 
 @app.route('/add-b-comment.json', methods=["POST"])
 def add_boulder_comment():
     """Adds a comment to a boulder"""
-    # print "this shit is getting real!"
+    
 
     comment = request.form.get("comment")
     boulder_id = session.get('boulder_id')
     user_id = session.get('user_id')
-    # print boulder_id
-    timestamp = datetime.now()
     
-    # print timestamp
+    timestamp = datetime.now()
 
     new_comment = Boulder_comment(boulder_comment=comment, 
                                 boulder_id=boulder_id,
@@ -452,14 +448,12 @@ def add_boulder_comment():
 @app.route('/add-r-comment.json', methods=["POST"])
 def add_route_comment():
     """Adds a comment to a route"""
-    # print "this shit is getting real!"
 
     comment = request.form.get("comment")
     route_id = session.get('route_id')
     user_id = session.get('user_id')
-    # print route_id
+    
     timestamp = datetime.now()
-    # print timestamp
 
     new_comment = Route_comment(route_comment=comment, 
                                 route_id=route_id,
@@ -489,7 +483,7 @@ def add_rate_boulder():
     
     user_id = request.form.get('user')
     boulder_id = request.form.get('boulder')
-    # print user_id, boulder_id, rate
+    
     # checks to see if the user has already rated the boulder
     rating = Boulder_rating.query.filter((Boulder_rating.boulder_id== boulder_id) &
                                         (Boulder_rating.user_id==user_id)).first()
@@ -497,7 +491,7 @@ def add_rate_boulder():
     # if the user already has a rating, update the db
     if rating:
         rating.boulder_rating = rate
-        # add to db
+        
         db.session.add(rating)
     
     # if the user has not rated the boulder before make a new rating
@@ -524,7 +518,7 @@ def add_rate_route():
 
     user_id = request.form.get('user')
     route_id = request.form.get('route')
-    # print user_id, route_id, rate
+    
 
     # looks for a rating for the route by the user in db
     rating = Route_rating.query.filter((Route_rating.route_id== route_id) &

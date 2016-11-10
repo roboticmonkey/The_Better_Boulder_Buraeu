@@ -9,16 +9,11 @@ def convert_sublocations_dict(sub_locations):
 
     results = []
 
-    # print "\n this is the start of helper function: multiple"
-    # print sub_locations, " is of type: ", type(sub_locations)
-
     for sub in sub_locations:
-        # print sub
+        
         sub_dict = convert_sublocation_dict(sub)
 
         results.append(sub_dict)
-    # print "\n these are the results from helper function: multiple"
-    # print results
 
     return results
 
@@ -29,11 +24,6 @@ def convert_sublocation_dict(sub_location):
     sub = sub_location
     
     results = []
-
-    # print "\n this is the start of helper function: single"
-    # print sub
-    # print type(sub)
-
     
     temp_dict = {}
     temp_dict["name"] = sub.sub_location_name
@@ -44,8 +34,6 @@ def convert_sublocation_dict(sub_location):
 
     
     results = temp_dict
-    # print "\n these are the results from helper function: single"
-    # print results
 
     return results
 
@@ -55,15 +43,10 @@ def convert_boulders_dict(boulders):
 
     results = []
 
-    # print "this is the start of helper function"
-    # print boulders
-
     for boulder in boulders:
         boulder_dict = convert_boulder_dict(boulder)
 
         results.append(boulder_dict)
-    # print "these are the results from helper function:"
-    # print results
 
     return results
 
@@ -98,16 +81,10 @@ def convert_locations_dict(locations):
 
     results = []
 
-    # print "this is the start of helper function"
-    # print locations
-
     for location in locations:
         location_dict = convert_location_dict(location)
 
         results.append(location_dict)
-
-    # print "these are the results from helper function:"
-    # print results
 
     return results
 
@@ -116,9 +93,6 @@ def convert_location_dict(location):
         a dictionary for converting to json"""
 
     results = []
-
-    # print "this is the start of helper function"
-    # print location
     
     temp_dict = {}
     temp_dict["name"] = location.location_name
@@ -129,9 +103,6 @@ def convert_location_dict(location):
 
     results = temp_dict
         
-    # print "these are the results from helper function:"
-    # print results
-
     return results
 
 def convert_routes_dict(routes):
